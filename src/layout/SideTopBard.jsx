@@ -1,8 +1,16 @@
 import { Dropdown } from 'bootstrap';
 import React from 'react';
 import { FaBarsStaggered } from 'react-icons/fa6';
+import { logout } from '../helper/auth';
+import { useNavigate } from 'react-router-dom';
 
 function SideTopBard({ onToggleSidebar }) {
+
+    const navigate = useNavigate();
+    const handleLogOut = () => {
+        logout();
+        navigate('/login');
+    }
     return (
         <div className='side-top-bar d-flex justify-content-between align-items-center gap-3'>
             <FaBarsStaggered onClick={onToggleSidebar} className='sidebar-toggel' />
@@ -22,7 +30,7 @@ function SideTopBard({ onToggleSidebar }) {
                 </button>
                 <ul className="dropdown-menu mt-2">
                     <li><a className="dropdown-item">Profile</a></li>
-                    <li><a className="dropdown-item border-top">Logout</a></li>
+                    <li><a className="dropdown-item border-top" onClick={handleLogOut}>Logout</a></li>
                 </ul>
             </div>
         </div>

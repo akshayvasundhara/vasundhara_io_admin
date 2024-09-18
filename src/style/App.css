@@ -473,9 +473,6 @@ input.form-control::placeholder {
 /* button disabled css  */
 .btn-disabled {
   pointer-events: none;
-  /* Prevents click events */
   opacity: 0.6;
-  /* Makes the button appear disabled */
   cursor: not-allowed;
-  /* Changes the cursor to indicate disabled state */
 }

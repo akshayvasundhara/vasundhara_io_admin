@@ -7,9 +7,9 @@ export const login = (user) => {
     localStorage.setItem("token", user?.token);
   }
   encryptAndStoreLoc("name", user?.name);
-  encryptAndStoreLoc("user", user?.id);
+  // encryptAndStoreLoc("user", user?.id);
   encryptAndStoreLoc("email", user?.email);
-  encryptAndStoreLoc("username", user?.username);
+  // encryptAndStoreLoc("username", user?.username);
   encryptAndStoreLoc("profile_image", user?.profile_image);
 
 
@@ -19,7 +19,7 @@ export const login = (user) => {
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("name");
-  localStorage.removeItem("user");
+  // localStorage.removeItem("user");
   localStorage.removeItem("email");
   localStorage.removeItem("profile_image");
   // window.location.href = "/login";

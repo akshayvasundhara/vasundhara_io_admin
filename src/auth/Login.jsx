@@ -63,18 +63,18 @@ function Login() {
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
             try {
-                api.post(`${serverURL}sign-in-admin`, updatedValues)
+                api.post(`${serverURL}login`, updatedValues)
                     .then((response) => {
-                        console.log("response.data", response);
+
                         setSubmitCount(1);
                         setLoading(false);
-                        if (response?.data.status === 1) {
-
+                        if (response?.data.success === true) {
                             login(response?.data.data);
                             toast.info(response?.data.message);
-                            navigate('/');
-                        } else if (response?.data.status === 0) {
-                            toast.error(response?.data.message);
+                            navigate('/dashboard');
+                        } else if (response?.data?.success === false) {
+                            if (typeof response?.data?.message === "string")
+                                toast.error(response?.data?.message);
                         }
                     })
                     .catch((error) => {
