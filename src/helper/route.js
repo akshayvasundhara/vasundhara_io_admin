@@ -7,21 +7,31 @@ import '../style/poppins.css';
 
 import Login from '../auth/Login';
 import Home from '../pages/home/HomeIndex';
+import ProtectLoginRoute from './ProtectLoginRoute';
+import ProtectedRoute from './ProtectedRoute';
+import PrivateRoute from './PrivateRoute';
 
 export default [
-
     {
         path: "/login",
-        element: <Login />,
+        element: (
+            <ProtectLoginRoute>
+                <Login />
+            </ProtectLoginRoute>
+        ),
     },
 
     {
         path: "/dashboard",
-        element: <Home />,
+        element: (
+            <PrivateRoute>
+                <Home />
+            </PrivateRoute>
+        ),
     },
     {
         path: "*",
-        element: <Navigate to="/" />,
+        element: <Navigate to="/dashboard" />,
     },
 ];
 
