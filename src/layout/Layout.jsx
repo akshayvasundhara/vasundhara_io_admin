@@ -17,7 +17,7 @@ function Layout({ children }) {
                     <div className='border-bottom'>
                         <SideTopBard onToggleSidebar={toggleSidebar} />
                     </div>
-                    <div className='page-main p-4'>
+                    <div className='page-main p-4 pt-3'>
                         {children}
                     </div>
                 </div>

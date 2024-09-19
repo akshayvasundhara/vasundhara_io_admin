@@ -11,7 +11,7 @@ import { FaRegNewspaper } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
 
-function HomeIndex() {
+function Portfolios() {
 
     const data = [
         { id: 1, title: "Testimonial", to: '/testimonials', icons: <FaUsers />, testimonialCount: 14, activeCount: 14 },
@@ -28,7 +28,7 @@ function HomeIndex() {
     return (
         <>
             <Layout>
-                <h2 className='page-title'>Dashboard</h2>
+                <h2 className='page-title'>Portfolios</h2>
                 <Row className='dashboard-cards font-family-poppins mt-3'>
                     {data.map((item) => (
                         <Col key={item.id} md={3}>
@@ -64,4 +64,4 @@ function HomeIndex() {
     )
 }
 
-export default HomeIndex
+export default Portfolios

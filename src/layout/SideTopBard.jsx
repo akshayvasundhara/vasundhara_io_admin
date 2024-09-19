@@ -22,15 +22,13 @@ function SideTopBard({ onToggleSidebar }) {
                         </div>
                         <div className='lh-sm'>
                             <p className='user-title'>Admin</p>
-                            <span className='user-login-date'>Jul. 2021</span>
                         </div>
                         <div className='dropdown-toggle'></div>
                     </div>
 
                 </button>
                 <ul className="dropdown-menu mt-2">
-                    <li><a className="dropdown-item">Profile</a></li>
-                    <li><a className="dropdown-item border-top" onClick={handleLogOut}>Logout</a></li>
+                    <li><a className="dropdown-item">Logout</a></li>
                 </ul>
             </div>
         </div>

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom'; // Import for routing
+
 import { IoHomeSharp } from "react-icons/io5";
+import { FaUsers } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
+
+
 
 const categories = [
     { id: 1, name: 'Dashboard', icons: <IoHomeSharp />, path: '/dashboard', subcategories: [] }, // Add 'path' for links
-    { id: 2, name: 'Testimonials', path: '/testimonials', subcategories: [] },
-    { id: 3, name: 'Home 3', path: '/home3', subcategories: [] },
+    { id: 2, name: 'Testimonials', icons: <FaUsers />, path: '/testimonials', subcategories: [] },
+    { id: 3, name: 'Portfolios', icons: <CgProfile  />, path: '/portfolios', subcategories: [] },
     { id: 4, name: 'Home 4', path: '/home4', subcategories: [] },
     // { id: 5, name: 'Category 1', path: 'category1', subcategories: ['Subcategory 2.1', 'Subcategory 2.2'] },
 ];

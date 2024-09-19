@@ -153,29 +153,131 @@ body {
   text-align: center;
   border: 0px;
   border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-family-poppins);
 }
 
-input.form-control {
-  padding: 9px 10px;
+.back-btn {
+  padding: 8px;
+  background-color: rgba(92, 103, 247, 0.1);
+  color: #fff;
+  text-align: center;
+  border: 0px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-family-poppins);
+  width: 30px;
+  height: 30px;
+}
+
+.back-btn svg {
+  font-size: 20px;
+  color: var(--primary);
 }
 
 input.form-control,
+select.form-select {
+  padding: 9px 10px;
+}
+
+textarea.form-control,
+input.form-control,
+select.form-select,
 input.form-control::placeholder {
-  color: var(--primary);
-  font-weight: 500;
+  color: #a0a5a9;
+  font-weight: 300;
   font-size: 16px;
 }
 
-.form-control:focus {
+.form-control:focus,
+.css-t3ipsp-control {
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
   border-color: #5c67f7;
   outline: 0;
-  box-shadow: 0 0 0 .25rem rgba(13, 110, 253, 0.25)
+  box-shadow: 0 0 0 .25rem rgba(13, 110, 253, 0.25) !important
 }
 
 .top-70 {
   top: 70%;
+}
+
+.btn-disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+label {
+  font-weight: 500;
+}
+
+.css-hlgwow {
+  padding: 5px !important;
+}
+
+.css-19bb58m {
+  color: var(--primary) !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
+
+.formfile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.formfile-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.save-btn {
+  padding: 10px 30px;
+  border: 0px;
+  border-radius: 5px;
+  background-color: var(--secondary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  padding: 10px 30px;
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  background-color: transparent;
+  color: var(--primary);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+th {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--font-family-poppins);
+}
+
+td {
+  font-size: 15px;
+  font-weight: 400;
+  font-family: var(--font-family-poppins);
+  vertical-align: middle;
+  max-width: 150px;
+  width: auto;
+  text-wrap: wrap;
+}
+
+.table-image {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border: 1px solid var(--primary);
+  border-radius: 50%;
 }
 
 /* General Css End*/
@@ -346,14 +448,6 @@ input.form-control::placeholder {
   text-align: start;
 }
 
-.user-login-date {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--primary);
-  margin-bottom: 0px;
-  text-align: start;
-}
-
 .user-dropdown a {
   font-size: 16px;
   font-weight: 600;
@@ -384,10 +478,11 @@ input.form-control::placeholder {
 }
 
 .page-title {
-  font-size: 30px;
+  font-size: 25px;
   color: var(--primary);
   font-weight: 600;
   font-family: var(--font-family-poppins);
+  margin-bottom: 0px;
 }
 
 .dashboard-cards h3 {
@@ -469,10 +564,121 @@ input.form-control::placeholder {
 }
 
 /* Dashboard Page End */
-
-/* button disabled css  */
-.btn-disabled {
-  pointer-events: none;
-  opacity: 0.6;
-  cursor: not-allowed;
+/* Testimonials Page Start */
+.table-card .card {
+  border: 0px;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  border-radius: 10px;
 }
+
+.table-card .card .card-body {
+  border-radius: 20px;
+}
+
+.table-delete-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+
+}
+
+.table-delete-btn svg {
+  font-size: 18px;
+  color: #fff;
+}
+
+.table-edit-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  background-color: var(--primary);
+  border: 0px;
+  border-radius: 5px;
+}
+
+.table-edit-btn svg {
+  font-size: 18px;
+  color: #fff;
+}
+
+
+.toggle {
+  position: relative;
+  display: inline-block;
+}
+
+.toggle__input {
+  display: none;
+}
+
+.toggle__label {
+  display: block;
+  width: 50px;
+  height: 25px;
+  background-color: var(--secondary);
+  border-radius: 99px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+  /* Add this to position the after pseudo-element correctly */
+}
+
+.dark-mode .toggle__label {
+  background-color: var(--primary);
+}
+
+.toggle__label::after {
+  content: '';
+  position: absolute;
+  top: 2.2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: right 0.3s ease;
+}
+
+.toggle__input:checked+.toggle__label::after {
+  right: 26px;
+}
+
+.drag-drop-icons {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background-color: rgba(92, 103, 247, 0.1);
+}
+
+.drag-over {
+  height: 197px;
+  width: 200px;
+  border: 1px dashed var(--primary);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.drag-over p {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 500;
+  columns: var(--primary);
+}
+
+.drag-drop-icons svg {
+  font-size: 30px;
+}
+
+.image-upload {
+  background-color: #fff;
+  height: 197px;
+  width: 200px;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+}
+
+
+/* Testimonials Page End */
