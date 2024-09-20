@@ -14,6 +14,7 @@
 body {
   margin: 0px;
   padding: 0px;
+  overflow-y: hidden;
 }
 
 /* General Css Start */
@@ -136,6 +137,10 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.rem-5 {
+  padding-bottom: 5rem !important;
+}
+
 /* Font Size Custom Class End */
 
 .text-muted {
@@ -197,7 +202,7 @@ input.form-control::placeholder {
   background-color: var(--bs-body-bg);
   border-color: #5c67f7;
   outline: 0;
-  box-shadow: 0 0 0 .25rem rgba(13, 110, 253, 0.25) !important
+  box-shadow: none !important
 }
 
 .top-70 {
@@ -480,7 +485,7 @@ td {
 .page-title {
   font-size: 25px;
   color: var(--primary);
-  font-weight: 600;
+  font-weight: 500;
   font-family: var(--font-family-poppins);
   margin-bottom: 0px;
 }
@@ -575,30 +580,48 @@ td {
   border-radius: 20px;
 }
 
+.table-delete-btn:hover,
 .table-delete-btn {
   width: 30px;
   height: 30px;
   padding: 0px;
+  background-color: rgba(251, 66, 66, 0.2);
+  border: 0px;
 
 }
 
 .table-delete-btn svg {
   font-size: 18px;
-  color: #fff;
+  color: #dc3545;
+}
+
+.table-view-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  background-color: rgba(92, 103, 247, 0.2);
+  border: 0px;
+  border-radius: 5px;
 }
 
 .table-edit-btn {
   width: 30px;
   height: 30px;
   padding: 0px;
-  background-color: var(--primary);
+  background-color: rgba(33, 206, 158, 0.2);
   border: 0px;
   border-radius: 5px;
 }
 
+
 .table-edit-btn svg {
   font-size: 18px;
-  color: #fff;
+  color: #21ce9e;
+}
+
+.table-view-btn svg {
+  font-size: 18px;
+  color: var(--secondary);
 }
 
 
@@ -716,3 +739,85 @@ td {
     transform: rotate(1turn)
   }
 }
+
+/* Hirings Page Start */
+.input-add {
+  max-width: 44px;
+  min-width: 44px;
+  height: 44px;
+  background-color: var(--secondary);
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.input-add svg {
+  font-size: 20px;
+}
+
+.view-image-box {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  border: 1px solid var(--primary);
+}
+
+.view-table.table>:not(caption)>*>* {
+  border-bottom-width: 0;
+}
+
+.responsibilities li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.responsibilities li svg {
+  color: #0094EE;
+  font-size: 15px;
+}
+
+
+/* Hirings Page End */
+
+
+/* Pagination Start */
+.pagination-main .pagination {
+  gap: 10px;
+}
+
+.pagination-main .page-item {
+  border: 1px solid #dee2e6 !important;
+  --bs-border-width: 0px !important;
+  width: 40px;
+  height: 40px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.pagination-main .page-link {
+  border: 0px !important;
+  padding: 0px;
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 500;
+  background-color: transparent;
+}
+
+.pagination-main .page-item svg {
+  color: var(--primary);
+}
+
+.pagination-main .page-item.active {
+  background-color: var(--secondary);
+}
+
+.pagination-main .page-item.active span {
+  color: #fff !important;
+}
+
+/* Pagination End */

@@ -199,7 +199,7 @@ function AddTestimonials() {
 
                                         <div className="d-flex justify-content-between align-items-center mt-3">
                                             <div className='d-flex align-items-center gap-2'>
-                                                <label htmlFor="industry-select" className="form-label text-default">
+                                                <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                     Status:
                                                 </label>
                                                 <Switch mode={states.status} />

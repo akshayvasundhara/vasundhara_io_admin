@@ -54,7 +54,7 @@ function DeleteButton({ id, endpoint, onSuccess }) {
 
 
     return (
-        <Button variant="danger" className='table-delete-btn d-flex justify-content-center align-items-center' onClick={handleDelete}>
+        <Button className='table-delete-btn d-flex justify-content-center align-items-center' onClick={handleDelete}>
             <RiDeleteBinLine />
         </Button>
     );

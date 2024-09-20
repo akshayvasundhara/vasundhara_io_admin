@@ -13,6 +13,9 @@ import PrivateRoute from './PrivateRoute';
 import Testimonialsindex from '../pages/testimonials/Testimonialsindex';
 import AddTestimonials from '../pages/testimonials/AddTestimonials';
 import Portfolios from '../pages/Portfolios/Portfolios';
+import HiringIndex from '../pages/Hirings/HiringIndex';
+import AddHirings from '../pages/Hirings/AddHirings';
+import ViewHirings from '../pages/Hirings/ViewHirings';
 
 export default [
     {
@@ -62,6 +65,38 @@ export default [
         element: (
             <PrivateRoute>
                 <Portfolios />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/hirings",
+        element: (
+            <PrivateRoute>
+                <HiringIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/hirings-add",
+        element: (
+            <PrivateRoute>
+                <AddHirings />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/hirings-edit",
+        element: (
+            <PrivateRoute>
+                <AddHirings />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/hirings-view",
+        element: (
+            <PrivateRoute>
+                <ViewHirings />
             </PrivateRoute>
         ),
     },
