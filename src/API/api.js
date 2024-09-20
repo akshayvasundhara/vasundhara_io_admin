@@ -52,4 +52,11 @@ export default {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         }),
+
+    patchWithToken: async (URL, DATA) =>
+        axiosInstance.patch(URL, DATA, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        }),
 };

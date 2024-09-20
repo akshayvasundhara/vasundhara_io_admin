@@ -3,11 +3,11 @@
 export const getServerURL = () => {
   switch (process.env.REACT_APP_NODE_ENV) {
     case 'production':
-      return `${process.env.REACT_APP_BASE_URL_PRODUCTION}api/admin/`;
+      return `${process.env.REACT_APP_BASE_URL_PRODUCTION}/api/admin`;
     case 'test':
-      return `${process.env.REACT_APP_BASE_URL_TEST}api/admin/`;
+      return `${process.env.REACT_APP_BASE_URL_TEST}/api/admin`;
     default:
-      return `${process.env.REACT_APP_BASE_URL}api/admin/`;
+      return `${process.env.REACT_APP_BASE_URL}/api/admin`;
   }
 };
 

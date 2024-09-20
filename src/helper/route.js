@@ -50,6 +50,14 @@ export default [
         ),
     },
     {
+        path: "/testimonials-edit",
+        element: (
+            <PrivateRoute>
+                <AddTestimonials />
+            </PrivateRoute>
+        ),
+    },
+    {
         path: "/portfolios",
         element: (
             <PrivateRoute>

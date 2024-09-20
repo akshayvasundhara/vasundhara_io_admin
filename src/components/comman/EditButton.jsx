@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 
 
 
-function EditButton({ to }) {
+function EditButton({ to, state }) {
 
     return (
-        <Link to={to} className='table-edit-btn d-flex justify-content-center align-items-center'>
+        <Link to={to} className='table-edit-btn d-flex justify-content-center align-items-center' state={state} >
             <MdOutlineEdit />
+
         </Link>
     );
 }

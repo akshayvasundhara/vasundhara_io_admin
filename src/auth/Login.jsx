@@ -63,7 +63,7 @@ function Login() {
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
             try {
-                api.post(`${serverURL}login`, updatedValues)
+                api.post(`${serverURL}/login`, updatedValues)
                     .then((response) => {
 
                         setSubmitCount(1);
