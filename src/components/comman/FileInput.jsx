@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdOutlineFileUpload } from "react-icons/md";
 
 
-function FileInput({ label, setImage }) {
+function FileInput({ label, setImage, initialImage }) {
     const [selectedImage, setSelectedImage] = useState(null);
+
+
+    useEffect(() => {
+        if (initialImage) {
+            setSelectedImage(initialImage); // Set the selected image if an initial image is provided
+        }
+    }, [initialImage]);
 
     const handleImageChange = (file) => {
         const reader = new FileReader();

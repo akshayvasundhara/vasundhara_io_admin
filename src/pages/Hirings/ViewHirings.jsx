@@ -5,24 +5,24 @@ import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
 import { ImArrowLeft } from "react-icons/im";
 import { FaCheckCircle } from "react-icons/fa";
+import { useLocation } from 'react-router-dom';
+import { getImageURL } from '../../helper/envConfig';
+import formatDate from '../../helper/formatDate';
 
 
 
 function ViewHirings() {
+    const location = useLocation();
+    const state = location.state || {};
+    console.log("state", state);
 
     // State to track the dark mode status
     const [isDarkMode, setIsDarkMode] = useState(false);
-
+    const imageURL = getImageURL();
     // Function to handle the toggle switch
     const handleToggle = () => {
         setIsDarkMode(!isDarkMode);
     };
-
-    const option = [
-        { value: '1', label: 'Full Time' },
-        { value: '2', label: 'Half Time' },
-    ];
-
     return (
         <>
             <Layout>
@@ -39,7 +39,7 @@ function ViewHirings() {
                                         <div className="col-sm-12">
                                             <div className='view-image-box mb-2'>
                                                 <img
-                                                    src="https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png"
+                                                    src={`${imageURL}${state.image}`}
                                                     alt=""
                                                     className='w-100 h-100'
                                                 />
@@ -47,15 +47,15 @@ function ViewHirings() {
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="job_name" className="form-label text-default fw-600">Job Name:</label>
-                                            <span className='ps-2'>Office Assistant</span>
+                                            <span className='ps-2'>{state.job_name}</span>
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="experience" className="form-label text-default fw-600">Experience:</label>
-                                            <span className='ps-2'>0-1 Year</span>
+                                            <span className='ps-2'>{state.experience} Year</span>
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="no" className="form-label text-default fw-600">No. of Openings:</label>
-                                            <span className='ps-2'>1</span>
+                                            <span className='ps-2'>{state.no_of_openings}</span>
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="qualification" className="form-label text-default fw-600">Job Time:</label>
@@ -63,51 +63,46 @@ function ViewHirings() {
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="qualification" className="form-label text-default fw-600">Qualification:</label>
-                                            <span className='ps-2'>Any</span>
+                                            <span className='ps-2'>{state.qualification}</span>
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="location" className="form-label text-default fw-600">Location:</label>
-                                            <li>Surat, Gujarat</li>
+                                            <li>{state.location}</li>
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="responsibilities" className="form-label text-default fw-600">Responsibilities:</label>
                                             <ul className='ps-2 list-unstyled responsibilities'>
-                                                <li> <FaCheckCircle /><span>Monitoring the use of equipment and supplies within the office.</span></li>
-                                                <li> <FaCheckCircle /><span>Dealing with queries or requests from the visitors and employees.</span></li>
-                                                <li> <FaCheckCircle /><span>Coordinating the maintenance and repair of office equipment.</span></li>
-                                                <li> <FaCheckCircle /><span>Assisting other administrative staff in wide range of office duties.</span></li>
-                                                <li> <FaCheckCircle /><span>Collecting and distributing couriers or parcels among employees and
-                                                    opening and sorting emails.</span></li>
-                                                <li> <FaCheckCircle /><span>Cooperating with office staff to maintain proper interaction and a
-                                                    friendly environment within the office.</span></li>
-                                                <li> <FaCheckCircle /><span>Make sure the office premise is clean.</span></li>
+                                                {state.responsibilities.map((responsibility, index) => (
+                                                    <li key={index}>
+                                                        <FaCheckCircle />
+                                                        <span>{responsibility}</span>
+                                                    </li>
+                                                ))}
                                             </ul>
                                             <p />
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="responsibilities" className="form-label text-default fw-600">Skill:</label>
                                             <ul className='ps-2 list-unstyled responsibilities'>
-                                                <li> <FaCheckCircle /><span>Monitoring the use of equipment and supplies within the office.</span></li>
-                                                <li> <FaCheckCircle /><span>Dealing with queries or requests from the visitors and employees.</span></li>
-                                                <li> <FaCheckCircle /><span>Coordinating the maintenance and repair of office equipment.</span></li>
-                                                <li> <FaCheckCircle /><span>Assisting other administrative staff in wide range of office duties.</span></li>
-                                                <li> <FaCheckCircle /><span>Collecting and distributing couriers or parcels among employees and
-                                                    opening and sorting emails.</span></li>
-                                                <li> <FaCheckCircle /><span>Cooperating with office staff to maintain proper interaction and a
-                                                    friendly environment within the office.</span></li>
-                                                <li> <FaCheckCircle /><span>Make sure the office premise is clean.</span></li>
+                                                {state.skill.map((skills, index) => (
+                                                    <li key={index}>
+                                                        <FaCheckCircle />
+                                                        <span>{skills}</span>
+                                                    </li>
+                                                ))}
                                             </ul>
+
                                             <p />
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="status" className="form-label text-default fw-600">Status:</label>
                                             <span className='ps-2'>
-                                                Deactivate
+                                                {state.status === 1 ? 'Activate' : 'Deactivate'}
                                             </span>
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="created_at" className="form-label text-default fw-600">Created At:</label>
-                                            <span className='ps-2'>September 20, 2024</span>
+                                            <span className='ps-2'>{formatDate(state.createdAt)}</span>
                                         </div>
                                     </div>
 

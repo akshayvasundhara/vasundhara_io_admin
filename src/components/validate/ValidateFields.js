@@ -58,5 +58,72 @@ export const ValidateFields = (values) => {
     errors.image = "Please select image";
   }
 
+  // Validate Job name field
+  if (!values?.job_name) {
+    errors.job_name = "Job Name field is required.";
+  } else if (values?.job_name?.trim()?.length === 0) {
+    errors.job_name = "Job Name cannot be empty or contain only spaces.";
+  } else if (values?.job_name?.length < 2) {
+    errors.job_name = "Job Name should be minimum 2 characters.";
+  }
+
+  // Validate Experience field
+  if (!values?.experience) {
+    errors.experience = "Experience field is required.";
+  } else if (values?.experience?.trim()?.length === 0) {
+    errors.experience = "Experience cannot be empty or contain only spaces.";
+  } else if (values?.experience?.length < 2) {
+    errors.experience = "Experience should be minimum 2 characters.";
+  }
+
+
+  // Validate Qualification field
+  if (!values?.qualification) {
+    errors.qualification = "Qualification field is required.";
+  } else if (values?.qualification?.trim()?.length === 0) {
+    errors.qualification = "Qualification cannot be empty or contain only spaces.";
+  } else if (values?.qualification?.length < 2) {
+    errors.qualification = "Qualification should be minimum 2 characters.";
+  }
+
+
+  // Validate Location field
+  if (!values?.location || values.location.length === 0) {
+    errors.location = "Location field is required.";
+  } else if (values.location.some(loc => typeof loc !== 'string' || loc.trim().length === 0)) {
+    errors.location = "Location cannot be empty or contain only spaces.";
+  } else if (values.location.some(loc => loc.length < 2)) {
+    errors.location = "Each location should be a minimum of 2 characters.";
+  }
+
+  // Validate responsibilities field
+  if (!values?.responsibilities || values.responsibilities.length === 0) {
+    errors.responsibilities = "Responsibilities field is required.";
+  } else if (values.responsibilities.some(res => typeof res !== 'string' || res.trim().length === 0)) {
+    errors.responsibilities = "Responsibilities cannot be empty or contain only spaces.";
+  } else if (values.responsibilities.some(res => res.length < 2)) {
+    errors.responsibilities = "Each responsibilities should be a minimum of 2 characters.";
+  }
+
+  // No of openings validation
+  if (!values?.no_of_openings) {
+    errors.no_of_openings = "Number of openings field is required.";
+  } else if (!/^\d+$/.test(values.no_of_openings)) {
+    errors.no_of_openings = "Number of openings must be a valid number.";
+  } else if (parseInt(values.no_of_openings, 10) < 1) {
+    errors.no_of_openings = "Number of openings must be at least 1.";
+  }
+
+  // Validate skill field
+  if (!values?.skill || values.skill.length === 0) {
+    errors.skill = "Skill field is required.";
+  }
+  else if (values.skill.some(sk => typeof sk !== 'string' || sk.trim().length === 0)) {
+    errors.skill = "Skill cannot be empty or contain only spaces.";
+  }
+  else if (values.skill.some(sk => sk.length < 2)) {
+    errors.skill = "Each skill should be a minimum of 2 characters.";
+  }
+
   return errors;
 };

@@ -9,6 +9,8 @@ import Switch from '../../components/comman/Switch';
 import { getImageURL, getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
+import CommanPagination from '../../components/comman/CommanPagination';
+import { toast } from 'react-toastify';
 
 
 
@@ -20,7 +22,9 @@ function Testimonialsindex() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
+    // Get Testimonial
     const getTestimonials = async () => {
         setMainLoader(true);
         try {
@@ -29,7 +33,8 @@ function Testimonialsindex() {
             const response = await api.getWithToken(`${serverURL}/testimonial?perPage=${limit}&page=${page}`)
             if (response.data.success === true) {
                 setTestimonial(response.data.data || []);
-                setPaginationData(response.data.paginationValue || []);
+                setPaginationData(response?.data?.data.paginationValue);
+                setCurrentPage(response?.data?.data.page);
             } else {
                 setTestimonial([]);
             }
@@ -45,13 +50,30 @@ function Testimonialsindex() {
         getTestimonials();
     }, [page, limit])
 
+
+    // Delete function
     const onSuccessData = () => {
-        // if (testimonial.length === 1 && page > 1) {
-        //     setCurrentPage(currentPage - 1)
-        // } else {
-        getTestimonials(limit, page)
-        // }
+        if (testimonial.length === 1 && page > 1) {
+            setCurrentPage(currentPage - 1)
+        } else {
+            getTestimonials(limit, page)
+        }
     }
+
+    // Update status
+    const updateStatus = async (itemId, newStatus) => {
+        try {
+            const response = await api.patchWithToken(`${serverURL}/testimonial/${itemId}`, { status: newStatus });
+            if (response.data.success) {
+                toast.info("Status updated successfully.");
+                getTestimonials(); // Refresh hiring data after updating
+            } else {
+                console.error("Failed to update status:", response.data.message);
+            }
+        } catch (error) {
+            console.error("Error updating status:", error.response ? error.response.data : error.message);
+        }
+    };
 
     return (
         <>
@@ -93,13 +115,14 @@ function Testimonialsindex() {
                                                                 <td>{test.name}</td>
                                                                 <td>{test.designation}</td>
                                                                 <td>
-                                                                    <Switch mode={test.status} />
+                                                                    {/* <Switch mode={test.status} id={test._id} /> */}
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
                                                                 </td>
                                                                 <td width={100}>
                                                                     <div className='d-flex align-items-center gap-2'>
                                                                         <EditButton to='/testimonials-edit' state={test} />
                                                                         <DeleteButton id={test._id}
-                                                                            endpoint={`${serverURL}testimonial`}
+                                                                            endpoint={`${serverURL}/testimonial`}
                                                                             onSuccess={onSuccessData}
                                                                         />
                                                                     </div>
@@ -118,6 +141,18 @@ function Testimonialsindex() {
                                 </Card>
                             </Col>
                         </Row>
+                    </div>
+
+                    <div className="d-md-flex justify-content-end align-items-center mt-4 mb-4">
+                        {paginationData > 1 && (
+                            <CommanPagination
+                                currentPage={currentPage}
+                                totalPages={paginationData}
+                                onPageChange={(newPage) => {
+                                    setPage(newPage);
+                                }}
+                            />
+                        )}
                     </div>
                 </Layout >
             )}

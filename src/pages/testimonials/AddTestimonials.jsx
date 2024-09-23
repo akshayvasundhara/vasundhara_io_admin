@@ -32,22 +32,22 @@ function AddTestimonials() {
 
     const location = useLocation();
     const state = location.state || {};
-    console.log("state", location);
-
     // State to track the dark mode status
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [errors, setErrors] = useState({});
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
+    const [status, setStatus] = useState(state.status || 1);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
     const navigate = useNavigate();
     // Function to handle the toggle switch
     const handleToggle = () => {
-        setIsDarkMode(!isDarkMode);
+        setStatus(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
     };
+
 
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
@@ -73,7 +73,7 @@ function AddTestimonials() {
 
     const addTestimonial = async (e) => {
         e.preventDefault(); // Prevent default form submission
-        const updatedValues = { ...states, image };
+        const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
         setErrors(validationErrors);
@@ -85,6 +85,7 @@ function AddTestimonials() {
                 formData.append('designation', updatedValues.designation);
                 formData.append('description', updatedValues.description);
                 formData.append('image', image);
+                formData.append('status', status);
 
                 setMainLoader(true); // Start loader
 
@@ -122,6 +123,8 @@ function AddTestimonials() {
         setStates({});
         navigate('/testimonials');
     }
+
+
     useEffect(() => {
         if (state && Object.keys(state).length > 0) {
             setStates({
@@ -138,7 +141,7 @@ function AddTestimonials() {
             }
         }
     }, [state]);
-    console.log(image); // Check the URL
+
     return (
         <>
             {mainLoader ? (
@@ -183,15 +186,12 @@ function AddTestimonials() {
                                                     />
                                                     <SingleError error={errors?.designation} />
                                                 </Col>
-                                                {/* <Col md={6}>
-                                                 <SelectMultiple label="View On pages:" />
-                                             </Col> */}
                                                 <Col md={6}>
                                                     <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
                                                     <SingleError error={errors?.description} />
                                                 </Col>
                                                 <Col md={6}>
-                                                    <FileInput label="Image:" setImage={setImage} />
+                                                    <FileInput label="Image:" setImage={setImage} initialImage={image} />
                                                     <SingleError error={errors?.image} />
                                                 </Col>
                                             </Row>
@@ -202,7 +202,7 @@ function AddTestimonials() {
                                                 <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                     Status:
                                                 </label>
-                                                <Switch mode={states.status} />
+                                                <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                             </div>
                                             <div className='d-flex gap-2'>
                                                 <CommanButton className="save-btn" text="Save" handleSubmit={addTestimonial} />
