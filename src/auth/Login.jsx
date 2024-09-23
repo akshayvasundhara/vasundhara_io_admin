@@ -6,7 +6,6 @@ import { getServerURL } from '../helper/envConfig';
 import { useNavigate } from 'react-router-dom';
 import SingleError from '../helper/SingleError';
 import { validate } from './LoginSchema';
-import { Button } from 'bootstrap';
 import api from '../API/api';
 import { login } from '../helper/auth';
 import { toast } from 'react-toastify';
@@ -105,7 +104,7 @@ function Login() {
                                     <div className="row gy-3">
                                         <div className="col-xl-12">
                                             <LableInput
-                                                label="Email"
+                                                label="Email:"
                                                 className="form-control"
                                                 id="email"
                                                 placeholder="Enter your email"
@@ -120,7 +119,7 @@ function Login() {
                                         <div className="col-xl-12">
                                             <div className="position-relative">
                                                 <LableInput
-                                                    label="Password"
+                                                    label="Password:"
                                                     className="form-control create-password-input"
                                                     id="password"
                                                     placeholder="Enter your password"

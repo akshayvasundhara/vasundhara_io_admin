@@ -4,7 +4,6 @@ import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
 import LableInput from '../../components/comman/LableInput';
-import Textarea from '../../components/comman/Textarea';
 import FileInput from '../../components/comman/FileInput';
 import Switch from '../../components/comman/Switch';
 import CommanButton from '../../components/comman/CommanButton';

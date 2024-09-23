@@ -4,8 +4,6 @@ import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
 import LableInput from '../../components/comman/LableInput';
-import SelectInput from '../../components/comman/SelectInput';
-import SelectMultiple from '../../components/comman/SelectMultiple';
 import Textarea from '../../components/comman/Textarea';
 import FileInput from '../../components/comman/FileInput';
 import Switch from '../../components/comman/Switch';
@@ -150,7 +148,7 @@ function AddTestimonials() {
                 <Layout>
                     <div className='d-flex align-items-center gap-2'>
                         <LinkButton text={<ImArrowLeft />} to='/testimonials' className='back-btn d-flex justify-content-center align-items-center' />
-                        <h2 className='page-title'>{location.pathname === '/testimonials-edit' ? 'Edit Testimonial' : 'Create Testimonial'} </h2>
+                        <h2 className='page-title'>{location.pathname === '/testimonials-edit' ? 'Edit Testimonial' : 'Add Testimonial'} </h2>
                     </div>
 
                     <div className='font-family-poppins mt-3'>

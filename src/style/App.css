@@ -205,6 +205,10 @@ input.form-control::placeholder {
   box-shadow: none !important
 }
 
+.page-link:focus {
+  box-shadow: none !important;
+}
+
 .top-70 {
   top: 70%;
 }
@@ -346,13 +350,26 @@ td {
 
 .subcategory-list {
   list-style: none;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   margin: 0;
   color: #fff;
 }
 
 .subcategory-list li {
   margin: 5px 0;
+  list-style-type: disc;
+}
+
+.subcategory-list li a {
+  color: #b2b8c7;
+  font-weight: 400;
+  text-decoration: none;
+  padding: 5px;
+}
+
+.subcategory-list li a:hover,
+.subcategory-list li.active a {
+  color: #fff;
 }
 
 .sidebar-toggle {
@@ -473,6 +490,38 @@ td {
 
 .sidebar-sm .category-header {
   justify-content: center;
+}
+
+.search-icon {
+  width: 40px;
+  height: 41px;
+  background-color: var(--primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  top: 71%;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  right: 1px !important;
+}
+
+.search-icon svg {
+  color: #fff;
+  font-size: 20px;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.form-check-input:focus {
+  box-shadow: none !important;
+}
+
+.form-check-input {
+  border: var(--bs-border-width) solid var(--primary) !important;
 }
 
 /* Layout Page End */
@@ -624,6 +673,23 @@ td {
   color: var(--secondary);
 }
 
+.linked {
+  background-color: #0077B5;
+}
+
+.twitter {
+  background-color: #1DA1F2;
+}
+
+.facebook {
+  background-color: #3b5998;
+}
+
+.facebook svg,
+.twitter svg,
+.linked svg {
+  color: #fff;
+}
 
 .toggle {
   position: relative;

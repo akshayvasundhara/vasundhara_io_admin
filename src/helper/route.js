@@ -8,7 +8,6 @@ import '../style/poppins.css';
 import Login from '../auth/Login';
 import Home from '../pages/home/HomeIndex';
 import ProtectLoginRoute from './ProtectLoginRoute';
-import ProtectedRoute from './ProtectedRoute';
 import PrivateRoute from './PrivateRoute';
 import Testimonialsindex from '../pages/testimonials/Testimonialsindex';
 import AddTestimonials from '../pages/testimonials/AddTestimonials';
@@ -16,6 +15,15 @@ import Portfolios from '../pages/Portfolios/Portfolios';
 import HiringIndex from '../pages/Hirings/HiringIndex';
 import AddHirings from '../pages/Hirings/AddHirings';
 import ViewHirings from '../pages/Hirings/ViewHirings';
+import ApplyJobs from '../pages/ApplyJobs/ApplyJobs';
+import TeamsIndex from '../pages/Teams/TeamsIndex';
+import TeamsAdd from '../pages/Teams/TeamsAdd';
+import FaqsIndex from '../pages/Faq/FaqsIndex';
+import FaqsAdd from '../pages/Faq/FaqsAdd';
+import CategoriesIndex from '../pages/Categories/CategoriesIndex';
+import CategoriesAdd from '../pages/Categories/CategoriesAdd';
+import BlogsListIndex from '../pages/Blogs/BlogsListIndex';
+import AddBlogList from '../pages/Blogs/AddBlogList';
 
 export default [
     {
@@ -97,6 +105,78 @@ export default [
         element: (
             <PrivateRoute>
                 <ViewHirings />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/apply-jobs",
+        element: (
+            <PrivateRoute>
+                <ApplyJobs />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/teams",
+        element: (
+            <PrivateRoute>
+                <TeamsIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/teams-add",
+        element: (
+            <PrivateRoute>
+                <TeamsAdd />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/faqs",
+        element: (
+            <PrivateRoute>
+                <FaqsIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/faqs-add",
+        element: (
+            <PrivateRoute>
+                <FaqsAdd />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/categories",
+        element: (
+            <PrivateRoute>
+                <CategoriesIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/categories-add",
+        element: (
+            <PrivateRoute>
+                <CategoriesAdd />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/blogs-list",
+        element: (
+            <PrivateRoute>
+                <BlogsListIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/blogs-list",
+        element: (
+            <PrivateRoute>
+                <AddBlogList />
             </PrivateRoute>
         ),
     },
