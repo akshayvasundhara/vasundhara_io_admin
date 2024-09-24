@@ -3,7 +3,7 @@ import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 
 import { IoHomeOutline } from "react-icons/io5";
-import { FaListOl, FaQuestion } from "react-icons/fa";
+import { FaChevronLeft, FaListOl, FaQuestion } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { LuContact2, LuPackageSearch } from "react-icons/lu";
 import { VscGitStashApply } from 'react-icons/vsc';
@@ -29,7 +29,7 @@ const categories = [
         icons: <TbBrandBlogger />,
         subcategories: [
             { name: 'Blog List', path: '/blogs-list' },
-            { name: 'Blog Categories', path: '/categories' },
+            { name: 'Blog Category', path: '/category' },
             // { name: 'Blog Comments', path: '/blog-comments' },
         ],
     },
@@ -61,13 +61,16 @@ function Sidebar({ className, onToggleSidebar }) {
     };
 
     return (
-        <div className={`sidebar ${className}`}>
-            <div className='d-flex justify-content-center px-2 py-3'>
+        <div className={`sidebar position-relative ${className}`}>
+            <div className='d-none d-lg-flex justify-content-center px-2 py-3'>
                 <img src={className ? '../images/logo/logo-sm.svg' : '../images/logo/logo.svg'} className={className ? 'logo-sm' : 'logo-xl'} alt="Logo" />
             </div>
-
-            <FaBarsStaggered onClick={onToggleSidebar} className='sidebar-toggel cursor-pointer' />
-
+            <div className='d-flex d-lg-none justify-content-center px-2 py-3'>
+                <img src='../images/logo/logo.svg' className='logo-xl' alt="Logo sm" />
+            </div>
+            <div className='sidebar-toggel-sm d-lg-none'>
+                <FaChevronLeft onClick={onToggleSidebar} className='sidebar-toggel cursor-pointer arrow-left' />
+            </div>
             <ul className='category-list'>
                 {categories.map(category => (
                     <li key={category.id}>

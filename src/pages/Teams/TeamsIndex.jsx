@@ -14,6 +14,7 @@ import { getImageURL, getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
 import { toast } from 'react-toastify';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 function TeamsIndex() {
@@ -83,7 +84,7 @@ function TeamsIndex() {
                 )}
             <Layout>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <h2 className='page-title'>Teams</h2>
+                    <h2 className='page-title'>Team</h2>
                     <LinkButton text="Add" to='/teams-add' className='secondary-button text-decoration-none px-4' />
                 </div>
                 <div className='font-family-poppins mt-3'>
@@ -91,69 +92,82 @@ function TeamsIndex() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <Table responsive="lg">
-                                        <thead>
-                                            <tr>
-                                                <th width="50px">No.</th>
-                                                <th>Image</th>
-                                                <th>Name</th>
-                                                <th>Designation</th>
-                                                <th>Description</th>
-                                                <th>Links</th>
-                                                <th width='100'>Status</th>
-                                                <th width='100'>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {team?.data?.length > 0 ? (
-                                                team?.data?.map((test, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{(page - 1) * limit + index + 1}.</td>
-                                                            <td>
-                                                                <div className='table-image'>
-                                                                    <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
-                                                                </div>
-                                                            </td>
-                                                            <td>{test.name}</td>
-                                                            <td>{test.designation}</td>
-                                                            <td>{test.description}</td>
-                                                            <td>
-                                                                <div className='d-flex align-items-center gap-2'>
-                                                                    <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center linked' >
-                                                                        <FaLinkedinIn />
-                                                                    </Link>
-                                                                    <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center twitter' >
-                                                                        <FaXTwitter />
-                                                                    </Link>
-                                                                    <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center facebook' >
-                                                                        <FaFacebookF />
-                                                                    </Link>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                            </td>
-                                                            <td width={100}>
-                                                                <div className='d-flex align-items-center gap-2'>
-                                                                    <EditButton to='/teams-edit' state={test} />
-                                                                    <DeleteButton id={test._id}
-                                                                        endpoint={`${serverURL}/team`}
-                                                                        onSuccess={onSuccessData}
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            ) : (
+                                    <div className='overflow-auto'>
+                                        <Table>
+                                            <thead>
                                                 <tr>
-                                                    <td colSpan="6">No data available</td>
+                                                    <th width="50px">No.</th>
+                                                    <th>Image</th>
+                                                    <th>Name</th>
+                                                    <th>Designation</th>
+                                                    {/* <th>Description</th> */}
+                                                    <th>Links</th>
+                                                    <th width='100'>Status</th>
+                                                    <th width='100'>Action</th>
                                                 </tr>
-                                            )}
+                                            </thead>
+                                            <tbody>
+                                                {team?.data?.length > 0 ? (
+                                                    team?.data?.map((test, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{(page - 1) * limit + index + 1}.</td>
+                                                                <td>
+                                                                    <div className='table-image'>
+                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
+                                                                    </div>
+                                                                </td>
+                                                                <td><p>{test.name}</p></td>
+                                                                <td><p>{test.designation}</p></td>
+                                                                {/* <td>{test.description}</td> */}
+                                                                <td>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center linked' >
+                                                                            <FaLinkedinIn />
+                                                                        </Link>
+                                                                        <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center twitter' >
+                                                                            <FaXTwitter />
+                                                                        </Link>
+                                                                        <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center facebook' >
+                                                                            <FaFacebookF />
+                                                                        </Link>
+                                                                        <div className='d-flex align-items-center gap-2'>
 
-                                        </tbody>
-                                    </Table>
+                                                                            <Link
+                                                                                // href={`${imageURL}${test.file}`}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                                className='table-view-btn d-flex justify-content-center align-items-center'
+                                                                            >
+                                                                                <FaLink />
+                                                                            </Link>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                </td>
+                                                                <td width={100}>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <EditButton to='/teams-edit' state={test} />
+                                                                        <DeleteButton id={test._id}
+                                                                            endpoint={`${serverURL}/team`}
+                                                                            onSuccess={onSuccessData}
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="6"><NoDataAvailable /></td>
+                                                    </tr>
+                                                )}
+
+                                            </tbody>
+                                        </Table>
+                                    </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
                                             currentPage={currentPage}

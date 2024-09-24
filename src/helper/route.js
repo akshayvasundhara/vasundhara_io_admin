@@ -170,7 +170,7 @@ export default [
         ),
     },
     {
-        path: "/categories",
+        path: "/category",
         element: (
             <PrivateRoute>
                 <CategoriesIndex />
@@ -178,7 +178,7 @@ export default [
         ),
     },
     {
-        path: "/categories-add",
+        path: "/category-add",
         element: (
             <PrivateRoute>
                 <CategoriesAdd />
@@ -186,7 +186,7 @@ export default [
         ),
     },
     {
-        path: "/categories-edit",
+        path: "/category-edit",
         element: (
             <PrivateRoute>
                 <CategoriesAdd />

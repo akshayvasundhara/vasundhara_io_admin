@@ -209,7 +209,7 @@ function AddHirings() {
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/hirings' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>{location.pathname === '/hirings-edit' ? 'Edit Hiring' : 'Create Hiring'} </h2>
+                    <h2 className='page-title'>{location.pathname === '/hirings-edit' ? 'Edit Hiring' : 'Add Hiring'} </h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
@@ -218,7 +218,7 @@ function AddHirings() {
                                 <Card.Body>
                                     <form action="">
                                         <Row className='g-3'>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <LableInput
                                                     label="Job Name:"
                                                     className="form-control"
@@ -231,7 +231,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.job_name} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <LableInput
                                                     label="Experience:"
                                                     className="form-control"
@@ -244,7 +244,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.experience} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <LableInput
                                                     label="Qualification:"
                                                     className="form-control"
@@ -258,7 +258,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.qualification} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <SelectInput
                                                     label="Job Time:"
                                                     options={option}
@@ -267,7 +267,7 @@ function AddHirings() {
                                                     onChange={handleChange}  // Call handleChange to update state
                                                 />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <PlushLableInput
                                                     label="Location:"
                                                     className="form-control"
@@ -281,7 +281,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.location} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <LableInput
                                                     label="No. of Openings:"
                                                     className="form-control"
@@ -295,7 +295,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.no_of_openings} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <PlushLableInput
                                                     label="Responsibilities:"
                                                     className="form-control"
@@ -309,7 +309,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.responsibilities} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <PlushLableInput
                                                     label="Skill:"
                                                     className="form-control"
@@ -323,21 +323,21 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.skill} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <FileInput label="Image:" setImage={setImage} initialImage={image} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                         </Row>
                                     </form>
 
-                                    <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                 Status:
                                             </label>
                                             <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>
-                                        <div className='d-flex gap-2'>
+                                        <div className='d-flex justify-content-end gap-2 mt-3 mt-md-0'>
                                             <CommanButton className="save-btn" text="Save" handleSubmit={addHiring} />
                                             <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeHirings} />
                                         </div>

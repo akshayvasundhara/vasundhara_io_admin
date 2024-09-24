@@ -200,7 +200,7 @@ input.form-control::placeholder {
 .css-t3ipsp-control {
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
-  border-color: #5c67f7;
+  border-color: var(--primary);
   outline: 0;
   box-shadow: none !important
 }
@@ -269,6 +269,7 @@ th {
   font-size: 16px;
   font-weight: 500;
   font-family: var(--font-family-poppins);
+  text-wrap: nowrap;
 }
 
 td {
@@ -276,9 +277,22 @@ td {
   font-weight: 400;
   font-family: var(--font-family-poppins);
   vertical-align: middle;
-  max-width: 150px;
+  max-width: 250px;
   width: auto;
   text-wrap: wrap;
+}
+
+td p {
+  max-width: 250px;
+  width: auto;
+  text-wrap: wrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .table-image {
@@ -295,6 +309,14 @@ td {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.label-none label {
+  display: none;
+}
+
+.single-error .error {
+  margin: 0px !important;
 }
 
 /* General Css End*/
@@ -320,7 +342,7 @@ td {
   height: 100vh;
   overflow-y: auto;
   font-family: var(--font-family-poppins);
-  transition: transform 0.3s ease;
+  transition: all 0.2s ease;
   overflow-x: hidden;
 }
 
@@ -502,11 +524,18 @@ td {
 }
 
 .sidebar-sm .category-link .mune-items {
-  display: none;
+  transition: all 0.2s ease;
 }
 
-.sidebar-sm .category-header {
-  justify-content: center;
+@media only screen and (max-width: 2560px) and (min-width: 992px) {
+
+  .sidebar-sm .category-header {
+    justify-content: center;
+  }
+
+  .sidebar-sm .category-link .mune-items {
+    display: none;
+  }
 }
 
 .search-icon {
@@ -544,6 +573,14 @@ td {
 .ck-content {
   height: 200px;
   overflow: auto;
+}
+
+.form-select:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: var(--secondary);
+  outline: 0;
+  box-shadow: none !important
 }
 
 /* Layout Page End */
@@ -731,7 +768,7 @@ td {
   background-color: var(--secondary);
   border-radius: 99px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color all 0.2s ease;
   position: relative;
   /* Add this to position the after pseudo-element correctly */
 }
@@ -749,7 +786,7 @@ td {
   height: 20px;
   background-color: #ffffff;
   border-radius: 50%;
-  transition: right 0.3s ease;
+  transition: right all 0.2s ease;
 }
 
 .toggle__input:checked+.toggle__label::after {
@@ -896,7 +933,7 @@ td {
   background-color: transparent;
 }
 
-.pagination-main .page-item svg {
+.pagination-main .page-item svg path {
   color: var(--primary);
 }
 
@@ -906,6 +943,16 @@ td {
 
 .pagination-main .page-item.active span {
   color: #fff !important;
+}
+
+.pagination-main .form-select {
+  width: 70px;
+}
+
+.pagination-main select.form-select {
+  padding: 7px 10px;
+  color: var(--primary);
+  font-weight: 400;
 }
 
 /* Pagination End */
@@ -921,6 +968,54 @@ td {
   color: #6e829f;
   font-size: 14px;
   font-weight: 400;
+}
+
+.no-data-available {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+
+@media only screen and (max-width: 991px) and (min-width: 200px) {
+
+  .sidebar-toggel-sm {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 16px;
+    right: 11px;
+  }
+
+  .sidebar {
+    position: absolute !important;
+    z-index: 99;
+    max-width: 0px;
+  }
+
+  .sidebar-sm {
+    max-width: 250px;
+  }
+
+  .logo-xl {
+    width: 135px;
+  }
+
+  .arrow-left {
+    font-size: 15px;
+  }
+}
+
+.width-800 table {
+  width: 800px;
 }
 
 /* Details End */

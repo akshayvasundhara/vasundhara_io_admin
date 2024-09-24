@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 function ContactUsIndex() {
@@ -70,7 +71,8 @@ function ContactUsIndex() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <Table responsive="lg">
+                                <div className='overflow-x-auto'>
+                                    <Table>
                                         <thead>
                                             <tr>
                                                 <th width="50px">No.</th>
@@ -88,11 +90,11 @@ function ContactUsIndex() {
                                                     return (
                                                         <tr key={index}>
                                                             <td>{(page - 1) * limit + index + 1}.</td>
-                                                            <td>{test.full_name}</td>
-                                                            <td>{test.last_name}</td>
-                                                            <td>{test.email}</td>
-                                                            <td>{test.phone}</td>
-                                                            <td>{test.country}</td>
+                                                            <td><p>{test.full_name}</p></td>
+                                                            <td><p>{test.last_name}</p></td>
+                                                            <td><p>{test.email}</p></td>
+                                                            <td><p>{test.phone}</p></td>
+                                                            <td><p>{test.country}</p></td>
                                                             <td width={100}>
                                                                 <div className='d-flex align-items-center gap-2'>
                                                                     <ViewButton to='/contact-us-view' state={test} />
@@ -106,12 +108,13 @@ function ContactUsIndex() {
                                                 })
                                             ) : (
                                                 <tr>
-                                                    <td colSpan="6">No data available</td>
+                                                   <td colSpan="6"><NoDataAvailable /></td>
                                                 </tr>
                                             )}
 
                                         </tbody>
                                     </Table>
+                                    </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
                                             currentPage={currentPage}

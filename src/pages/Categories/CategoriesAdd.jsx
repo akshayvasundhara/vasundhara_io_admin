@@ -149,14 +149,14 @@ function CategoriesAdd() {
                                         </Row>
                                     </form>
 
-                                    <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                 Status:
                                             </label>
                                             <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>
-                                        <div className='d-flex gap-2'>
+                                        <div className='d-flex justify-content-end gap-2 mt-3 mt-md-0'>
                                             <CommanButton className="save-btn" text="Save" handleSubmit={addCategory} />
                                             <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeCategory} />
                                         </div>

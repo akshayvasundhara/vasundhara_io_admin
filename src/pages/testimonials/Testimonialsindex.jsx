@@ -11,6 +11,7 @@ import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
 import CommanPagination from '../../components/comman/CommanPagination';
 import { toast } from 'react-toastify';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 
@@ -91,53 +92,55 @@ function Testimonialsindex() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <Table responsive="lg">
-                                        <thead>
-                                            <tr>
-                                                <th width="50px">No.</th>
-                                                <th>Image</th>
-                                                <th>Name</th>
-                                                <th>Designation</th>
-                                                <th width='100'>Status</th>
-                                                <th width='100'>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {testimonial.data?.length > 0 ? (
-                                                testimonial?.data.map((test, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{(page - 1) * limit + index + 1}.</td>
-                                                            <td>
-                                                                <div className='table-image'>
-                                                                    <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
-                                                                </div>
-                                                            </td>
-                                                            <td>{test.name}</td>
-                                                            <td>{test.designation}</td>
-                                                            <td>
-                                                                {/* <Switch mode={test.status} id={test._id} /> */}
-                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                            </td>
-                                                            <td width={100}>
-                                                                <div className='d-flex align-items-center gap-2'>
-                                                                    <EditButton to='/testimonials-edit' state={test} />
-                                                                    <DeleteButton id={test._id}
-                                                                        endpoint={`${serverURL}/testimonial`}
-                                                                        onSuccess={onSuccessData}
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            ) : (
+                                    <div className='overflow-x-auto'>
+                                        <Table>
+                                            <thead>
                                                 <tr>
-                                                    <td colSpan="6">No data available</td>
+                                                    <th width="50px">No.</th>
+                                                    <th>Image</th>
+                                                    <th>Name</th>
+                                                    <th>Designation</th>
+                                                    <th>Status</th>
+                                                    <th width='100'>Action</th>
                                                 </tr>
-                                            )}
-                                        </tbody>
-                                    </Table>
+                                            </thead>
+                                            <tbody>
+                                                {testimonial.data?.length > 0 ? (
+                                                    testimonial?.data.map((test, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{(page - 1) * limit + index + 1}.</td>
+                                                                <td>
+                                                                    <div className='table-image'>
+                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
+                                                                    </div>
+                                                                </td>
+                                                                <td><p>{test.name}</p></td>
+                                                                <td><p>{test.designation}</p></td>
+                                                                <td>
+                                                                    {/* <Switch mode={test.status} id={test._id} /> */}
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                </td>
+                                                                <td width={100}>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <EditButton to='/testimonials-edit' state={test} />
+                                                                        <DeleteButton id={test._id}
+                                                                            endpoint={`${serverURL}/testimonial`}
+                                                                            onSuccess={onSuccessData}
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="6"><NoDataAvailable /></td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </Table>
+                                    </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
                                             currentPage={currentPage}

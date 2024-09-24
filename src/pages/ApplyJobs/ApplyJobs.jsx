@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { getImageURL, getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 function ApplyJobs() {
@@ -71,63 +72,65 @@ function ApplyJobs() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <Table responsive="lg">
-                                        <thead>
-                                            <tr>
-                                                <th width="50px">No.</th>
-                                                <th>First Name</th>
-                                                <th>Email</th>
-                                                <th>Position</th>
-                                                <th>Mobile</th>
-                                                <th>File</th>
-                                                <th width='100'>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                job?.data?.length > 0 ? (
-                                                    job?.data?.map((test, index) => {
-                                                        return (
-                                                            <tr key={index}>
-                                                                <td>{(page - 1) * limit + index + 1}.</td>
-                                                                <td>{test.full_name}</td>
-                                                                <td>{test.email}</td>
-                                                                <td>{test.field?.job_name}</td>
-                                                                <td>{test.phone}</td>
-                                                                <td width={100}>
-                                                                    <div className='d-flex align-items-center gap-2'>
+                                    <div className='overflow-auto'>
+                                        <Table>
+                                            <thead>
+                                                <tr>
+                                                    <th width="50px">No.</th>
+                                                    <th>First Name</th>
+                                                    <th>Email</th>
+                                                    <th>Position</th>
+                                                    <th>Mobile</th>
+                                                    <th>File</th>
+                                                    <th width='100'>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    job?.data?.length > 0 ? (
+                                                        job?.data?.map((test, index) => {
+                                                            return (
+                                                                <tr key={index}>
+                                                                    <td>{(page - 1) * limit + index + 1}.</td>
+                                                                    <td><p>{test.full_name}</p></td>
+                                                                    <td><p>{test.email}</p></td>
+                                                                    <td><p>{test.field?.job_name}</p></td>
+                                                                    <td><p>{test.phone}</p></td>
+                                                                    <td width={100}>
+                                                                        <div className='d-flex align-items-center gap-2'>
 
-                                                                        <a
-                                                                            href={`${imageURL}${test.file}`}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className='table-view-btn d-flex justify-content-center align-items-center'
-                                                                        >
-                                                                            <FaLink />
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td width={100}>
-                                                                    <div className='d-flex align-items-center gap-2'>
-                                                                        <ViewButton to='/apply-jobs-view' />
-                                                                        <DeleteButton id={test._id}
-                                                                            endpoint={`${serverURL}/apply-job`}
-                                                                            onSuccess={onSuccessData}
-                                                                        />
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                ) : (
-                                                    <tr>
-                                                        <td colSpan="6">No data available</td>
-                                                    </tr>
-                                                )
-                                            }
+                                                                            <a
+                                                                                href={`${imageURL}${test.file}`}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                                className='table-view-btn d-flex justify-content-center align-items-center'
+                                                                            >
+                                                                                <FaLink />
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td width={100}>
+                                                                        <div className='d-flex align-items-center gap-2'>
+                                                                            <ViewButton to='/apply-jobs-view' />
+                                                                            <DeleteButton id={test._id}
+                                                                                endpoint={`${serverURL}/apply-job`}
+                                                                                onSuccess={onSuccessData}
+                                                                            />
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    ) : (
+                                                        <tr>
+                                                            <td colSpan="6"><NoDataAvailable /></td>
+                                                        </tr>
+                                                    )
+                                                }
 
-                                        </tbody>
-                                    </Table>
+                                            </tbody>
+                                        </Table>
+                                    </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
                                             currentPage={currentPage}

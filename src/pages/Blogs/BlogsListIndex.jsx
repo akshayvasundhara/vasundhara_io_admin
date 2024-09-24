@@ -15,6 +15,7 @@ import api from '../../API/api';
 import { getImageURL, getServerURL } from '../../helper/envConfig';
 import { toast } from 'react-toastify';
 import LoaderComman from '../../components/comman/LoaderComman';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 function BlogsListIndex() {
@@ -137,9 +138,9 @@ function BlogsListIndex() {
                                             </div>
                                         </Col>
                                     </Row>
+                                    <div className='overflow-x-auto'>
 
-
-                                    <Table responsive="lg">
+                                    <Table >
                                         <thead>
                                             <tr>
                                                 <th width="50px">No.</th>
@@ -163,10 +164,12 @@ function BlogsListIndex() {
                                                                     <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
                                                                 </div>
                                                             </td>
-                                                            <td>{test.title}</td>
-                                                            <td>{test.content}</td>
-                                                            <td>{test.category.name}</td>
-                                                            <td>{test.author.name}</td>
+                                                            <td><p>
+                                                            {test.title}
+                                                                </p></td>
+                                                            <td><p>{test.content}</p></td>
+                                                            <td><p>{test.category.name}</p></td>
+                                                            <td><p>{test.author.name}</p></td>
                                                             <td>
                                                                 <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
                                                             </td>
@@ -185,12 +188,13 @@ function BlogsListIndex() {
                                                 })
                                             ) : (
                                                 <tr>
-                                                    <td colSpan="6">No data available</td>
+                                                     <td colSpan="6"><NoDataAvailable /></td>
                                                 </tr>
                                             )}
 
                                         </tbody>
                                     </Table>
+                                    </div>
                                     <CommanPagination />
                                 </Card.Body>
                             </Card>

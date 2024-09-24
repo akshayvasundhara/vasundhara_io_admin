@@ -155,7 +155,7 @@ function AddTestimonials() {
                                 <Card.Body>
                                     <form action="">
                                         <Row className='g-3'>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <LableInput
                                                     label="Name:"
                                                     className="form-control"
@@ -168,7 +168,7 @@ function AddTestimonials() {
                                                 />
                                                 <SingleError error={errors?.name} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <LableInput
                                                     label="Designation"
                                                     className="form-control"
@@ -181,25 +181,25 @@ function AddTestimonials() {
                                                 />
                                                 <SingleError error={errors?.designation} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.description} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <FileInput label="Image:" setImage={setImage} initialImage={image} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                         </Row>
                                     </form>
 
-                                    <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                 Status:
                                             </label>
                                             <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>
-                                        <div className='d-flex gap-2'>
+                                        <div className='d-flex justify-content-end gap-2 mt-3 mt-md-0'>
                                             <CommanButton className="save-btn" text="Save" handleSubmit={addTestimonial} />
                                             <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeTestimonial} />
                                         </div>

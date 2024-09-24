@@ -32,7 +32,7 @@ function NewslettersIndex() {
                                         <tbody>
                                             <tr>
                                                 <td>1.</td>
-                                                <td>test@example.com</td>
+                                                <td><p>test@example.com</p></td>
                                                 <td width={100}>
                                                     <div className='d-flex align-items-center gap-2 ms-2'>
                                                         <DeleteButton />

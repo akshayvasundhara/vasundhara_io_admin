@@ -11,6 +11,8 @@ import { getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import { toast } from 'react-toastify';
 import LoaderComman from '../../components/comman/LoaderComman';
+import SelectInput from '../../components/comman/SelectInput';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 function FaqsIndex() {
@@ -72,6 +74,15 @@ function FaqsIndex() {
         }
     };
 
+    const option = [
+        { value: '1', label: 'Select Categories' },
+        { value: '2', label: 'Application Development' },
+        { value: '3', label: 'Website Development' },
+        { value: '4', label: 'Game Development' },
+        { value: '5', label: 'Billing' },
+        { value: '6', label: 'About Services' },
+    ];
+
     return (
         <>
             {
@@ -88,54 +99,61 @@ function FaqsIndex() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <Table responsive="lg">
-                                        <thead>
-                                            <tr>
-                                                <th width="50px">No.</th>
-                                                <th>Question</th>
-                                                <th>Answer</th>
-                                                <th width="100px">Type</th>
-                                                <th width='100'>Status</th>
-                                                <th width='100'>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {faq && faq?.length > 0 ? (
-                                                faq?.map((test, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{(page - 1) * limit + index + 1}.</td>
-                                                            <td>{test.question}</td>
-                                                            <td>{test.answer}</td>
-                                                            <td>
-                                                                {test.type[0]?.replace(/_/g, ' ')
-                                                                    .split(' ')
-                                                                    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-                                                                    .join(' ') || 'N/A'}
-                                                            </td>
-                                                            <td>
-                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                            </td>
-                                                            <td width={100}>
-                                                                <div className='d-flex align-items-center gap-2'>
-                                                                    <EditButton to='/faqs-edit' state={test} />
-                                                                    <DeleteButton id={test._id}
-                                                                        endpoint={`${serverURL}/faqs`}
-                                                                        onSuccess={onSuccessData}
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            ) : (
+                                    <Row className='g-4 mb-4'>
+                                        <Col md={6}>
+                                            <SelectInput label="" options={option} />
+                                        </Col>
+                                    </Row>
+                                    <div className="overflow-auto">
+                                        <Table>
+                                            <thead>
                                                 <tr>
-                                                    <td colSpan="6">No data available</td>
+                                                    <th width="50px">No.</th>
+                                                    <th>Question</th>
+                                                    <th>Answer</th>
+                                                    <th width="100px">Type</th>
+                                                    <th width='100'>Status</th>
+                                                    <th width='100'>Action</th>
                                                 </tr>
-                                            )}
+                                            </thead>
+                                            <tbody>
+                                                {faq && faq?.length > 0 ? (
+                                                    faq?.map((test, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{(page - 1) * limit + index + 1}.</td>
+                                                                <td><p>{test.question}</p></td>
+                                                                <td><p>{test.answer}</p></td>
+                                                                <td>
+                                                                    {test.type[0]?.replace(/_/g, ' ')
+                                                                        .split(' ')
+                                                                        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+                                                                        .join(' ') || 'N/A'}
+                                                                </td>
+                                                                <td>
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                </td>
+                                                                <td width={100}>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <EditButton to='/faqs-edit' state={test} />
+                                                                        <DeleteButton id={test._id}
+                                                                            endpoint={`${serverURL}/faqs`}
+                                                                            onSuccess={onSuccessData}
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="6"><NoDataAvailable /></td>
+                                                    </tr>
+                                                )}
 
-                                        </tbody>
-                                    </Table>
+                                            </tbody>
+                                        </Table>
+                                    </div>
                                     <CommanPagination />
                                 </Card.Body>
                             </Card>

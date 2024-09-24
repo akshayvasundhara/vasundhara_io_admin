@@ -99,8 +99,8 @@ function Login() {
                                     <div className='d-flex justify-content-center py-4'>
                                         <img src="../images/logo/logo.svg" width={250} alt="" />
                                     </div>
-                                    <div className="row gy-3">
-                                        <div className="col-xl-12">
+                                    <div className="row gy-3 mt-2 single-error">
+                                        <div className="col-xl-12 label-none">
                                             <LableInput
                                                 // label="Email:"
                                                 className="form-control"
@@ -114,7 +114,7 @@ function Login() {
                                             />
                                         </div>
                                         <SingleError error={errors?.email} />
-                                        <div className="col-xl-12">
+                                        <div className="col-xl-12 label-none">
                                             <div className="position-relative">
                                                 <LableInput
                                                     // label="Password:"
@@ -128,7 +128,7 @@ function Login() {
                                                     onChange={handleChange}
                                                 />
                                                 <span
-                                                    className="position-absolute end-0 top-70 translate-middle-y me-2 cursor-pointer"
+                                                    className="position-absolute end-0 top-50 translate-middle-y me-2 cursor-pointer"
                                                     onClick={togglePasswordVisibility}
                                                 >
                                                     {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}

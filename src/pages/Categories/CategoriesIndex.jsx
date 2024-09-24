@@ -10,6 +10,7 @@ import { getServerURL } from '../../helper/envConfig';
 import { toast } from 'react-toastify';
 import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 function CategoriesIndex() {
@@ -75,7 +76,7 @@ function CategoriesIndex() {
             <Layout>
                 <div className='d-flex justify-content-between align-items-center'>
                     <h2 className='page-title'>Category</h2>
-                    <LinkButton text="Add" to='/categories-add' className='secondary-button text-decoration-none px-4' />
+                    <LinkButton text="Add" to='/category-add' className='secondary-button text-decoration-none px-4' />
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
@@ -97,7 +98,7 @@ function CategoriesIndex() {
                                                     return (
                                                         <tr key={index}>
                                                             <td>{(page - 1) * limit + index + 1}.</td>
-                                                            <td>{test.name}</td>
+                                                            <td><p>{test.name}</p></td>
                                                             <td>
                                                                 <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
                                                             </td>
@@ -111,7 +112,7 @@ function CategoriesIndex() {
                                                 })
                                             ) : (
                                                 <tr>
-                                                    <td colSpan="6">No data available</td>
+                                                     <td colSpan="6"><NoDataAvailable /></td>
                                                 </tr>
                                             )}
 

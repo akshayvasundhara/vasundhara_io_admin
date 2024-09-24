@@ -174,7 +174,7 @@ function FaqsAdd() {
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/faqs' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>{location.pathname === '/faqs-edit' ? 'Edit Faq' : 'Create Faq'} </h2>
+                    <h2 className='page-title'>{location.pathname === '/faqs-edit' ? 'Edit Faq' : 'Add Faq'} </h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
@@ -183,15 +183,15 @@ function FaqsAdd() {
                                 <Card.Body>
                                     <form action="">
                                         <Row className='g-3'>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <Textarea label="Question:" rows="4" type="text" name="question" value={states.question} onChange={handleChange} />
                                                 <SingleError error={errors?.question} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 <Textarea label="Answer:" rows="4" type="text" name="answer" value={states.answer} onChange={handleChange} />
                                                 <SingleError error={errors?.answer} />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={12} lg={6}>
                                                 {/* <SelectInput label="Type:" options={option} /> */}
 
                                                 <SelectMultiple label="Type:"
@@ -204,14 +204,14 @@ function FaqsAdd() {
                                         </Row>
                                     </form>
 
-                                    <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                 Status:
                                             </label>
                                             <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>
-                                        <div className='d-flex gap-2'>
+                                        <div className='d-flex justify-content-end gap-2 mt-3 mt-md-0'>
                                             <CommanButton className="save-btn" text="Save" handleSubmit={addFaq} />
                                             <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeFaq} />
                                         </div>

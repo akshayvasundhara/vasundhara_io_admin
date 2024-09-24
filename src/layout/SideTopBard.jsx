@@ -13,7 +13,9 @@ function SideTopBard({ onToggleSidebar }) {
     }
     return (
         <div className='side-top-bar d-flex justify-content-between align-items-center gap-3'>
-            <FaBarsStaggered onClick={onToggleSidebar} className='sidebar-toggel' />
+            <div>
+                <FaBarsStaggered onClick={onToggleSidebar} className='sidebar-toggel' />
+            </div>
             <div className="dropdown user-dropdown">
                 <button className="border-0 bg-transparent" type="button" aria-expanded="false" data-bs-toggle="dropdown">
                     <div className='d-flex align-items-center gap-2 user-image'>
