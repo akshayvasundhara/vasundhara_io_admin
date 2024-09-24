@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-];
+const SelectMultiple = ({ label, options, name, value, onChange }) => {
+    const [selectedOptions, setSelectedOptions] = useState(value || []);
 
-const SelectMultiple = ({ label }) => {
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    // Update the selected options when the value prop changes
+    useEffect(() => {
+        setSelectedOptions(value);
+    }, [value]);
 
-    const handleChange = (options) => {
-        setSelectedOptions(options);
-        console.log('Selected options:', options);
+    const handleChange = (selectedOptions) => {
+        // Extract the values from the selected options
+        const values = selectedOptions ? selectedOptions.map(option => option.value) : [];
+        setSelectedOptions(values);
+        onChange(name, values); // Pass the name and selected values to the parent
     };
 
     return (
@@ -22,9 +23,10 @@ const SelectMultiple = ({ label }) => {
             </label>
             <Select
                 isMulti
-                value={selectedOptions}
-                onChange={handleChange}
                 options={options}
+                name={name}
+                value={options.filter(option => selectedOptions.includes(option.value))} // Map to display selected options correctly
+                onChange={handleChange}
             />
         </div>
     );

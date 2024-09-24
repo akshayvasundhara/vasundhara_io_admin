@@ -1,6 +1,6 @@
 import React from 'react'
 
-function LableInput({ label, className, id, placeholder, type, name, onChange, value }) {
+function LableInput({ label, className, id, placeholder, type, name, onChange, value, onkeyPress }) {
     return (
         <>
             <label
@@ -17,6 +17,7 @@ function LableInput({ label, className, id, placeholder, type, name, onChange, v
                 name={name}
                 onChange={onChange}
                 value={value}
+                onKeyPress={onkeyPress}
             />
         </>
     )

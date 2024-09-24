@@ -52,8 +52,8 @@ function HiringIndex() {
 
     // Delete function
     const onSuccessData = () => {
-        if (hiring.length === 1 && page > 1) {
-            setCurrentPage(currentPage - 1)
+        if (hiring.data.length === 1 && page > 1) {
+            setPage(currentPage - 1)
         } else {
             getHiring(limit, page)
         }
@@ -74,6 +74,13 @@ function HiringIndex() {
         }
     };
 
+    const capitalizeWords = (str) => {
+        return str
+            .toLowerCase() // Convert to lowercase to avoid issues with mixed case
+            .split(' ') // Split the string into words
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+            .join(' '); // Join the words back into a string
+    };
     return (
         <>
             {mainLoader ? (
@@ -118,7 +125,7 @@ function HiringIndex() {
                                                                 <td>{test.job_name}</td>
                                                                 <td>{test.experience}</td>
                                                                 <td>{test.qualification}</td>
-                                                                <td>Full Time</td>
+                                                                <td>{capitalizeWords(test.job_time)}</td>
                                                                 <td>{test.no_of_openings}</td>
                                                                 <td>
                                                                     {test.location.map((loc, index) => (
@@ -152,25 +159,20 @@ function HiringIndex() {
                                             )}
 
                                         </Table>
-
-                                        <CommanPagination />
+                                        {paginationData > 1 && (
+                                            <CommanPagination
+                                                currentPage={currentPage}
+                                                totalPages={paginationData}
+                                                onPageChange={(newPage) => {
+                                                    setPage(newPage);
+                                                }}
+                                            />
+                                        )}
                                     </Card.Body>
                                 </Card>
                             </Col>
 
                         </Row>
-                    </div>
-
-                    <div className="d-md-flex justify-content-end align-items-center mt-4 mb-4">
-                        {paginationData > 1 && (
-                            <CommanPagination
-                                currentPage={currentPage}
-                                totalPages={paginationData}
-                                onPageChange={(newPage) => {
-                                    setPage(newPage);
-                                }}
-                            />
-                        )}
                     </div>
                 </Layout >
             )}

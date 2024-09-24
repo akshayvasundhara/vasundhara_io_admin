@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
@@ -9,29 +9,146 @@ import FileInput from '../../components/comman/FileInput';
 import Switch from '../../components/comman/Switch';
 import CommanButton from '../../components/comman/CommanButton';
 import { ImArrowLeft } from "react-icons/im";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getImageURL, getServerURL } from '../../helper/envConfig';
+import SingleError from '../../helper/SingleError';
+import { ValidateFields } from '../../components/validate/ValidateFields';
+import ErrorFilter from '../../helper/errorFilter';
+import { errorResponse } from '../../helper/error';
+import { toast } from 'react-toastify';
+import api from '../../API/api';
+const requireField = [
+    "name",
+    "designation",
+    "description",
+    "status",
+    "image",
+    "twitter_link",
+    "twitter_link",
+    "linkedin_link",
+];
 
 
 function TeamsAdd() {
-
+    const location = useLocation();
+    const state = location.state || {};
     // State to track the dark mode status
     const [isDarkMode, setIsDarkMode] = useState(false);
 
+    const [errors, setErrors] = useState({});
+    const serverURL = getServerURL();
+    const imageURL = getImageURL();
+    const [submitCount, setSubmitCount] = useState(0);
+    const [status, setStatus] = useState(state.status || 1);
+    const [states, setStates] = useState({});
+    const [image, setImage] = useState(null);
+    const [mainLoader, setMainLoader] = useState(false);
+    const navigate = useNavigate();
+
     // Function to handle the toggle switch
     const handleToggle = () => {
-        setIsDarkMode(!isDarkMode);
+        setStatus(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
     };
 
-    const option = [
-        { value: '1', label: 'Full Time' },
-        { value: '2', label: 'Half Time' },
-    ];
+    const handleChange = async (e) => {
+        const { name, value, checked, type } = e.target;
+        let newValue = type === "checkbox" ? checked : value;
+        if (submitCount > 0) {
+            let validationErrors = ValidateFields({ ...states, [name]: value });
+            validationErrors = ErrorFilter(validationErrors, requireField);
+            setErrors(validationErrors);
+
+            if (Object.keys(validationErrors)?.length === 0) {
+                delete errors[name];
+            }
+        }
+        if (name === 'image') {
+            setImage(newValue);
+        } else {
+            setStates((prevValues) => ({
+                ...prevValues,
+                [name]: newValue,
+            }));
+        }
+    }
+
+    // Add Edit Api
+    const addTeam = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+        const updatedValues = { ...states, image, status };
+        let validationErrors = ValidateFields(updatedValues);
+        validationErrors = ErrorFilter(validationErrors, requireField);
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length === 0) {
+            try {
+                const formData = new FormData(); // Create FormData for file upload
+                formData.append('name', updatedValues.name);
+                formData.append('designation', updatedValues.designation);
+                formData.append('description', updatedValues.description);
+                formData.append('image', image);
+                formData.append('status', status);
+                formData.append('linkedin_link', updatedValues.linkedin_link);
+                formData.append('twitter_link', updatedValues.twitter_link);
+                formData.append('facebook_link', updatedValues.facebook_link);
+
+                setMainLoader(true); // Start loader
+                let response;
+
+                if (state._id) {
+                    response = await api.patchWithToken(`${serverURL}/team/${state._id}`, formData);
+                } else {
+                    response = await api.postWithToken(`${serverURL}/team`, formData);
+                }
+                if (response?.data.success === true) {
+                    toast.info(response?.data.message);
+                    navigate('/teams');
+                } else if (response?.data?.success === false) {
+                    if (typeof response?.data?.message === "string")
+                        toast.error(response?.data?.message);
+                }
+            } catch (error) {
+                setMainLoader(false);
+                errorResponse(error);
+            } finally {
+                setMainLoader(false);
+            }
+        }
+    }
+
+
+    const closeTestimonial = async (e) => {
+        setStates({});
+        navigate('/teams');
+    }
+
+    useEffect(() => {
+        if (state && Object.keys(state).length > 0) {
+            setStates({
+                name: state.name,
+                designation: state.designation,
+                description: state.description,
+                status: state.status,
+                twitter_link: state.twitter_link,
+                facebook_link: state.facebook_link,
+                linkedin_link: state.linkedin_link,
+
+            });
+            if (state.image) {
+                const fullImageUrl = `${imageURL}${state.image}`;
+                setImage(fullImageUrl);
+            } else {
+                setImage(null); // Clear image if there's no valid image
+            }
+        }
+    }, [state]);
 
     return (
         <>
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/teams' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>Add Teams</h2>
+                    <h2 className='page-title'>{location.pathname === '/teams-edit' ? 'Edit Teams' : 'Add Teams'} </h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
@@ -47,11 +164,11 @@ function TeamsAdd() {
                                                     id="text"
                                                     placeholder="Enter name"
                                                     type="text"
-                                                    name='email'
-                                                // value={values?.email || ""}
-                                                // onKeyPress={handleKeyPress}
-                                                // onChange={handleChange}
+                                                    name='name'
+                                                    value={states?.name || ""}
+                                                    onChange={handleChange}
                                                 />
+                                                <SingleError error={errors?.name} />
                                             </Col>
                                             <Col md={6}>
                                                 <LableInput
@@ -60,30 +177,31 @@ function TeamsAdd() {
                                                     id="text"
                                                     placeholder="Enter designation"
                                                     type="text"
-                                                    name='email'
-                                                // value={values?.email || ""}
-                                                // onKeyPress={handleKeyPress}
-                                                // onChange={handleChange}
+                                                    name='designation'
+                                                    value={states?.designation || ""}
+                                                    onChange={handleChange}
                                                 />
+                                                <SingleError error={errors?.designation} />
                                             </Col>
                                             <Col md={6}>
-                                                <Textarea label="Description:" rows="9" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
+                                                <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.description} />
                                             </Col>
                                             <Col md={6}>
-                                                <FileInput label="Icon:" />
+                                                <FileInput label="Icon:" setImage={setImage} initialImage={image} />
+                                                <SingleError error={errors?.image} />
                                             </Col>
                                             <Col md={6}>
-                                                <Textarea label="Linkedin:" rows="4" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
+                                                <Textarea label="Linkedin:" rows="4" type="text" name="linkedin_link" value={states?.linkedin_link || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.linkedin_link} />
                                             </Col>
                                             <Col md={6}>
-                                                <Textarea label="Twitter:" rows="4" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
+                                                <Textarea label="Twitter:" rows="4" type="text" name="twitter_link" value={states?.twitter_link || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.twitter_link} />
                                             </Col>
                                             <Col md={6}>
-                                                <Textarea label="Facebook:" rows="4" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
+                                                <Textarea label="Facebook:" rows="4" type="text" name="facebook_link" value={states?.facebook_link || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.facebook_link} />
                                             </Col>
                                         </Row>
                                     </form>
@@ -93,11 +211,11 @@ function TeamsAdd() {
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                 Status:
                                             </label>
-                                            <Switch />
+                                            <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>
                                         <div className='d-flex gap-2'>
-                                            <CommanButton className="save-btn" text="Save" />
-                                            <CommanButton className="cancel-btn" text="Cancel" />
+                                            <CommanButton className="save-btn" text="Save" handleSubmit={addTeam} />
+                                            <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeTestimonial} />
                                         </div>
                                     </div>
                                 </Card.Body>

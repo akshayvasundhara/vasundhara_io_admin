@@ -36,7 +36,6 @@ function AddHirings() {
 
     const location = useLocation();
     const state = location.state || {};
-    // State to track the dark mode status
     const [errors, setErrors] = useState({});
     const serverURL = getServerURL();
     const imageURL = getImageURL();
@@ -71,6 +70,15 @@ function AddHirings() {
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
+        if (name === 'no_of_openings') {
+            const numericValue = parseInt(value, 10);
+            if (!isNaN(numericValue) && numericValue >= 1) {
+                newValue = numericValue;
+            } else {
+                newValue = ''; // Clear input if invalid
+            }
+        }
+
         if (submitCount > 0) {
             let validationErrors = ValidateFields({ ...states, [name]: value });
             validationErrors = ErrorFilter(validationErrors, requireField);
@@ -268,7 +276,7 @@ function AddHirings() {
                                                         className="form-control"
                                                         id="text"
                                                         placeholder="Enter no of openings"
-                                                        type="text"
+                                                        type="number"
                                                         name='no_of_openings'
                                                         value={states?.no_of_openings || ""}
                                                         // onKeyPress={handleKeyPress}

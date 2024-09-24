@@ -28,7 +28,7 @@ function SideTopBard({ onToggleSidebar }) {
 
                 </button>
                 <ul className="dropdown-menu mt-2">
-                    <li><a className="dropdown-item">Logout</a></li>
+                    <li><a className="dropdown-item" onClick={handleLogOut}>Logout</a></li>
                 </ul>
             </div>
         </div>

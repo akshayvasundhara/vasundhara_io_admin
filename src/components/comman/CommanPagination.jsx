@@ -115,7 +115,6 @@ function CommanPagination({ currentPage, totalPages, onPageChange }) {
                             </svg>
                         </Pagination.Next>
                     </Pagination>
-
                 }
 
             </div>

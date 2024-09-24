@@ -23,3 +23,4 @@ export const getImageURL = () => {
       return process.env.REACT_APP_BASE_URL;
   }
 };
+

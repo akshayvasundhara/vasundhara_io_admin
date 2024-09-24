@@ -53,12 +53,13 @@ function Testimonialsindex() {
 
     // Delete function
     const onSuccessData = () => {
-        if (testimonial.length === 1 && page > 1) {
-            setCurrentPage(currentPage - 1)
+        if (testimonial.data.length === 1 && page > 1) {
+            setPage(currentPage - 1);
         } else {
-            getTestimonials(limit, page)
+            getTestimonials(limit, page);
         }
     }
+
 
     // Update status
     const updateStatus = async (itemId, newStatus) => {
@@ -68,7 +69,7 @@ function Testimonialsindex() {
                 toast.info("Status updated successfully.");
                 getTestimonials(); // Refresh hiring data after updating
             } else {
-                console.error("Failed to update status:", response.data.message);
+                toast.error("Failed to update status:", response.data.message);
             }
         } catch (error) {
             console.error("Error updating status:", error.response ? error.response.data : error.message);
@@ -137,23 +138,22 @@ function Testimonialsindex() {
                                                 )}
                                             </tbody>
                                         </Table>
+                                        {paginationData > 1 && (
+                                            <CommanPagination
+                                                currentPage={currentPage}
+                                                totalPages={paginationData}
+                                                onPageChange={(newPage) => {
+                                                    setPage(newPage);
+                                                }}
+                                            />
+                                        )}
                                     </Card.Body>
                                 </Card>
                             </Col>
                         </Row>
                     </div>
 
-                    <div className="d-md-flex justify-content-end align-items-center mt-4 mb-4">
-                        {paginationData > 1 && (
-                            <CommanPagination
-                                currentPage={currentPage}
-                                totalPages={paginationData}
-                                onPageChange={(newPage) => {
-                                    setPage(newPage);
-                                }}
-                            />
-                        )}
-                    </div>
+
                 </Layout >
             )}
         </>

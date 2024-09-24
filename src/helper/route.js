@@ -133,6 +133,14 @@ export default [
         ),
     },
     {
+        path: "/teams-edit",
+        element: (
+            <PrivateRoute>
+                <TeamsAdd />
+            </PrivateRoute>
+        ),
+    },
+    {
         path: "/faqs",
         element: (
             <PrivateRoute>
@@ -149,6 +157,14 @@ export default [
         ),
     },
     {
+        path: "/faqs-edit",
+        element: (
+            <PrivateRoute>
+                <FaqsAdd />
+            </PrivateRoute>
+        ),
+    },
+    {
         path: "/categories",
         element: (
             <PrivateRoute>
@@ -158,6 +174,14 @@ export default [
     },
     {
         path: "/categories-add",
+        element: (
+            <PrivateRoute>
+                <CategoriesAdd />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/categories-edit",
         element: (
             <PrivateRoute>
                 <CategoriesAdd />

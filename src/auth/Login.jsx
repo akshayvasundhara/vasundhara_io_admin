@@ -31,6 +31,8 @@ function Login() {
 
 
     const handleKeyPress = (e) => {
+        console.log("hello");
+
         if (e.key === 'Enter') {
             setSubmitCount(1);
             handleSubmit(e);
@@ -111,7 +113,7 @@ function Login() {
                                                 type="text"
                                                 name='email'
                                                 value={values?.email || ""}
-                                                // onKeyPress={handleKeyPress}
+
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -126,7 +128,7 @@ function Login() {
                                                     type={isPasswordVisible ? 'text' : 'password'}
                                                     name='password'
                                                     value={values?.password || ''}
-                                                    // onKeyPress={handleKeyPress}
+                                                    onkeyPress={handleKeyPress}
                                                     onChange={handleChange}
                                                 />
                                                 <span

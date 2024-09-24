@@ -1,11 +1,7 @@
 const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Month is zero-based, so we add 1
-    const year = date.getFullYear();
-  
-    return `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
-  };
+  const date = new Date(dateString);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+};
 
-  export default formatDate;
-
+export default formatDate;

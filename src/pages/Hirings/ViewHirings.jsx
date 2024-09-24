@@ -67,7 +67,11 @@ function ViewHirings() {
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="location" className="form-label text-default fw-600">Location:</label>
-                                            <li>{state.location}</li>
+                                            {state.location.map((loc, index) => (
+                                                <li key={index}>
+                                                    <span>{loc}</span>
+                                                </li>
+                                            ))}
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="responsibilities" className="form-label text-default fw-600">Responsibilities:</label>

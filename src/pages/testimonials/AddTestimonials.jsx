@@ -30,8 +30,7 @@ function AddTestimonials() {
 
     const location = useLocation();
     const state = location.state || {};
-    // State to track the dark mode status
-    const [isDarkMode, setIsDarkMode] = useState(false);
+
     const [errors, setErrors] = useState({});
     const serverURL = getServerURL();
     const imageURL = getImageURL();
@@ -86,26 +85,19 @@ function AddTestimonials() {
                 formData.append('status', status);
 
                 setMainLoader(true); // Start loader
+                let response;
 
                 if (state._id) {
-                    const response = await api.patchWithToken(`${serverURL}/testimonial/${state._id}`, formData);
-                    if (response?.data.success === true) {
-                        toast.info(response?.data.message);
-                        navigate('/testimonials');
-                    } else if (response?.data?.success === false) {
-                        if (typeof response?.data?.message === "string")
-                            toast.error(response?.data?.message);
-                    }
+                    response = await api.patchWithToken(`${serverURL}/testimonial/${state._id}`, formData);
                 } else {
-                    // Call the add API
-                    const response = await api.postWithToken(`${serverURL}/testimonial`, formData);
-                    if (response?.data.success === true) {
-                        toast.info(response?.data.message);
-                        navigate('/testimonials');
-                    } else if (response?.data?.success === false) {
-                        if (typeof response?.data?.message === "string")
-                            toast.error(response?.data?.message);
-                    }
+                    response = await api.postWithToken(`${serverURL}/testimonial`, formData);
+                }
+                if (response?.data.success === true) {
+                    toast.info(response?.data.message);
+                    navigate('/testimonials');
+                } else if (response?.data?.success === false) {
+                    if (typeof response?.data?.message === "string")
+                        toast.error(response?.data?.message);
                 }
             } catch (error) {
                 setMainLoader(false);

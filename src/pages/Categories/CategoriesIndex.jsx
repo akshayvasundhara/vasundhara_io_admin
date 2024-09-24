@@ -1,14 +1,69 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../layout/Layout'
 import { Row, Col, Card, Table } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
 import CommanPagination from '../../components/comman/CommanPagination';
 import EditButton from '../../components/comman/EditButton';
 import Switch from '../../components/comman/Switch';
+import { getServerURL } from '../../helper/envConfig';
+import { toast } from 'react-toastify';
+import api from '../../API/api';
 
 
 function CategoriesIndex() {
+    const serverURL = getServerURL();
+    const [category, setCategory] = useState([]);
+    const [paginationData, setPaginationData] = useState({});
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const [mainLoader, setMainLoader] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+
+
+    // Get Category
+    const getCategories = async () => {
+        setMainLoader(true);
+        try {
+            console.log("serverURL", serverURL);
+
+            const response = await api.getWithToken(`${serverURL}/testimonial?perPage=${limit}&page=${page}`)
+            if (response.data.success === true) {
+                setCategory(response.data.data || []);
+                setPaginationData(response?.data?.data.paginationValue);
+                setCurrentPage(response?.data?.data.page);
+            } else {
+                setCategory([]);
+            }
+
+        } catch (error) {
+            console.error("Error fetching products:", error.response ? error.response.data : error.message);
+        } finally {
+            setMainLoader(false);
+        }
+    }
+
+    useEffect(() => {
+        getCategories();
+    }, [page, limit])
+
+
+
+    // Update status
+    const updateStatus = async (itemId, newStatus) => {
+        try {
+            const response = await api.patchWithToken(`${serverURL}/testimonial/${itemId}`, { status: newStatus });
+            if (response.data.success) {
+                toast.info("Status updated successfully.");
+                getCategories(); // Refresh hiring data after updating
+            } else {
+                toast.error("Failed to update status:", response.data.message);
+            }
+        } catch (error) {
+            console.error("Error updating status:", error.response ? error.response.data : error.message);
+        }
+    };
+
 
     return (
         <>
@@ -32,6 +87,7 @@ function CategoriesIndex() {
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                             <tr>
                                                 <td>1.</td>
                                                 <td>What kind of games can Vasundhara build?</td>
@@ -46,7 +102,15 @@ function CategoriesIndex() {
                                             </tr>
                                         </tbody>
                                     </Table>
-                                    <CommanPagination />
+                                    {paginationData > 1 && (
+                                        <CommanPagination
+                                            currentPage={currentPage}
+                                            totalPages={paginationData}
+                                            onPageChange={(newPage) => {
+                                                setPage(newPage);
+                                            }}
+                                        />
+                                    )}
                                 </Card.Body>
                             </Card>
                         </Col>
