@@ -11,6 +11,9 @@ import { Link } from 'react-router-dom';
 import EditButton from '../../components/comman/EditButton';
 import Switch from '../../components/comman/Switch';
 import { FaXTwitter } from 'react-icons/fa6';
+import { getImageURL, getServerURL } from '../../helper/envConfig';
+import api from '../../API/api';
+import { toast } from 'react-toastify';
 
 
 function TeamsIndex() {
@@ -141,8 +144,8 @@ function TeamsIndex() {
                             </Row>
                         </div>
                     </Layout >
-                )
-            }
+            
+            
 
         </>
     )
