@@ -83,100 +83,98 @@ function HiringIndex() {
     };
     return (
         <>
-            {mainLoader ? (
+            {mainLoader && (
                 <LoaderComman />
-            ) : (
-                <Layout>
-                    <div className='d-flex justify-content-between align-items-center'>
-                        <h2 className='page-title'>Hirings</h2>
-                        <LinkButton text="Add" to='/hirings-add' className='secondary-button text-decoration-none px-4' />
-                    </div>
-                    <div className='font-family-poppins mt-3'>
-                        <Row xs={12} className="table-card">
-                            <Col>
-                                <Card>
-                                    <Card.Body>
-                                        <Table responsive="lg">
-                                            <thead>
-                                                <tr>
-                                                    <th width="50px">No.</th>
-                                                    <th>Icon</th>
-                                                    <th>Job Name</th>
-                                                    <th>Experience</th>
-                                                    <th>Qualification</th>
-                                                    <th>Job Time</th>
-                                                    <th>No. of Openings	</th>
-                                                    <th>Location</th>
-                                                    <th width='100'>Status</th>
-                                                    <th width='100'>Action</th>
-                                                </tr>
-                                            </thead>
-                                            {hiring.data?.length > 0 ? (
-                                                hiring?.data?.map((test, index) => {
-                                                    return (
-                                                        <tbody>
-                                                            <tr key={index}>
-                                                                <td>{(page - 1) * limit + index + 1}.</td>
-                                                                <td>
-                                                                    <div className='table-image'>
-                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
-                                                                    </div>
-                                                                </td>
-                                                                <td>{test.job_name}</td>
-                                                                <td>{test.experience}</td>
-                                                                <td>{test.qualification}</td>
-                                                                <td>{capitalizeWords(test.job_time)}</td>
-                                                                <td>{test.no_of_openings}</td>
-                                                                <td>
-                                                                    {test.location.map((loc, index) => (
-                                                                        <span key={index}>
-                                                                            {loc}
-                                                                            {index < test.location.length - 1 && ', '}
-                                                                        </span>
-                                                                    ))}
-                                                                </td>
-                                                                <td>
-                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                                </td>
-                                                                <td width={100}>
-                                                                    <div className='d-flex align-items-center gap-2'>
-                                                                        <ViewButton to='/hirings-view' state={test} />
-                                                                        <EditButton to='/hirings-edit' state={test} />
-                                                                        <DeleteButton id={test._id}
-                                                                            endpoint={`${serverURL}/hiring`}
-                                                                            onSuccess={onSuccessData} />
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    )
-                                                })
-
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan="6">No data available</td>
-                                                </tr>
-                                            )}
-
-                                        </Table>
-                                        {paginationData > 1 && (
-                                            <CommanPagination
-                                                currentPage={currentPage}
-                                                totalPages={paginationData}
-                                                onPageChange={(newPage) => {
-                                                    setPage(newPage);
-                                                }}
-                                            />
-                                        )}
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-
-                        </Row>
-                    </div>
-                </Layout >
             )}
+            <Layout>
+                <div className='d-flex justify-content-between align-items-center'>
+                    <h2 className='page-title'>Hirings</h2>
+                    <LinkButton text="Add" to='/hirings-add' className='secondary-button text-decoration-none px-4' />
+                </div>
+                <div className='font-family-poppins mt-3'>
+                    <Row xs={12} className="table-card">
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    <Table responsive="lg">
+                                        <thead>
+                                            <tr>
+                                                <th width="50px">No.</th>
+                                                <th>Icon</th>
+                                                <th>Job Name</th>
+                                                <th>Experience</th>
+                                                <th>Qualification</th>
+                                                <th>Job Time</th>
+                                                <th>No. of Openings	</th>
+                                                <th>Location</th>
+                                                <th width='100'>Status</th>
+                                                <th width='100'>Action</th>
+                                            </tr>
+                                        </thead>
+                                        {hiring.data?.length > 0 ? (
+                                            hiring?.data?.map((test, index) => {
+                                                return (
+                                                    <tbody>
+                                                        <tr key={index}>
+                                                            <td>{(page - 1) * limit + index + 1}.</td>
+                                                            <td>
+                                                                <div className='table-image'>
+                                                                    <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
+                                                                </div>
+                                                            </td>
+                                                            <td>{test.job_name}</td>
+                                                            <td>{test.experience}</td>
+                                                            <td>{test.qualification}</td>
+                                                            <td>{capitalizeWords(test.job_time)}</td>
+                                                            <td>{test.no_of_openings}</td>
+                                                            <td>
+                                                                {test.location.map((loc, index) => (
+                                                                    <span key={index}>
+                                                                        {loc}
+                                                                        {index < test.location.length - 1 && ', '}
+                                                                    </span>
+                                                                ))}
+                                                            </td>
+                                                            <td>
+                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                            </td>
+                                                            <td width={100}>
+                                                                <div className='d-flex align-items-center gap-2'>
+                                                                    <ViewButton to='/hirings-view' state={test} />
+                                                                    <EditButton to='/hirings-edit' state={test} />
+                                                                    <DeleteButton id={test._id}
+                                                                        endpoint={`${serverURL}/hiring`}
+                                                                        onSuccess={onSuccessData} />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                )
+                                            })
 
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="6">No data available</td>
+                                            </tr>
+                                        )}
+
+                                    </Table>
+                                    {paginationData > 1 && (
+                                        <CommanPagination
+                                            currentPage={currentPage}
+                                            totalPages={paginationData}
+                                            onPageChange={(newPage) => {
+                                                setPage(newPage);
+                                            }}
+                                        />
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+
+                    </Row>
+                </div>
+            </Layout >
         </>
     )
 }

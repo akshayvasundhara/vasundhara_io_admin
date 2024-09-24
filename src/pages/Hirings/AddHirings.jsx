@@ -29,7 +29,8 @@ const requireField = [
     "location",
     "responsibilities",
     "job_time",
-    "skill"
+    "skill",
+    "no_of_openings"
 ];
 
 function AddHirings() {
@@ -192,154 +193,152 @@ function AddHirings() {
 
     return (
         <>
-            {mainLoader ? (
+            {mainLoader && (
                 <LoaderComman />
-            ) : (
-                <Layout>
-                    <div className='d-flex align-items-center gap-2'>
-                        <LinkButton text={<ImArrowLeft />} to='/hirings' className='back-btn d-flex justify-content-center align-items-center' />
-                        <h2 className='page-title'>{location.pathname === '/hirings-edit' ? 'Edit Hirings' : 'Create Hirings'} </h2>
-                    </div>
-                    <div className='font-family-poppins mt-3'>
-                        <Row xs={12} className="table-card">
-                            <Col>
-                                <Card>
-                                    <Card.Body>
-                                        <form action="">
-                                            <Row className='g-3'>
-                                                <Col md={6}>
-                                                    <LableInput
-                                                        label="Job Name:"
-                                                        className="form-control"
-                                                        id="text"
-                                                        placeholder="Enter name"
-                                                        type="text"
-                                                        name='job_name'
-                                                        value={states?.job_name || ""}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <SingleError error={errors?.job_name} />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <LableInput
-                                                        label="Experience:"
-                                                        className="form-control"
-                                                        id="text"
-                                                        placeholder="Enter experience"
-                                                        type="text"
-                                                        name='experience'
-                                                        value={states?.experience || ""}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <SingleError error={errors?.experience} />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <LableInput
-                                                        label="Qualification:"
-                                                        className="form-control"
-                                                        id="text"
-                                                        placeholder="Enter qualification"
-                                                        type="text"
-                                                        name='qualification'
-                                                        value={states?.qualification || ""}
-                                                        // onKeyPress={handleKeyPress}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <SingleError error={errors?.qualification} />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <SelectInput
-                                                        label="Job Time:"
-                                                        options={option}
-                                                        name="job_time"  // Add name here
-                                                        value={states.job_time}  // Bind to the state
-                                                        onChange={handleChange}  // Call handleChange to update state
-                                                    />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <PlushLableInput
-                                                        label="Location:"
-                                                        className="form-control"
-                                                        id="text"
-                                                        placeholder="Enter responsibilities"
-                                                        type="text"
-                                                        name='location'
-                                                        value={states?.location || ""}
-                                                        // onKeyPress={handleKeyPress}
-                                                        onChange={(newValues) => handleArrayChange('location', newValues)}
-                                                    />
-                                                    <SingleError error={errors?.location} />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <LableInput
-                                                        label="No. of Openings:"
-                                                        className="form-control"
-                                                        id="text"
-                                                        placeholder="Enter no of openings"
-                                                        type="number"
-                                                        name='no_of_openings'
-                                                        value={states?.no_of_openings || ""}
-                                                        // onKeyPress={handleKeyPress}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <SingleError error={errors?.no_of_openings} />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <PlushLableInput
-                                                        label="Responsibilities:"
-                                                        className="form-control"
-                                                        id="text"
-                                                        placeholder="Enter responsibilities"
-                                                        type="text"
-                                                        name='responsibilities'
-                                                        value={states?.responsibilities || ""}
-                                                        // onKeyPress={handleKeyPress}
-                                                        onChange={(newValues) => handleArrayChange('responsibilities', newValues)}
-                                                    />
-                                                    <SingleError error={errors?.responsibilities} />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <PlushLableInput
-                                                        label="Skill:"
-                                                        className="form-control"
-                                                        id="text"
-                                                        placeholder="Enter skill"
-                                                        type="text"
-                                                        name='skill'
-                                                        value={states?.skill || ""}
-                                                        // onKeyPress={handleKeyPress}
-                                                        onChange={(newValues) => handleArrayChange('skill', newValues)}
-                                                    />
-                                                    <SingleError error={errors?.skill} />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <FileInput label="Image:" setImage={setImage} initialImage={image} />
-                                                    <SingleError error={errors?.image} />
-                                                </Col>
-                                            </Row>
-                                        </form>
-
-                                        <div className="d-flex justify-content-between align-items-center mt-3">
-                                            <div className='d-flex align-items-center gap-2'>
-                                                <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                    Status:
-                                                </label>
-                                                <Switch mode={state.status} onToggle={handleToggle} index={0} />
-                                            </div>
-                                            <div className='d-flex gap-2'>
-                                                <CommanButton className="save-btn" text="Save" handleSubmit={addHiring} />
-                                                <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeHirings} />
-                                            </div>
-                                        </div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-
-                        </Row>
-                    </div>
-                </Layout >
             )}
+            <Layout>
+                <div className='d-flex align-items-center gap-2'>
+                    <LinkButton text={<ImArrowLeft />} to='/hirings' className='back-btn d-flex justify-content-center align-items-center' />
+                    <h2 className='page-title'>{location.pathname === '/hirings-edit' ? 'Edit Hirings' : 'Create Hirings'} </h2>
+                </div>
+                <div className='font-family-poppins mt-3'>
+                    <Row xs={12} className="table-card">
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    <form action="">
+                                        <Row className='g-3'>
+                                            <Col md={6}>
+                                                <LableInput
+                                                    label="Job Name:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter name"
+                                                    type="text"
+                                                    name='job_name'
+                                                    value={states?.job_name || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.job_name} />
+                                            </Col>
+                                            <Col md={6}>
+                                                <LableInput
+                                                    label="Experience:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter experience"
+                                                    type="text"
+                                                    name='experience'
+                                                    value={states?.experience || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.experience} />
+                                            </Col>
+                                            <Col md={6}>
+                                                <LableInput
+                                                    label="Qualification:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter qualification"
+                                                    type="text"
+                                                    name='qualification'
+                                                    value={states?.qualification || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.qualification} />
+                                            </Col>
+                                            <Col md={6}>
+                                                <SelectInput
+                                                    label="Job Time:"
+                                                    options={option}
+                                                    name="job_time"  // Add name here
+                                                    value={states.job_time}  // Bind to the state
+                                                    onChange={handleChange}  // Call handleChange to update state
+                                                />
+                                            </Col>
+                                            <Col md={6}>
+                                                <PlushLableInput
+                                                    label="Location:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter location"
+                                                    type="text"
+                                                    name='location'
+                                                    value={states?.location || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={(newValues) => handleArrayChange('location', newValues)}
+                                                />
+                                                <SingleError error={errors?.location} />
+                                            </Col>
+                                            <Col md={6}>
+                                                <LableInput
+                                                    label="No. of Openings:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter no of openings"
+                                                    type="number"
+                                                    name='no_of_openings'
+                                                    value={states?.no_of_openings || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.no_of_openings} />
+                                            </Col>
+                                            <Col md={6}>
+                                                <PlushLableInput
+                                                    label="Responsibilities:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter responsibilities"
+                                                    type="text"
+                                                    name='responsibilities'
+                                                    value={states?.responsibilities || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={(newValues) => handleArrayChange('responsibilities', newValues)}
+                                                />
+                                                <SingleError error={errors?.responsibilities} />
+                                            </Col>
+                                            <Col md={6}>
+                                                <PlushLableInput
+                                                    label="Skill:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter skill"
+                                                    type="text"
+                                                    name='skill'
+                                                    value={states?.skill || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={(newValues) => handleArrayChange('skill', newValues)}
+                                                />
+                                                <SingleError error={errors?.skill} />
+                                            </Col>
+                                            <Col md={6}>
+                                                <FileInput label="Image:" setImage={setImage} initialImage={image} />
+                                                <SingleError error={errors?.image} />
+                                            </Col>
+                                        </Row>
+                                    </form>
 
+                                    <div className="d-flex justify-content-between align-items-center mt-3">
+                                        <div className='d-flex align-items-center gap-2'>
+                                            <label htmlFor="industry-select" className="form-label text-default mb-0">
+                                                Status:
+                                            </label>
+                                            <Switch mode={state.status} onToggle={handleToggle} index={0} />
+                                        </div>
+                                        <div className='d-flex gap-2'>
+                                            <CommanButton className="save-btn" text="Save" handleSubmit={addHiring} />
+                                            <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeHirings} />
+                                        </div>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+
+                    </Row>
+                </div>
+            </Layout >
         </>
     )
 }

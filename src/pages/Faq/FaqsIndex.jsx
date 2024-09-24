@@ -75,77 +75,76 @@ function FaqsIndex() {
     return (
         <>
             {
-                mainLoader ? (
+                mainLoader && (
                     <LoaderComman />
-                ) : (
-                    <Layout>
-                        <div className='d-flex justify-content-between align-items-center'>
-                            <h2 className='page-title'>Faqs</h2>
-                            <LinkButton text="Add" to='/faqs-add' className='secondary-button text-decoration-none px-4' />
-                        </div>
-                        <div className='font-family-poppins mt-3'>
-                            <Row xs={12} className="table-card">
-                                <Col>
-                                    <Card>
-                                        <Card.Body>
-                                            <Table responsive="lg">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="50px">No.</th>
-                                                        <th>Question</th>
-                                                        <th>Answer</th>
-                                                        <th width="100px">Type</th>
-                                                        <th width='100'>Status</th>
-                                                        <th width='100'>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {faq && faq?.length > 0 ? (
-                                                        faq?.map((test, index) => {
-                                                            return (
-                                                                <tr key={index}>
-                                                                    <td>{(page - 1) * limit + index + 1}.</td>
-                                                                    <td>{test.question}</td>
-                                                                    <td>{test.answer}</td>
-                                                                    <td>
-                                                                        {test.type[0]?.replace(/_/g, ' ')
-                                                                            .split(' ')
-                                                                            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-                                                                            .join(' ') || 'N/A'}
-                                                                    </td>
-                                                                    <td>
-                                                                        <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                                    </td>
-                                                                    <td width={100}>
-                                                                        <div className='d-flex align-items-center gap-2'>
-                                                                            <EditButton to='/faqs-edit' state={test} />
-                                                                            <DeleteButton id={test._id}
-                                                                                endpoint={`${serverURL}/faqs`}
-                                                                                onSuccess={onSuccessData}
-                                                                            />
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                    ) : (
-                                                        <tr>
-                                                            <td colSpan="6">No data available</td>
+                )}
+            <Layout>
+                <div className='d-flex justify-content-between align-items-center'>
+                    <h2 className='page-title'>Faqs</h2>
+                    <LinkButton text="Add" to='/faqs-add' className='secondary-button text-decoration-none px-4' />
+                </div>
+                <div className='font-family-poppins mt-3'>
+                    <Row xs={12} className="table-card">
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    <Table responsive="lg">
+                                        <thead>
+                                            <tr>
+                                                <th width="50px">No.</th>
+                                                <th>Question</th>
+                                                <th>Answer</th>
+                                                <th width="100px">Type</th>
+                                                <th width='100'>Status</th>
+                                                <th width='100'>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {faq && faq?.length > 0 ? (
+                                                faq?.map((test, index) => {
+                                                    return (
+                                                        <tr key={index}>
+                                                            <td>{(page - 1) * limit + index + 1}.</td>
+                                                            <td>{test.question}</td>
+                                                            <td>{test.answer}</td>
+                                                            <td>
+                                                                {test.type[0]?.replace(/_/g, ' ')
+                                                                    .split(' ')
+                                                                    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+                                                                    .join(' ') || 'N/A'}
+                                                            </td>
+                                                            <td>
+                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                            </td>
+                                                            <td width={100}>
+                                                                <div className='d-flex align-items-center gap-2'>
+                                                                    <EditButton to='/faqs-edit' state={test} />
+                                                                    <DeleteButton id={test._id}
+                                                                        endpoint={`${serverURL}/faqs`}
+                                                                        onSuccess={onSuccessData}
+                                                                    />
+                                                                </div>
+                                                            </td>
                                                         </tr>
-                                                    )}
+                                                    )
+                                                })
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="6">No data available</td>
+                                                </tr>
+                                            )}
 
-                                                </tbody>
-                                            </Table>
-                                            <CommanPagination />
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
+                                        </tbody>
+                                    </Table>
+                                    <CommanPagination />
+                                </Card.Body>
+                            </Card>
+                        </Col>
 
-                            </Row>
-                        </div>
-                    </Layout >
-                )
-            }
+                    </Row>
+                </div>
+            </Layout >
+
 
         </>
     )

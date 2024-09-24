@@ -78,84 +78,83 @@ function Testimonialsindex() {
 
     return (
         <>
-            {mainLoader ? (
+            {mainLoader && (
                 <LoaderComman />
-            ) : (
-                <Layout>
-                    <div className='d-flex justify-content-between align-items-center'>
-                        <h2 className='page-title'>Testimonials</h2>
-                        <LinkButton text="Add" to='/testimonials-add' className='secondary-button text-decoration-none px-4' />
-                    </div>
-                    <div className='font-family-poppins mt-3'>
-                        <Row xs={12} className="table-card">
-                            <Col>
-                                <Card>
-                                    <Card.Body>
-                                        <Table responsive="lg">
-                                            <thead>
-                                                <tr>
-                                                    <th width="50px">No.</th>
-                                                    <th>Image</th>
-                                                    <th>Name</th>
-                                                    <th>Designation</th>
-                                                    <th width='100'>Status</th>
-                                                    <th width='100'>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {testimonial.data?.length > 0 ? (
-                                                    testimonial?.data.map((test, index) => {
-                                                        return (
-                                                            <tr key={index}>
-                                                                <td>{(page - 1) * limit + index + 1}.</td>
-                                                                <td>
-                                                                    <div className='table-image'>
-                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
-                                                                    </div>
-                                                                </td>
-                                                                <td>{test.name}</td>
-                                                                <td>{test.designation}</td>
-                                                                <td>
-                                                                    {/* <Switch mode={test.status} id={test._id} /> */}
-                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                                </td>
-                                                                <td width={100}>
-                                                                    <div className='d-flex align-items-center gap-2'>
-                                                                        <EditButton to='/testimonials-edit' state={test} />
-                                                                        <DeleteButton id={test._id}
-                                                                            endpoint={`${serverURL}/testimonial`}
-                                                                            onSuccess={onSuccessData}
-                                                                        />
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                ) : (
-                                                    <tr>
-                                                        <td colSpan="6">No data available</td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </Table>
-                                        {paginationData > 1 && (
-                                            <CommanPagination
-                                                currentPage={currentPage}
-                                                totalPages={paginationData}
-                                                onPageChange={(newPage) => {
-                                                    setPage(newPage);
-                                                }}
-                                            />
-                                        )}
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </div>
-
-
-                </Layout >
             )}
+            <Layout>
+                <div className='d-flex justify-content-between align-items-center'>
+                    <h2 className='page-title'>Testimonials</h2>
+                    <LinkButton text="Add" to='/testimonials-add' className='secondary-button text-decoration-none px-4' />
+                </div>
+                <div className='font-family-poppins mt-3'>
+                    <Row xs={12} className="table-card">
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    <Table responsive="lg">
+                                        <thead>
+                                            <tr>
+                                                <th width="50px">No.</th>
+                                                <th>Image</th>
+                                                <th>Name</th>
+                                                <th>Designation</th>
+                                                <th width='100'>Status</th>
+                                                <th width='100'>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {testimonial.data?.length > 0 ? (
+                                                testimonial?.data.map((test, index) => {
+                                                    return (
+                                                        <tr key={index}>
+                                                            <td>{(page - 1) * limit + index + 1}.</td>
+                                                            <td>
+                                                                <div className='table-image'>
+                                                                    <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
+                                                                </div>
+                                                            </td>
+                                                            <td>{test.name}</td>
+                                                            <td>{test.designation}</td>
+                                                            <td>
+                                                                {/* <Switch mode={test.status} id={test._id} /> */}
+                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                            </td>
+                                                            <td width={100}>
+                                                                <div className='d-flex align-items-center gap-2'>
+                                                                    <EditButton to='/testimonials-edit' state={test} />
+                                                                    <DeleteButton id={test._id}
+                                                                        endpoint={`${serverURL}/testimonial`}
+                                                                        onSuccess={onSuccessData}
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="6">No data available</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </Table>
+                                    {paginationData > 1 && (
+                                        <CommanPagination
+                                            currentPage={currentPage}
+                                            totalPages={paginationData}
+                                            onPageChange={(newPage) => {
+                                                setPage(newPage);
+                                            }}
+                                        />
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </div>
+
+
+            </Layout >
         </>
     )
 }

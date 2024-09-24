@@ -85,6 +85,8 @@ export const ValidateFields = (values) => {
 
   // No of openings validation
   if (!values?.no_of_openings) {
+    console.log("values?.no_of_openings", !values?.no_of_openings, errors);
+
     errors.no_of_openings = "Number of openings field is required.";
   } else if (!/^\d+$/.test(values.no_of_openings)) {
     errors.no_of_openings = "Number of openings must be a valid number.";
