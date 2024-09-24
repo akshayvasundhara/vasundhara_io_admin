@@ -16,6 +16,7 @@ function FileInput({ label, setImage, initialImage }) {
         const reader = new FileReader();
         reader.onloadend = () => {
             setSelectedImage(reader.result);
+
         };
         reader.readAsDataURL(file);
         setImage(file);

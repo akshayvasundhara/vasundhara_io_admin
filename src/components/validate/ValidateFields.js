@@ -25,7 +25,7 @@ export const ValidateFields = (values) => {
   } else if (values?.designation?.trim()?.length === 0) {
     errors.designation = "Designation cannot be empty or contain only spaces.";
   } else if (values?.designation.length < 3 || values?.designation.length > 255) {
-    errors.designation = "Designation should be between 3 and 25 characters.";
+    errors.designation = "Designation should be between 3 and 255 characters.";
   }
 
   // Validate Description field
@@ -34,7 +34,11 @@ export const ValidateFields = (values) => {
   } else if (values?.description?.trim()?.length === 0) {
     errors.description = "Description cannot be empty or contain only spaces.";
   } else if (values?.description.trim().length < 3 || values?.description.trim().length > 255) {
-    errors.description = "Description should be between 3 and 25 characters.";
+    errors.description = "Description should be between 3 and 255 characters.";
+  }
+  // Image validation
+  if (!values?.image) {
+    errors.image = "Please select image";
   }
 
   // Validate Job name field
@@ -85,7 +89,6 @@ export const ValidateFields = (values) => {
 
   // No of openings validation
   if (!values?.no_of_openings) {
-    console.log("values?.no_of_openings", !values?.no_of_openings, errors);
 
     errors.no_of_openings = "Number of openings field is required.";
   } else if (!/^\d+$/.test(values.no_of_openings)) {
@@ -105,7 +108,7 @@ export const ValidateFields = (values) => {
 
   // Validate linkedin_link field
   if (!values?.linkedin_link) {
-    errors.linkedin_link = "Linkedin link field is required.";
+    errors.linkedin_link = "Linkedin link is required.";
   } else if (values?.linkedin_link?.trim()?.length === 0) {
     errors.linkedin_link = "Linkedin link cannot be empty or contain only spaces.";
   } else if (values?.linkedin_link.length < 3 || values?.linkedin_link.length > 255) {
@@ -114,20 +117,20 @@ export const ValidateFields = (values) => {
 
   // Validate facebook_link field
   if (!values?.facebook_link) {
-    errors.facebook_link = "Facebook link field is required.";
+    errors.facebook_link = "Facebook link is required.";
   } else if (values?.facebook_link?.trim()?.length === 0) {
     errors.facebook_link = "Facebook link cannot be empty or contain only spaces.";
   } else if (values?.facebook_link.length < 3 || values?.facebook_link.length > 255) {
     errors.facebook_link = "Facebook link should be between 3 and 25 characters.";
   }
 
-  // Validate instagram_link field
-  if (!values?.instagram_link) {
-    errors.instagram_link = "Instagram link field is required.";
-  } else if (values?.instagram_link?.trim()?.length === 0) {
-    errors.instagram_link = "Instagram link cannot be empty or contain only spaces.";
-  } else if (values?.instagram_link.length < 3 || values?.instagram_link.length > 255) {
-    errors.instagram_link = "Instagram link should be between 3 and 25 characters.";
+  // Validate twitter_link field
+  if (!values?.twitter_link) {
+    errors.twitter_link = "Twitter link is required.";
+  } else if (values?.twitter_link?.trim()?.length === 0) {
+    errors.twitter_link = "Twitter link cannot be empty or contain only spaces.";
+  } else if (values?.twitter_link.length < 3 || values?.twitter_link.length > 255) {
+    errors.twitter_link = "Twitter link should be between 3 and 25 characters.";
   }
 
 

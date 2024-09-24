@@ -9,6 +9,7 @@ import Switch from '../../components/comman/Switch';
 import { getServerURL } from '../../helper/envConfig';
 import { toast } from 'react-toastify';
 import api from '../../API/api';
+import LoaderComman from '../../components/comman/LoaderComman';
 
 
 function CategoriesIndex() {
@@ -27,7 +28,7 @@ function CategoriesIndex() {
         try {
             console.log("serverURL", serverURL);
 
-            const response = await api.getWithToken(`${serverURL}/testimonial?perPage=${limit}&page=${page}`)
+            const response = await api.getWithToken(`${serverURL}/blog-category?perPage=${limit}&page=${page}`)
             if (response.data.success === true) {
                 setCategory(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
@@ -67,6 +68,10 @@ function CategoriesIndex() {
 
     return (
         <>
+
+            {mainLoader && (
+                <LoaderComman />
+            )}
             <Layout>
                 <div className='d-flex justify-content-between align-items-center'>
                     <h2 className='page-title'>Category</h2>
@@ -87,19 +92,29 @@ function CategoriesIndex() {
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {category?.data?.length > 0 ? (
+                                                category?.data?.map((test, index) => {
+                                                    return (
+                                                        <tr key={index}>
+                                                            <td>{(page - 1) * limit + index + 1}.</td>
+                                                            <td>{test.name}</td>
+                                                            <td>
+                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                            </td>
+                                                            <td width={100}>
+                                                                <div className='d-flex align-items-center gap-2 ps-3'>
+                                                                    <EditButton to='/categories-edit' state={test} />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="6">No data available</td>
+                                                </tr>
+                                            )}
 
-                                            <tr>
-                                                <td>1.</td>
-                                                <td>What kind of games can Vasundhara build?</td>
-                                                <td>
-                                                    <Switch />
-                                                </td>
-                                                <td width={100}>
-                                                    <div className='d-flex align-items-center gap-2 ps-3'>
-                                                        <EditButton to='/categories-add' />
-                                                    </div>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </Table>
                                     {paginationData > 1 && (

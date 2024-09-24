@@ -24,7 +24,7 @@ const requireField = [
     "status",
     "image",
     "twitter_link",
-    "twitter_link",
+    "facebook_link",
     "linkedin_link",
 ];
 
@@ -32,14 +32,12 @@ const requireField = [
 function TeamsAdd() {
     const location = useLocation();
     const state = location.state || {};
-    // State to track the dark mode status
-    const [isDarkMode, setIsDarkMode] = useState(false);
 
     const [errors, setErrors] = useState({});
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1);
+    const [status, setStatus] = useState(state.status);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
@@ -54,12 +52,14 @@ function TeamsAdd() {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
         if (submitCount > 0) {
-            let validationErrors = ValidateFields({ ...states, [name]: value });
+            let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-
-            if (Object.keys(validationErrors)?.length === 0) {
-                delete errors[name];
+            if (!validationErrors[name]) {
+                setErrors((prevErrors) => {
+                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
+                    return rest; // Return new errors without the removed error
+                });
             }
         }
         if (name === 'image') {
@@ -75,6 +75,7 @@ function TeamsAdd() {
     // Add Edit Api
     const addTeam = async (e) => {
         e.preventDefault(); // Prevent default form submission
+        setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
@@ -148,7 +149,7 @@ function TeamsAdd() {
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/teams' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>{location.pathname === '/teams-edit' ? 'Edit Teams' : 'Add Teams'} </h2>
+                    <h2 className='page-title'>{location.pathname === '/teams-edit' ? 'Edit Team' : 'Add Team'} </h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">

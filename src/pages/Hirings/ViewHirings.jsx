@@ -14,7 +14,6 @@ import formatDate from '../../helper/formatDate';
 function ViewHirings() {
     const location = useLocation();
     const state = location.state || {};
-    console.log("state", state);
 
     // State to track the dark mode status
     const [isDarkMode, setIsDarkMode] = useState(false);

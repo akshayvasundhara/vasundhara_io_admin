@@ -34,7 +34,7 @@ function FaqsAdd() {
 
     const [errors, setErrors] = useState({});
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1);
+    const [status, setStatus] = useState(state.status);
     const [states, setStates] = useState({
         question: '',
         answer: '',
@@ -51,20 +51,22 @@ function FaqsAdd() {
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
+        setStates((prevValues) => ({
+            ...prevValues,
+            [name]: newValue,
+        }));
         if (submitCount > 0) {
             let validationErrors = ValidateFields({ ...states, [name]: value });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-            if (Object.keys(validationErrors)?.length === 0) {
-                delete errors[name];
+            if (!validationErrors[name]) {
+                setErrors((prevErrors) => {
+                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
+                    return rest; // Return new errors without the removed error
+                });
             }
         }
-        else {
-            setStates((prevValues) => ({
-                ...prevValues,
-                [name]: newValue,
-            }));
-        }
+
     }
     // Handle array change for location, res, skill
     const handleArrayChange = (name, newValues) => {
@@ -72,6 +74,20 @@ function FaqsAdd() {
             ...prevValues,
             [name]: newValues,
         }));
+
+        if (submitCount > 0) {
+            const updatedValues = { ...states, [name]: newValues };
+            let validationErrors = ValidateFields(updatedValues);
+            validationErrors = ErrorFilter(validationErrors, requireField);
+            setErrors(validationErrors);
+
+            if (!validationErrors[name]) {
+                setErrors((prevErrors) => {
+                    const { [name]: removedError, ...rest } = prevErrors;
+                    return rest;
+                });
+            }
+        }
     };
 
 
@@ -121,6 +137,7 @@ function FaqsAdd() {
     // Add Edit FAQ
     const addFaq = async (e) => {
         e.preventDefault(); // Prevent default form submission
+        setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, status };
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
@@ -157,7 +174,7 @@ function FaqsAdd() {
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/faqs' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>{location.pathname === '/faqs-edit' ? 'Edit Faqs' : 'Create Faqs'} </h2>
+                    <h2 className='page-title'>{location.pathname === '/faqs-edit' ? 'Edit Faq' : 'Create Faq'} </h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">

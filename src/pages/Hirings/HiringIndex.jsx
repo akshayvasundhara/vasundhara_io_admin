@@ -12,6 +12,7 @@ import { getImageURL, getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
 import { toast } from 'react-toastify';
+import { capitalizeWords } from '../../helper/capitalize';
 
 
 function HiringIndex() {
@@ -74,13 +75,13 @@ function HiringIndex() {
         }
     };
 
-    const capitalizeWords = (str) => {
-        return str
-            .toLowerCase() // Convert to lowercase to avoid issues with mixed case
-            .split(' ') // Split the string into words
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-            .join(' '); // Join the words back into a string
-    };
+    // const capitalizeWords = (str) => {
+    //     return str
+    //         .toLowerCase() // Convert to lowercase to avoid issues with mixed case
+    //         .split(' ') // Split the string into words
+    //         .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+    //         .join(' '); // Join the words back into a string
+    // };
     return (
         <>
             {mainLoader && (

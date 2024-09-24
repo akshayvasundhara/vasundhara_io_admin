@@ -210,6 +210,14 @@ export default [
         ),
     },
     {
+        path: "/blogs-list-edit",
+        element: (
+            <PrivateRoute>
+                <AddBlogList />
+            </PrivateRoute>
+        ),
+    },
+    {
         path: "/blogs-details",
         element: (
             <PrivateRoute>

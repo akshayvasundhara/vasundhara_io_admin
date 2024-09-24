@@ -9,25 +9,22 @@ import { ImArrowLeft } from "react-icons/im";
 import LableInput from '../../components/comman/LableInput';
 import SelectInput from '../../components/comman/SelectInput';
 import Textarea from '../../components/comman/Textarea';
+import { useLocation } from 'react-router-dom';
 
 
 function ContactUsIndexView() {
-
-    const option = [
-        { value: '1', label: 'Application Development' },
-        { value: '2', label: 'Website Development' },
-        { value: '3', label: 'Game Development' },
-        { value: '4', label: 'Billing' },
-        { value: '5', label: 'About Services' },
-    ];
+    const location = useLocation();
+    const state = location.state || {};
+    console.log("state", state);
 
     const names = [
-        { label: 'First Name:', value: 'Jhon' },
-        { label: 'Last Name:', value: 'Doe' },
-        { label: 'Email:', value: 'test@eaxmple.com' },
-        { label: 'Mobile:', value: '+919922610389' },
-        { label: 'Service:', value: 'art & animation' },
-        { label: 'Country:', value: 'Surat, Gujarat' },
+        { label: 'Full Name:', value: state.full_name || '' },
+        { label: 'Last Name:', value: state.last_name || '' },
+        { label: 'Email:', value: state.email || '' },
+        { label: 'Mobile:', value: state.phone || '' },
+        { label: 'Service:', value: state.service || '' },
+        { label: 'Country:', value: state.country || '' },
+        { label: 'Message:', value: state.message || '' },
     ];
 
     return (

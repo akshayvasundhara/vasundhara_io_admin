@@ -41,7 +41,7 @@ function AddHirings() {
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1);
+    const [status, setStatus] = useState(state.status);
     const [states, setStates] = useState({
         job_name: '',
         experience: '',
@@ -71,21 +71,16 @@ function AddHirings() {
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
-        if (name === 'no_of_openings') {
-            const numericValue = parseInt(value, 10);
-            if (!isNaN(numericValue) && numericValue >= 1) {
-                newValue = numericValue;
-            } else {
-                newValue = ''; // Clear input if invalid
-            }
-        }
 
         if (submitCount > 0) {
-            let validationErrors = ValidateFields({ ...states, [name]: value });
+            let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-            if (Object.keys(validationErrors)?.length === 0) {
-                delete errors[name];
+            if (!validationErrors[name]) {
+                setErrors((prevErrors) => {
+                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
+                    return rest; // Return new errors without the removed error
+                });
             }
         }
         if (name === 'image') {
@@ -105,11 +100,26 @@ function AddHirings() {
             ...prevValues,
             [name]: newValues,
         }));
+
+        if (submitCount > 0) {
+            const updatedValues = { ...states, [name]: newValues };
+            let validationErrors = ValidateFields(updatedValues);
+            validationErrors = ErrorFilter(validationErrors, requireField);
+            setErrors(validationErrors);
+
+            if (!validationErrors[name]) {
+                setErrors((prevErrors) => {
+                    const { [name]: removedError, ...rest } = prevErrors;
+                    return rest;
+                });
+            }
+        }
     };
 
     // Add Edit Hiring
     const addHiring = async (e) => {
         e.preventDefault(); // Prevent default form submission
+        setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
 
         let validationErrors = ValidateFields(updatedValues);
@@ -199,7 +209,7 @@ function AddHirings() {
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/hirings' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>{location.pathname === '/hirings-edit' ? 'Edit Hirings' : 'Create Hirings'} </h2>
+                    <h2 className='page-title'>{location.pathname === '/hirings-edit' ? 'Edit Hiring' : 'Create Hiring'} </h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">

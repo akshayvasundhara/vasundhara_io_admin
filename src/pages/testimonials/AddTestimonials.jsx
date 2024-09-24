@@ -35,7 +35,7 @@ function AddTestimonials() {
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1);
+    const [status, setStatus] = useState(state.status);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
@@ -54,12 +54,16 @@ function AddTestimonials() {
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
 
-            if (Object.keys(validationErrors)?.length === 0) {
-                delete errors[name];
+            if (!validationErrors[name]) {
+                setErrors((prevErrors) => {
+                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
+                    return rest; // Return new errors without the removed error
+                });
             }
         }
         if (name === 'image') {
             setImage(newValue);
+
         } else {
             setStates((prevValues) => ({
                 ...prevValues,
@@ -70,6 +74,7 @@ function AddTestimonials() {
 
     const addTestimonial = async (e) => {
         e.preventDefault(); // Prevent default form submission
+        setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
