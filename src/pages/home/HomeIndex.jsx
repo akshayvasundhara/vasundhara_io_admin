@@ -31,7 +31,7 @@ function HomeIndex() {
                 <h2 className='page-title'>Dashboard</h2>
                 <Row className='dashboard-cards font-family-poppins mt-3'>
                     {data.map((item) => (
-                        <Col key={item.id} md={3}>
+                        <Col key={item.id} md={6} xl={3}>
                             <Link to={item.to} className='text-decoration-none'>
                                 <Card className="text-center">
                                     <Card.Body>

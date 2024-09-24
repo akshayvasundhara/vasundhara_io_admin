@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/App.css';
 import '../style/poppins.css';
+import 'ckeditor5/ckeditor5.css';
 
 import Login from '../auth/Login';
 import Home from '../pages/home/HomeIndex';
@@ -24,6 +25,10 @@ import CategoriesIndex from '../pages/Categories/CategoriesIndex';
 import CategoriesAdd from '../pages/Categories/CategoriesAdd';
 import BlogsListIndex from '../pages/Blogs/BlogsListIndex';
 import AddBlogList from '../pages/Blogs/AddBlogList';
+import ContactUsIndex from '../pages/ContactUs/ContactUsIndex';
+import ContactUsIndexView from '../pages/ContactUs/ContactUsIndexView';
+import NewslettersIndex from '../pages/Newsletters/NewslettersIndex';
+import BlogIndexView from '../pages/Blogs/BlogIndexView';
 
 export default [
     {
@@ -197,10 +202,42 @@ export default [
         ),
     },
     {
-        path: "/blogs-list",
+        path: "/blogs-list-add",
         element: (
             <PrivateRoute>
                 <AddBlogList />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/blogs-details",
+        element: (
+            <PrivateRoute>
+                <BlogIndexView />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/contact-us",
+        element: (
+            <PrivateRoute>
+                <ContactUsIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/contact-us-view",
+        element: (
+            <PrivateRoute>
+                <ContactUsIndexView />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/newsletters",
+        element: (
+            <PrivateRoute>
+                <NewslettersIndex />
             </PrivateRoute>
         ),
     },

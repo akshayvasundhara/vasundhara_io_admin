@@ -69,7 +69,7 @@ function CategoriesIndex() {
         <>
             <Layout>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <h2 className='page-title'>Categories</h2>
+                    <h2 className='page-title'>Category</h2>
                     <LinkButton text="Add" to='/categories-add' className='secondary-button text-decoration-none px-4' />
                 </div>
                 <div className='font-family-poppins mt-3'>

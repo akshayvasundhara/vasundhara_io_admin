@@ -35,7 +35,7 @@ function ViewHirings() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <div className="row g-2">
+                                    <div className="row g-2 details-box">
                                         <div className="col-sm-12">
                                             <div className='view-image-box mb-2'>
                                                 <img
@@ -46,24 +46,24 @@ function ViewHirings() {
                                             </div>
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="job_name" className="form-label text-default fw-600">Job Name:</label>
-                                            <span className='ps-2'>{state.job_name}</span>
+                                            <label htmlFor="job_name">Job Name:</label>
+                                            <p>{state.job_name}</p>
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="experience" className="form-label text-default fw-600">Experience:</label>
-                                            <span className='ps-2'>{state.experience} Year</span>
+                                            <label htmlFor="experience">Experience:</label>
+                                            <p>{state.experience} Year</p>
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="no" className="form-label text-default fw-600">No. of Openings:</label>
-                                            <span className='ps-2'>{state.no_of_openings}</span>
+                                            <label htmlFor="no">No. of Openings:</label>
+                                            <p>{state.no_of_openings}</p>
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="qualification" className="form-label text-default fw-600">Job Time:</label>
-                                            <span className='ps-2'>Full Time</span>
+                                            <label htmlFor="qualification">Job Time:</label>
+                                            <p>Full Time</p>
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="qualification" className="form-label text-default fw-600">Qualification:</label>
-                                            <span className='ps-2'>{state.qualification}</span>
+                                            <label htmlFor="qualification">Qualification:</label>
+                                            <p>{state.qualification}</p>
                                         </div>
                                         <div className="col-sm-12">
                                             <label htmlFor="location" className="form-label text-default fw-600">Location:</label>
@@ -74,8 +74,8 @@ function ViewHirings() {
                                             ))}
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="responsibilities" className="form-label text-default fw-600">Responsibilities:</label>
-                                            <ul className='ps-2 list-unstyled responsibilities'>
+                                            <label htmlFor="responsibilities">Responsibilities:</label>
+                                            <ul className='ps-2 list-unstyled responsibilities pt-2'>
                                                 {state.responsibilities.map((responsibility, index) => (
                                                     <li key={index}>
                                                         <FaCheckCircle />
@@ -86,8 +86,8 @@ function ViewHirings() {
                                             <p />
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="responsibilities" className="form-label text-default fw-600">Skill:</label>
-                                            <ul className='ps-2 list-unstyled responsibilities'>
+                                            <label htmlFor="responsibilities">Skill:</label>
+                                            <ul className='ps-2 list-unstyled responsibilities pt-2'>
                                                 {state.skill.map((skills, index) => (
                                                     <li key={index}>
                                                         <FaCheckCircle />
@@ -99,14 +99,14 @@ function ViewHirings() {
                                             <p />
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="status" className="form-label text-default fw-600">Status:</label>
-                                            <span className='ps-2'>
+                                            <label htmlFor="status">Status:</label>
+                                            <p>
                                                 {state.status === 1 ? 'Activate' : 'Deactivate'}
-                                            </span>
+                                            </p>
                                         </div>
                                         <div className="col-sm-12">
-                                            <label htmlFor="created_at" className="form-label text-default fw-600">Created At:</label>
-                                            <span className='ps-2'>{formatDate(state.createdAt)}</span>
+                                            <label htmlFor="created_at">Created At:</label>
+                                            <p>{formatDate(state.createdAt)}</p>
                                         </div>
                                     </div>
 

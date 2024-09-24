@@ -99,14 +99,10 @@ function Login() {
                                     <div className='d-flex justify-content-center py-4'>
                                         <img src="../images/logo/logo.svg" width={250} alt="" />
                                     </div>
-                                    <p className="mb-1 text-start fs-4 fw-500">vasundhara us</p>
-                                    <p className="mb-4 text-muted op-7 fw-400 text-start">
-                                        Sign in to start your session
-                                    </p>
                                     <div className="row gy-3">
                                         <div className="col-xl-12">
                                             <LableInput
-                                                label="Email:"
+                                                // label="Email:"
                                                 className="form-control"
                                                 id="email"
                                                 placeholder="Enter your email"
@@ -121,7 +117,7 @@ function Login() {
                                         <div className="col-xl-12">
                                             <div className="position-relative">
                                                 <LableInput
-                                                    label="Password:"
+                                                    // label="Password:"
                                                     className="form-control create-password-input"
                                                     id="password"
                                                     placeholder="Enter your password"
@@ -138,14 +134,14 @@ function Login() {
                                                     {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
                                                 </span>
                                             </div>
-                                            <div className="mt-2">
+                                            {/* <div className="mt-2">
                                                 <label
                                                     className="form-check-label text-muted fw-normal"
                                                     htmlFor="defaultCheck1"
                                                 >
                                                     I forgot my password
                                                 </label>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <SingleError error={errors?.password} />
                                     </div>

@@ -25,7 +25,7 @@ function CategoriesAdd() {
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/categories' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>Add Categories</h2>
+                    <h2 className='page-title'>Add Category</h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">

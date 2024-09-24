@@ -10,6 +10,7 @@ import Switch from '../../components/comman/Switch';
 import CommanButton from '../../components/comman/CommanButton';
 import { ImArrowLeft } from "react-icons/im";
 import SelectInput from '../../components/comman/SelectInput';
+import MyEditor from '../../components/comman/MyEditor';
 
 
 function AddBlogList() {
@@ -23,11 +24,12 @@ function AddBlogList() {
     };
 
     const option = [
-        { value: '1', label: 'Category 1' },
-        { value: '2', label: 'Category 2' },
-        { value: '3', label: 'Category 3' },
-        { value: '4', label: 'Category 4' },
-        { value: '5', label: 'Category 5' },
+        { value: '1', label: 'Select Category' },
+        { value: '2', label: 'Category 1' },
+        { value: '3', label: 'Category 2' },
+        { value: '4', label: 'Category 3' },
+        { value: '5', label: 'Category 4' },
+        { value: '6', label: 'Category 5' },
     ];
 
     return (
@@ -35,7 +37,7 @@ function AddBlogList() {
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/teams' className='back-btn d-flex justify-content-center align-items-center' />
-                    <h2 className='page-title'>Add Blogs</h2>
+                    <h2 className='page-title'>Add Blog</h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
@@ -50,19 +52,6 @@ function AddBlogList() {
                                                     className="form-control"
                                                     id="text"
                                                     placeholder="Enter title"
-                                                    type="text"
-                                                    name='email'
-                                                // value={values?.email || ""}
-                                                // onKeyPress={handleKeyPress}
-                                                // onChange={handleChange}
-                                                />
-                                            </Col>
-                                            <Col md={6}>
-                                                <LableInput
-                                                    label="Unique Route:"
-                                                    className="form-control"
-                                                    id="text"
-                                                    placeholder="Enter route"
                                                     type="text"
                                                     name='email'
                                                 // value={values?.email || ""}
@@ -87,6 +76,9 @@ function AddBlogList() {
                                                 />
                                             </Col>
                                             <Col md={6}>
+                                                <SelectInput label="Author:" options={option} />
+                                            </Col>
+                                            <Col md={4}>
                                                 <LableInput
                                                     label="View:"
                                                     className="form-control"
@@ -99,21 +91,8 @@ function AddBlogList() {
                                                 // onChange={handleChange}
                                                 />
                                             </Col>
-                                            <Col md={6}>
-                                                <LableInput
-                                                    label="User Name:"
-                                                    className="form-control"
-                                                    id="text"
-                                                    placeholder="Enter user name"
-                                                    type="text"
-                                                    name='email'
-                                                // value={values?.email || ""}
-                                                // onKeyPress={handleKeyPress}
-                                                // onChange={handleChange}
-                                                />
-                                            </Col>
 
-                                            <Col md={6}>
+                                            <Col md={4}>
                                                 <LableInput
                                                     label="Likes:"
                                                     className="form-control"
@@ -126,92 +105,12 @@ function AddBlogList() {
                                                 // onChange={handleChange}
                                                 />
                                             </Col>
-                                            <Col md={6}>
+                                            <Col md={4}>
                                                 <LableInput
-                                                    label="Select User Gender:"
-                                                    className="form-control d-none"
-                                                />
-                                                <div className='d-flex align-items-center gap-3'>
-                                                    <div className="form-check">
-                                                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
-                                                        <label className="form-check-label fw-400" for="flexRadioDefault1">
-                                                            Male
-                                                        </label>
-                                                    </div>
-                                                    <div className="form-check">
-                                                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked />
-                                                        <label className="form-check-label fw-400" for="flexRadioDefault2">
-                                                            Female
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                            <Col md={6}>
-                                                <div className='d-flex align-items-center gap-3'>
-                                                    <FileInput label="User Image:" />
-                                                    <FileInput label="Banner Image:" />
-                                                </div>
-                                            </Col>
-                                            <Col md={6}>
-                                                <Textarea label="User Content:" rows="9" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
-                                            </Col>
-                                            <Col md={6}>
-                                                <Textarea label="Head Tags By SEO:" rows="9" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
-                                            </Col>
-                                            <Col md={6}>
-                                                <Textarea label="Banner Content:" rows="9" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
-                                            </Col>
-                                            <Col md={6}>
-                                                <Textarea label="Table Of Content:" rows="9" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
-                                            </Col>
-                                            <Col md={6}>
-                                                <Textarea label="Main Content:" rows="9" type="text" name="description" />
-                                                {/* <SingleError error={errors?.description} /> */}
-                                            </Col>
-                                            <Col md={4}>
-                                                <div className='d-flex align-items-center gap-2'>
-                                                    <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                        Active:
-                                                    </label>
-                                                    <Switch />
-                                                </div>
-                                            </Col>
-                                            <Col md={4}>
-                                                <div className='d-flex align-items-center gap-2'>
-                                                    <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                        Show Table Of Content:
-                                                    </label>
-                                                    <Switch />
-                                                </div>
-                                            </Col>
-                                            <Col md={4}>
-                                                <div className='d-flex align-items-center gap-2'>
-                                                    <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                        FAQs Status:
-                                                    </label>
-                                                    <Switch />
-                                                </div>
-                                            </Col>
-                                            <Col md={4}>
-                                                <div className='d-flex align-items-center gap-2'>
-                                                    <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                        Status:
-                                                    </label>
-                                                    <Switch />
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <Row className='g-4'>
-                                            <Col md={6}>
-                                                <LableInput
-                                                    label="Title:"
+                                                    label="Blog Read Time:"
                                                     className="form-control"
                                                     id="text"
-                                                    placeholder="Enter title"
+                                                    placeholder="Enter blog read time (In minutes)"
                                                     type="text"
                                                     name='email'
                                                 // value={values?.email || ""}
@@ -219,6 +118,47 @@ function AddBlogList() {
                                                 // onChange={handleChange}
                                                 />
                                             </Col>
+                                            <Col md={6} className='switch-box'>
+                                                <div className='d-flex align-items-center gap-2 mb-3'>
+                                                    <label htmlFor="industry-select" className="form-label text-default mb-0">
+                                                        Status:
+                                                    </label>
+                                                    <Switch />
+                                                </div>
+                                                <div className='d-flex align-items-center gap-2 mb-3'>
+                                                    <label htmlFor="industry-select" className="form-label text-default mb-0">
+                                                        Featured:
+                                                    </label>
+                                                    <Switch />
+                                                </div>
+                                                <div className='d-flex align-items-center gap-2 mb-3'>
+                                                    <label htmlFor="industry-select" className="form-label text-default mb-0">
+                                                        Trending:
+                                                    </label>
+                                                    <Switch />
+                                                </div>
+                                            </Col>
+                                            <Col md={6}>
+                                                <div className='d-flex align-items-center gap-3'>
+                                                    <FileInput label="Image:" />
+                                                </div>
+                                            </Col>
+                                            <Col md={12}>
+                                                <Textarea label="Description:" rows="9" type="text" name="description" />
+                                                {/* <SingleError error={errors?.description} /> */}
+                                            </Col>
+                                            <Col md={12}>
+                                                <label htmlFor="industry-select" className="form-label text-default">
+                                                    Main Content:
+                                                </label>
+                                                <MyEditor />
+                                            </Col>
+
+                                            <Col md={12}>
+                                                <Textarea label="Head Tags By SEO:" rows="9" type="text" name="description" />
+                                                {/* <SingleError error={errors?.description} /> */}
+                                            </Col>
+
                                         </Row>
                                     </form>
 

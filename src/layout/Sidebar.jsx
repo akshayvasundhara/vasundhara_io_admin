@@ -5,11 +5,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { IoHomeOutline } from "react-icons/io5";
 import { FaListOl, FaQuestion } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
-import { LuPackageSearch } from "react-icons/lu";
+import { LuContact2, LuPackageSearch } from "react-icons/lu";
 import { VscGitStashApply } from 'react-icons/vsc';
 import { PiUsersThreeBold } from 'react-icons/pi';
 import { TbBrandBlogger } from 'react-icons/tb';
 import { RiShieldUserLine } from 'react-icons/ri';
+import { BsFillSendArrowUpFill } from 'react-icons/bs';
+import { FaBarsStaggered } from 'react-icons/fa6';
 
 const categories = [
     { id: 1, name: 'Dashboard', icons: <IoHomeOutline />, path: '/dashboard', subcategories: [] },
@@ -19,20 +21,24 @@ const categories = [
     { id: 5, name: 'Apply Jobs', icons: <VscGitStashApply />, path: '/apply-jobs', subcategories: [] },
     { id: 6, name: 'Teams', icons: <PiUsersThreeBold />, path: '/teams', subcategories: [] },
     { id: 7, name: 'Faqs', icons: <FaQuestion />, path: '/faqs', subcategories: [] },
-    { id: 8, name: 'Categories', icons: <FaListOl />, path: '/categories', subcategories: [] },
+    // { id: 8, name: 'Categories', icons: <FaListOl />, path: '/categories', subcategories: [] },
+    // { id: 9, name: 'Blogs', icons: <TbBrandBlogger />, path: '/blogs-list', subcategories: [] },
     {
         id: 9,
         name: 'Blogs',
         icons: <TbBrandBlogger />,
         subcategories: [
             { name: 'Blog List', path: '/blogs-list' },
-            { name: 'Blog Media', path: '/blog-media' },
-            { name: 'Blog Comments', path: '/blog-comments' },
+            { name: 'Blog Categories', path: '/categories' },
+            // { name: 'Blog Comments', path: '/blog-comments' },
         ],
-    }
+    },
+    { id: 10, name: 'Contact Us', icons: <LuContact2 />, path: '/contact-us', subcategories: [] },
+    { id: 11, name: 'Newsletters', icons: <BsFillSendArrowUpFill />, path: '/newsletters', subcategories: [] },
+
 ];
 
-function Sidebar({ className }) {
+function Sidebar({ className, onToggleSidebar }) {
     const [activeCategory, setActiveCategory] = useState(1);
     const location = useLocation();
 
@@ -59,6 +65,9 @@ function Sidebar({ className }) {
             <div className='d-flex justify-content-center px-2 py-3'>
                 <img src={className ? '../images/logo/logo-sm.svg' : '../images/logo/logo.svg'} className={className ? 'logo-sm' : 'logo-xl'} alt="Logo" />
             </div>
+
+            <FaBarsStaggered onClick={onToggleSidebar} className='sidebar-toggel cursor-pointer' />
+
             <ul className='category-list'>
                 {categories.map(category => (
                     <li key={category.id}>
@@ -66,8 +75,12 @@ function Sidebar({ className }) {
                             className={`category-header ${activeCategory === category.id ? 'active' : ''}`}
                             onClick={() => handleCategoryClick(category.id, category.subcategories.length > 0)}
                         >
-                            <span className='side-icons'>{category.icons}</span>
-                            <Link to={category.path} className="category-link">{category.name}</Link>
+                            <Link to={category.path} className="category-link d-flex align-items-center gap-2">
+                                <span className='side-icons'>{category.icons}</span>
+                                <span className='mune-items'>
+                                    {category.name}
+                                </span>
+                            </Link>
                             {category.subcategories.length > 0 && (
                                 activeCategory === category.id ? (
                                     <MdExpandLess className="icon" />

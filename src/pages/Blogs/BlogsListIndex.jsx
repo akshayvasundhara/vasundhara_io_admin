@@ -16,18 +16,19 @@ import { RiSearch2Line } from 'react-icons/ri';
 function BlogsListIndex() {
 
     const option = [
-        { value: '1', label: 'Application Development' },
-        { value: '2', label: 'Website Development' },
-        { value: '3', label: 'Game Development' },
-        { value: '4', label: 'Billing' },
-        { value: '5', label: 'About Services' },
+        { value: '1', label: 'Select Categories' },
+        { value: '2', label: 'Application Development' },
+        { value: '3', label: 'Website Development' },
+        { value: '4', label: 'Game Development' },
+        { value: '5', label: 'Billing' },
+        { value: '6', label: 'About Services' },
     ];
     return (
         <>
             <Layout>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <h2 className='page-title'>Blogs List</h2>
-                    <LinkButton text="Add" to='/add-blogs-list' className='secondary-button text-decoration-none px-4' />
+                    <h2 className='page-title'>Blog</h2>
+                    <LinkButton text="Add" to='/blogs-list-add' className='secondary-button text-decoration-none px-4' />
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
@@ -36,12 +37,12 @@ function BlogsListIndex() {
                                 <Card.Body>
                                     <Row className='g-4 mb-4'>
                                         <Col md={6}>
-                                            <SelectInput label="Select Categories:" options={option} />
+                                            <SelectInput label="" options={option} />
                                         </Col>
                                         <Col md={6}>
                                             <div className="position-relative">
                                                 <LableInput
-                                                    label="Search Blog:"
+                                                    // label="Search Blog:"
                                                     className="form-control create-password-input overflow-hidden"
                                                     id="password"
                                                     placeholder="Search blog"
@@ -61,13 +62,11 @@ function BlogsListIndex() {
                                         <thead>
                                             <tr>
                                                 <th width="50px">No.</th>
-                                                <th>Image</th>
+                                                <th width="80">Image</th>
                                                 <th>Title</th>
-                                                <th>Route</th>
                                                 <th>Content</th>
                                                 <th>Category</th>
-                                                <th>View</th>
-                                                <th>User Name</th>
+                                                <th>Author</th>
                                                 <th width='100'>Status</th>
                                                 <th width='100'>Action</th>
                                             </tr>
@@ -80,19 +79,17 @@ function BlogsListIndex() {
                                                         <img src="https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png" alt="" className='w-100 h-100' />
                                                     </div>
                                                 </td>
-                                                <td>Mastering the Game: Unveiling the Success of Our Teen Patti Multiplayer Card Game</td>
                                                 <td>mastering-the-our-teen-patti-multiplayer-card-game</td>
                                                 <td>Elevate your gaming expertise by exploring the success story of our Teen Patti Multiplayer Card Game...</td>
                                                 <td>client story</td>
-                                                <td>0</td>
                                                 <td>Ronak Pipaliya</td>
                                                 <td>
                                                     <Switch />
                                                 </td>
                                                 <td width={100}>
                                                     <div className='d-flex align-items-center gap-2'>
-                                                        <ViewButton to='/apply-jobs-view' />
-                                                        <EditButton to='/hirings-add' />
+                                                        <ViewButton to='/blogs-details' />
+                                                        <EditButton to='/blogs-list-add' />
                                                         <DeleteButton />
                                                     </div>
                                                 </td>
