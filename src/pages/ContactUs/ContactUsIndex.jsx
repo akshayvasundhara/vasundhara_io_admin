@@ -108,7 +108,7 @@ function ContactUsIndex() {
                                                 })
                                             ) : (
                                                 <tr>
-                                                   <td colSpan="6"><NoDataAvailable /></td>
+                                                   <td colSpan="7"><NoDataAvailable /></td>
                                                 </tr>
                                             )}
 

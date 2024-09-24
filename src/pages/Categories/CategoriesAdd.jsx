@@ -30,7 +30,7 @@ function CategoriesAdd() {
     const [errors, setErrors] = useState({});
     const serverURL = getServerURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status);
+    const [status, setStatus] = useState(state.status || 1)
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);

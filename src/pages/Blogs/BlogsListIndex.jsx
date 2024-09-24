@@ -188,7 +188,7 @@ function BlogsListIndex() {
                                                 })
                                             ) : (
                                                 <tr>
-                                                     <td colSpan="6"><NoDataAvailable /></td>
+                                                     <td colSpan="8"><NoDataAvailable /></td>
                                                 </tr>
                                             )}
 

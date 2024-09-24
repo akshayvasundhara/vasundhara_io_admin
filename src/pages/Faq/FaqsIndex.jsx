@@ -111,8 +111,8 @@ function FaqsIndex() {
                                                     <th width="50px">No.</th>
                                                     <th>Question</th>
                                                     <th>Answer</th>
-                                                    <th width="100px">Type</th>
-                                                    <th width='100'>Status</th>
+                                                    <th>Type</th>
+                                                    <th>Status</th>
                                                     <th width='100'>Action</th>
                                                 </tr>
                                             </thead>

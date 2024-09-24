@@ -34,7 +34,7 @@ function FaqsAdd() {
 
     const [errors, setErrors] = useState({});
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status);
+    const [status, setStatus] = useState(state.status || 1)
     const [states, setStates] = useState({
         question: '',
         answer: '',

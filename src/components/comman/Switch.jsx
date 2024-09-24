@@ -20,7 +20,7 @@ function Switch({ mode, index, onToggle, itemId }) {
     };
     return (
         <>
-            <div className={`cont d-flex justify-content-start align-items-center ${currentMode === 0 ? 'dark-mode' : ''}`}>
+            <div className={`cont d-flex justify-content-start align-items-center ${currentMode === 0 ? 'dark-mode' : 'toggle01'}`}>
                 <div className="toggle">
                     <input
                         type="checkbox"

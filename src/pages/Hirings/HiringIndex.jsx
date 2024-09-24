@@ -159,7 +159,7 @@ function HiringIndex() {
 
                                             ) : (
                                                 <tr>
-                                                    <td colSpan="6"><NoDataAvailable /></td>
+                                                    <td colSpan="10"><NoDataAvailable /></td>
                                                 </tr>
                                             )}
 

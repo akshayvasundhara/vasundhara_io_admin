@@ -41,7 +41,7 @@ function AddHirings() {
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status);
+    const [status, setStatus] = useState(state.status || 1)
     const [states, setStates] = useState({
         job_name: '',
         experience: '',
@@ -295,7 +295,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.no_of_openings} />
                                             </Col>
-                                            <Col md={12} lg={6}>
+                                            <Col md={12}>
                                                 <PlushLableInput
                                                     label="Responsibilities:"
                                                     className="form-control"
@@ -309,7 +309,7 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.responsibilities} />
                                             </Col>
-                                            <Col md={12} lg={6}>
+                                            <Col md={12}>
                                                 <PlushLableInput
                                                     label="Skill:"
                                                     className="form-control"
