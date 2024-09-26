@@ -42,7 +42,7 @@ const debounce = (func, wait) => {
     };
 };
 
-const MyEditor = ({ htmlData, onChangeHtmlData, field }) => {
+const MyEditor = ({ htmlData, onChangeHtmlData }) => {
     const editorContainerRef = useRef(null);
     const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -174,7 +174,7 @@ const MyEditor = ({ htmlData, onChangeHtmlData, field }) => {
                 onChange={(event, editor) => {
                     const data = editor.getData();
                     if (data !== htmlData) {
-                        onChangeHtmlData(field, data);
+                        onChangeHtmlData(data);
                     }
                 }}
             />

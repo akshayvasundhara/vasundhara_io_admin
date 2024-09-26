@@ -37,7 +37,8 @@ function TeamsAdd() {
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1)
+    // const [status, setStatus] = useState(state.status || 1)
+    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
@@ -205,7 +206,7 @@ function TeamsAdd() {
                                                 <SingleError error={errors?.facebook_link} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Other:" rows="4" type="text" name="other_link"/>
+                                                <Textarea label="Other:" rows="4" type="text" name="other_link" />
                                                 {/* <SingleError error={errors?.facebook_link} /> */}
                                             </Col>
                                         </Row>

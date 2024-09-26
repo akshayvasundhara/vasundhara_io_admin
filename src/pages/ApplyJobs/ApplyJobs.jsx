@@ -22,7 +22,6 @@ function ApplyJobs() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
 
 
     const getJobs = async () => {
@@ -32,7 +31,7 @@ function ApplyJobs() {
             if (response.data.success === true) {
                 setJob(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
-                setCurrentPage(response?.data?.data.page);
+                setPage(response?.data?.data.page);
             } else {
                 setJob([]);
             }
@@ -50,7 +49,7 @@ function ApplyJobs() {
 
     const onSuccessData = () => {
         if (job.data.length === 1 && page > 1) {
-            setPage(currentPage - 1)
+            setPage(page - 1)
         } else {
             getJobs(limit, page)
         }
@@ -133,7 +132,7 @@ function ApplyJobs() {
                                     </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
-                                            currentPage={currentPage}
+                                            currentPage={page}
                                             totalPages={paginationData}
                                             onPageChange={(newPage) => {
                                                 setPage(newPage);

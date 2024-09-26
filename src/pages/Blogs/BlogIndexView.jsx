@@ -5,24 +5,30 @@ import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
 import CommanButton from '../../components/comman/CommanButton';
 import { ImArrowLeft } from "react-icons/im";
+import { useLocation } from 'react-router-dom';
+import { getImageURL } from '../../helper/envConfig';
 
 
 function BlogIndexView() {
 
+    const location = useLocation();
+    const state = location.state || {};
+    const imageURL = getImageURL();
+
     const names = [
-        { label: 'Title:', value: 'title:' },
-        { label: 'Category:', value: 'Category' },
-        { label: 'Date:', value: '23-09-2024' },
-        { label: 'Author:', value: 'Author' },
-        { label: 'View:', value: '100' },
-        { label: 'Likes:', value: '500' },
-        { label: 'Blog Read Time:(In minutes)', value: '123' },
-        { label: 'Status:', value: 'On' },
-        { label: 'Featured:', value: 'Off' },
-        { label: 'Trending:', value: 'On' },
-        { label: 'Description:', value: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, unde, officia molestias fuga error voluptatum necessitatibus deleniti consequatur voluptas harum quod assumenda corrupti quis soluta aspernatur dolores quisquam eligendi quidem.' },
-        { label: 'Main Content:', value: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, unde, officia molestias fuga error voluptatum necessitatibus deleniti consequatur voluptas harum quod assumenda corrupti quis soluta aspernatur dolores quisquam eligendi quidem.' },
-        { label: 'Head Tags By SEO:', value: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, unde, officia molestias fuga error voluptatum necessitatibus deleniti consequatur voluptas harum quod assumenda corrupti quis soluta aspernatur dolores quisquam eligendi quidem.' },
+        { label: 'Title:', value: state.title || '' },
+        { label: 'Category:', value: state.category.name || '' },
+        { label: 'Date:', value: state.date ? new Date(state.date).toISOString().split("T")[0] : "", },
+        { label: 'Author:', value: state.author.name || '' },
+        { label: 'View:', value: state.views || '' },
+        { label: 'Likes:', value: state.likes || '' },
+        { label: 'Blog Read Time:(In minutes)', value: state.blog_read_time || '' },
+        { label: 'Status:', value: state.status === 1 ? 'On' : 'Off' },
+        { label: 'Featured:', value: state.isFeatured === 1 ? 'On' : 'Off' },
+        { label: 'Trending:', value: state.isTrending === 1 ? 'On' : 'Off' },
+        { label: 'Content:', value: state.content || '' },
+        { label: 'Main Content:', value: state.main_content || '' },
+        { label: 'Head Tags By SEO:', value: state.seo || '' },
     ];
 
     return (
@@ -39,7 +45,7 @@ function BlogIndexView() {
                                 <Card.Body className='details-box'>
                                     <div className='view-image-box mb-3'>
                                         <img
-                                            src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
+                                            src={`${imageURL}${state.image}`}
                                             alt=""
                                             className='w-100 h-100'
                                         />

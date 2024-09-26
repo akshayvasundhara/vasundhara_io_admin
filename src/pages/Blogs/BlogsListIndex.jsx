@@ -20,47 +20,52 @@ import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 function BlogsListIndex() {
     const serverURL = getServerURL();
-    const [options, setOptions] = useState([]);
-
+    const [category, setCategory] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const imageURL = getImageURL();
     const [blog, setBlog] = useState([]);
     const [paginationData, setPaginationData] = useState({});
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('');
 
-    // Get FAQ Type
-    const getOptions = async () => {
+    // Get blog category Type
+    const getCategories = async () => {
         try {
-            const response = await api.getWithToken(`${serverURL}/faqs_type`);
+
+            const response = await api.getWithToken(`${serverURL}/blog-category`)
             if (response.data.success === true) {
-                const formattedOptions = response.data.data.data.map(item => ({
-                    label: item.label,
-                    value: item.value,
-                }));
-                setOptions(formattedOptions);
+                setCategory(response.data.data.data || []);
             } else {
-                setOptions([]);
+                setCategory([]);
             }
+
         } catch (error) {
             console.error("Error fetching products:", error.response ? error.response.data : error.message);
         }
-    };
+    }
 
     useEffect(() => {
-        getOptions();
+        getCategories();
     }, [])
 
+    const categoryOptions = [
+        { value: '', label: 'All' }, // All option
+        ...category.map(cat => ({
+            value: cat._id,
+            label: cat.name
+        }))
+    ];
     // Get Blogs
     const getBlogs = async () => {
         setMainLoader(true);
         try {
-            const response = await api.getWithToken(`${serverURL}/blog?perPage=${limit}&page=${page}`)
+            const response = await api.getWithToken(`${serverURL}/blog?perPage=${limit}&page=${page}${selectedCategory ? `&category=${selectedCategory}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
             if (response.data.success === true) {
                 setBlog(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
-                setCurrentPage(response?.data?.data.page);
+                setPage(response?.data?.data.page);
             } else {
                 setBlog([]);
             }
@@ -73,13 +78,16 @@ function BlogsListIndex() {
     }
 
     useEffect(() => {
-        getBlogs();
-    }, [page, limit])
+        const delayDebounceFn = setTimeout(() => {
+            getBlogs();
+        }, 500);
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery, selectedCategory, page]); // 
 
     // Delete function
     const onSuccessData = () => {
         if (blog.data.length === 1 && page > 1) {
-            setPage(currentPage - 1);
+            setPage(page - 1);
         } else {
             getBlogs(limit, page);
         }
@@ -101,6 +109,17 @@ function BlogsListIndex() {
         }
     };
 
+    // Handle category change
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value); // Set the selected category
+        setPage(1); // Reset to first page when category changes
+    };
+
+    // Handle search input change
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+        setPage(1); // Reset to the first page when search changes
+    };
     return (
         <>
 
@@ -119,7 +138,8 @@ function BlogsListIndex() {
                                 <Card.Body>
                                     <Row className='g-4 mb-4'>
                                         <Col md={6}>
-                                            <SelectInput label="" options={options} />
+                                            <SelectInput label="" options={categoryOptions} value={selectedCategory}
+                                                onChange={handleCategoryChange} />
                                         </Col>
                                         <Col md={6}>
                                             <div className="position-relative">
@@ -128,10 +148,13 @@ function BlogsListIndex() {
                                                     className="form-control create-password-input overflow-hidden"
                                                     id="password"
                                                     placeholder="Search blog"
-                                                    name='password'
+                                                    name='search'
+                                                    value={searchQuery} // Set the value for the input
+                                                    onChange={handleSearchChange}
                                                 />
                                                 <span
                                                     className="position-absolute end-0 top-70 translate-middle-y cursor-pointer search-icon"
+                                                    onClick={() => getBlogs()}
                                                 >
                                                     <RiSearch2Line />
                                                 </span>
@@ -140,62 +163,70 @@ function BlogsListIndex() {
                                     </Row>
                                     <div className='overflow-x-auto'>
 
-                                    <Table >
-                                        <thead>
-                                            <tr>
-                                                <th width="50px">No.</th>
-                                                <th width="80">Image</th>
-                                                <th>Title</th>
-                                                <th>Content</th>
-                                                <th>Category</th>
-                                                <th>Author</th>
-                                                <th width='100'>Status</th>
-                                                <th width='100'>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {blog?.data?.length > 0 ? (
-                                                blog?.data?.map((test, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{(page - 1) * limit + index + 1}.</td>
-                                                            <td>
-                                                                <div className='table-image'>
-                                                                    <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
-                                                                </div>
-                                                            </td>
-                                                            <td><p>
-                                                            {test.title}
-                                                                </p></td>
-                                                            <td><p>{test.content}</p></td>
-                                                            <td><p>{test.category.name}</p></td>
-                                                            <td><p>{test.author.name}</p></td>
-                                                            <td>
-                                                                <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                            </td>
-                                                            <td width={100}>
-                                                                <div className='d-flex align-items-center gap-2'>
-                                                                    <ViewButton to='/blogs-details' state={test} />
-                                                                    <EditButton to='/blogs-list-edit' state={test} />
-                                                                    <DeleteButton id={test._id}
-                                                                        endpoint={`${serverURL}/blog`}
-                                                                        onSuccess={onSuccessData}
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            ) : (
+                                        <Table >
+                                            <thead>
                                                 <tr>
-                                                     <td colSpan="8"><NoDataAvailable /></td>
+                                                    <th width="50px">No.</th>
+                                                    <th width="80">Image</th>
+                                                    <th>Title</th>
+                                                    <th>Content</th>
+                                                    <th>Category</th>
+                                                    <th>Author</th>
+                                                    <th width='100'>Status</th>
+                                                    <th width='100'>Action</th>
                                                 </tr>
-                                            )}
+                                            </thead>
+                                            <tbody>
+                                                {blog?.data?.length > 0 ? (
+                                                    blog?.data?.map((test, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{(page - 1) * limit + index + 1}.</td>
+                                                                <td>
+                                                                    <div className='table-image'>
+                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
+                                                                    </div>
+                                                                </td>
+                                                                <td><p>
+                                                                    {test.title}
+                                                                </p></td>
+                                                                <td><p>{test.content}</p></td>
+                                                                <td><p>{test.category.name}</p></td>
+                                                                <td><p>{test.author.name}</p></td>
+                                                                <td>
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                </td>
+                                                                <td width={100}>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <ViewButton to='/blogs-details' state={test} />
+                                                                        <EditButton to='/blogs-list-edit' state={test} />
+                                                                        <DeleteButton id={test._id}
+                                                                            endpoint={`${serverURL}/blog`}
+                                                                            onSuccess={onSuccessData}
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="8"><NoDataAvailable /></td>
+                                                    </tr>
+                                                )}
 
-                                        </tbody>
-                                    </Table>
+                                            </tbody>
+                                        </Table>
                                     </div>
-                                    <CommanPagination />
+                                    {paginationData > 1 && (
+                                        <CommanPagination
+                                            currentPage={page}
+                                            totalPages={paginationData}
+                                            onPageChange={(newPage) => {
+                                                setPage(newPage);
+                                            }}
+                                        />
+                                    )}
                                 </Card.Body>
                             </Card>
                         </Col>

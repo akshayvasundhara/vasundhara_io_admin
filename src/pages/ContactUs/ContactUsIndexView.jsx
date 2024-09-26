@@ -15,7 +15,6 @@ import { useLocation } from 'react-router-dom';
 function ContactUsIndexView() {
     const location = useLocation();
     const state = location.state || {};
-    console.log("state", state);
 
     const names = [
         { label: 'Full Name:', value: state.full_name || '' },

@@ -31,8 +31,6 @@ function Login() {
 
 
     const handleKeyPress = (e) => {
-        console.log("hello");
-
         if (e.key === 'Enter') {
             setSubmitCount(1);
             handleSubmit(e);

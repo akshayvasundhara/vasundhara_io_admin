@@ -25,7 +25,6 @@ function TeamsIndex() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
 
     // Get Team
     const getTeams = async () => {
@@ -35,7 +34,7 @@ function TeamsIndex() {
             if (response.data.success === true) {
                 setTeam(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
-                setCurrentPage(response?.data?.data.page);
+                setPage(response?.data?.data.page);
             } else {
                 setTeam([]);
             }
@@ -54,7 +53,7 @@ function TeamsIndex() {
     // Delete function
     const onSuccessData = () => {
         if (team.data.length === 1 && page > 1) {
-            setPage(currentPage - 1);
+            setPage(page - 1);
         } else {
             getTeams(limit, page);
         }
@@ -170,7 +169,7 @@ function TeamsIndex() {
                                     </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
-                                            currentPage={currentPage}
+                                            currentPage={page}
                                             totalPages={paginationData}
                                             onPageChange={(newPage) => {
                                                 setPage(newPage);

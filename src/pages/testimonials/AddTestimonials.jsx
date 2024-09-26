@@ -22,7 +22,6 @@ const requireField = [
     "name",
     "designation",
     "description",
-    "status",
     "image",
 ];
 
@@ -35,7 +34,8 @@ function AddTestimonials() {
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1);
+    // const [status, setStatus] = useState(state.status || 1);
+    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
@@ -49,21 +49,20 @@ function AddTestimonials() {
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
+        let validationErrors;
         if (submitCount > 0) {
-            let validationErrors = ValidateFields({ ...states, [name]: value });
+            validationErrors = ValidateFields({ ...states, [name]: value });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-
-            if (!validationErrors[name]) {
-                setErrors((prevErrors) => {
-                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
-                    return rest; // Return new errors without the removed error
-                });
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors[name];
             }
         }
         if (name === 'image') {
             setImage(newValue);
-
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors[name];
+            }
         } else {
             setStates((prevValues) => ({
                 ...prevValues,

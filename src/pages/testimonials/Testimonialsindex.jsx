@@ -23,7 +23,7 @@ function Testimonialsindex() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
+
 
     // Get Testimonial
     const getTestimonials = async () => {
@@ -35,7 +35,7 @@ function Testimonialsindex() {
             if (response.data.success === true) {
                 setTestimonial(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
-                setCurrentPage(response?.data?.data.page);
+                setPage(response?.data?.data.page);
             } else {
                 setTestimonial([]);
             }
@@ -55,7 +55,7 @@ function Testimonialsindex() {
     // Delete function
     const onSuccessData = () => {
         if (testimonial.data.length === 1 && page > 1) {
-            setPage(currentPage - 1);
+            setPage(page - 1);
         } else {
             getTestimonials(limit, page);
         }
@@ -143,7 +143,7 @@ function Testimonialsindex() {
                                     </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
-                                            currentPage={currentPage}
+                                            currentPage={page}
                                             totalPages={paginationData}
                                             onPageChange={(newPage) => {
                                                 setPage(newPage);

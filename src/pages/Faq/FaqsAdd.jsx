@@ -16,6 +16,7 @@ import ErrorFilter from '../../helper/errorFilter';
 import SingleError from '../../helper/SingleError';
 import { errorResponse } from '../../helper/error';
 import { toast } from 'react-toastify';
+import LoaderComman from '../../components/comman/LoaderComman';
 
 const requireField = [
     "question",
@@ -26,7 +27,6 @@ const requireField = [
 function FaqsAdd() {
     const location = useLocation();
     const state = location.state || {};
-
     const navigate = useNavigate();
     const serverURL = getServerURL();
     const [mainLoader, setMainLoader] = useState(true);
@@ -34,7 +34,8 @@ function FaqsAdd() {
 
     const [errors, setErrors] = useState({});
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1)
+    // const [status, setStatus] = useState(state.status || 1)
+    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [states, setStates] = useState({
         question: '',
         answer: '',
@@ -171,6 +172,9 @@ function FaqsAdd() {
 
     return (
         <>
+            {mainLoader && (
+                <LoaderComman />
+            )}
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
                     <LinkButton text={<ImArrowLeft />} to='/faqs' className='back-btn d-flex justify-content-center align-items-center' />

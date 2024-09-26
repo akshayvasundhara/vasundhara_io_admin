@@ -20,7 +20,6 @@ function CategoriesIndex() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
 
 
     // Get Category
@@ -33,7 +32,7 @@ function CategoriesIndex() {
             if (response.data.success === true) {
                 setCategory(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
-                setCurrentPage(response?.data?.data.page);
+                setPage(response?.data?.data.page);
             } else {
                 setCategory([]);
             }
@@ -104,7 +103,7 @@ function CategoriesIndex() {
                                                             </td>
                                                             <td width={100}>
                                                                 <div className='d-flex align-items-center gap-2 ps-3'>
-                                                                    <EditButton to='/categories-edit' state={test} />
+                                                                    <EditButton to='/category-edit' state={test} />
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -112,7 +111,7 @@ function CategoriesIndex() {
                                                 })
                                             ) : (
                                                 <tr>
-                                                     <td colSpan="6"><NoDataAvailable /></td>
+                                                    <td colSpan="6"><NoDataAvailable /></td>
                                                 </tr>
                                             )}
 
@@ -120,7 +119,7 @@ function CategoriesIndex() {
                                     </Table>
                                     {paginationData > 1 && (
                                         <CommanPagination
-                                            currentPage={currentPage}
+                                            currentPage={page}
                                             totalPages={paginationData}
                                             onPageChange={(newPage) => {
                                                 setPage(newPage);

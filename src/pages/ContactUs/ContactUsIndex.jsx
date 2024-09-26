@@ -21,7 +21,6 @@ function ContactUsIndex() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
 
 
     // Get Contact us 
@@ -32,7 +31,7 @@ function ContactUsIndex() {
             if (response.data.success === true) {
                 setContact(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
-                setCurrentPage(response?.data?.data.page);
+                setPage(response?.data?.data.page);
             } else {
                 setContact([]);
             }
@@ -52,7 +51,7 @@ function ContactUsIndex() {
     // Delete function
     const onSuccessData = () => {
         if (contact.data.length === 1 && page > 1) {
-            setPage(currentPage - 1);
+            setPage(page - 1);
         } else {
             getContacts(limit, page);
         }
@@ -71,53 +70,53 @@ function ContactUsIndex() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                <div className='overflow-x-auto'>
-                                    <Table>
-                                        <thead>
-                                            <tr>
-                                                <th width="50px">No.</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Email</th>
-                                                <th>Mobile</th>
-                                                <th>Country</th>
-                                                <th width='100'>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {contact?.data?.length > 0 ? (
-                                                contact?.data?.map((test, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{(page - 1) * limit + index + 1}.</td>
-                                                            <td><p>{test.full_name}</p></td>
-                                                            <td><p>{test.last_name}</p></td>
-                                                            <td><p>{test.email}</p></td>
-                                                            <td><p>{test.phone}</p></td>
-                                                            <td><p>{test.country}</p></td>
-                                                            <td width={100}>
-                                                                <div className='d-flex align-items-center gap-2'>
-                                                                    <ViewButton to='/contact-us-view' state={test} />
-                                                                    <DeleteButton id={test._id}
-                                                                        endpoint={`${serverURL}/contact-us`}
-                                                                        onSuccess={onSuccessData} />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            ) : (
+                                    <div className='overflow-x-auto'>
+                                        <Table>
+                                            <thead>
                                                 <tr>
-                                                   <td colSpan="7"><NoDataAvailable /></td>
+                                                    <th width="50px">No.</th>
+                                                    <th>First Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Email</th>
+                                                    <th>Mobile</th>
+                                                    <th>Country</th>
+                                                    <th width='100'>Action</th>
                                                 </tr>
-                                            )}
+                                            </thead>
+                                            <tbody>
+                                                {contact?.data?.length > 0 ? (
+                                                    contact?.data?.map((test, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{(page - 1) * limit + index + 1}.</td>
+                                                                <td><p>{test.full_name}</p></td>
+                                                                <td><p>{test.last_name}</p></td>
+                                                                <td><p>{test.email}</p></td>
+                                                                <td><p>{test.phone}</p></td>
+                                                                <td><p>{test.country}</p></td>
+                                                                <td width={100}>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <ViewButton to='/contact-us-view' state={test} />
+                                                                        <DeleteButton id={test._id}
+                                                                            endpoint={`${serverURL}/contact-us`}
+                                                                            onSuccess={onSuccessData} />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="7"><NoDataAvailable /></td>
+                                                    </tr>
+                                                )}
 
-                                        </tbody>
-                                    </Table>
+                                            </tbody>
+                                        </Table>
                                     </div>
                                     {paginationData > 1 && (
                                         <CommanPagination
-                                            currentPage={currentPage}
+                                            currentPage={page}
                                             totalPages={paginationData}
                                             onPageChange={(newPage) => {
                                                 setPage(newPage);

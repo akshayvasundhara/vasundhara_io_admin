@@ -41,7 +41,9 @@ function AddHirings() {
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1)
+    // const [status, setStatus] = useState(state.status || 1)
+    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
+
     const [states, setStates] = useState({
         job_name: '',
         experience: '',
@@ -76,11 +78,8 @@ function AddHirings() {
             let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-            if (!validationErrors[name]) {
-                setErrors((prevErrors) => {
-                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
-                    return rest; // Return new errors without the removed error
-                });
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors[name];
             }
         }
         if (name === 'image') {
@@ -106,12 +105,8 @@ function AddHirings() {
             let validationErrors = ValidateFields(updatedValues);
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-
-            if (!validationErrors[name]) {
-                setErrors((prevErrors) => {
-                    const { [name]: removedError, ...rest } = prevErrors;
-                    return rest;
-                });
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors[name];
             }
         }
     };

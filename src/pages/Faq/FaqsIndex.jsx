@@ -22,19 +22,19 @@ function FaqsIndex() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-
+    const [options, setOptions] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     // Get FAQ
     const getFAQ = async () => {
         setMainLoader(true);
         try {
-            const response = await api.getWithToken(`${serverURL}/faqs?perPage=${limit}&page=${page}`)
+            const response = await api.getWithToken(`${serverURL}/faqs?perPage=${limit}&page=${page}${selectedCategory ? `&type=${selectedCategory}` : ''}`);
 
             if (response.data.success === true) {
                 setFaq(response.data.data.data || []);
                 setPaginationData(response.data?.data?.paginationValue);
-                setCurrentPage(response?.data?.data.page);
+                setPage(response?.data?.data.page);
             } else {
                 setFaq([]);
             }
@@ -47,12 +47,12 @@ function FaqsIndex() {
 
     useEffect(() => {
         getFAQ();
-    }, [page, limit])
+    }, [page, limit, selectedCategory])
 
     // Delete function
     const onSuccessData = () => {
         if (faq.length === 1 && page > 1) {
-            setPage(currentPage - 1);
+            setPage(page - 1);
         } else {
             getFAQ(limit, page);
         }
@@ -74,14 +74,43 @@ function FaqsIndex() {
         }
     };
 
-    const option = [
-        { value: '1', label: 'Select Categories' },
-        { value: '2', label: 'Application Development' },
-        { value: '3', label: 'Website Development' },
-        { value: '4', label: 'Game Development' },
-        { value: '5', label: 'Billing' },
-        { value: '6', label: 'About Services' },
-    ];
+    // Get FAQ Type
+    const getOptions = async () => {
+        try {
+            const response = await api.getWithToken(`${serverURL}/faqs_type`);
+            if (response.data.success === true) {
+                const formattedOptions = [
+                    { label: 'All', value: '' }, // Value set to an empty string for "All"
+                    ...response.data.data.data.map(item => ({
+                        label: item.label,
+                        value: item.value,
+                    })),
+                ];
+                setOptions(formattedOptions);
+            } else {
+                setOptions([]);
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error.response ? error.response.data : error.message);
+        } finally {
+            setMainLoader(false);
+        }
+    };
+
+    useEffect(() => {
+        getOptions();
+    }, [])
+
+    console.log("options", options);
+
+
+    // Handle category change
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
+        console.log("event.target.value", event.target.value);
+        // Set the selected category
+        setPage(1); // Reset to first page when category changes
+    };
 
     return (
         <>
@@ -101,7 +130,8 @@ function FaqsIndex() {
                                 <Card.Body>
                                     <Row className='g-4 mb-4'>
                                         <Col md={6}>
-                                            <SelectInput label="" options={option} />
+                                            <SelectInput label="" options={options} value={selectedCategory}
+                                                onChange={handleCategoryChange} />
                                         </Col>
                                     </Row>
                                     <div className="overflow-auto">
@@ -154,7 +184,15 @@ function FaqsIndex() {
                                             </tbody>
                                         </Table>
                                     </div>
-                                    <CommanPagination />
+                                    {paginationData > 1 && (
+                                        <CommanPagination
+                                            currentPage={page}
+                                            totalPages={paginationData}
+                                            onPageChange={(newPage) => {
+                                                setPage(newPage);
+                                            }}
+                                        />
+                                    )}
                                 </Card.Body>
                             </Card>
                         </Col>

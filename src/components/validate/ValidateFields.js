@@ -7,7 +7,7 @@ export const ValidateFields = (values) => {
   } else if (values?.name?.trim()?.length === 0) {
     errors.name = "Name cannot be empty or contain only spaces.";
   } else if (values?.name.length < 3 || values?.name.length > 255) {
-    errors.name = "Name should be between 3 and 25 characters.";
+    errors.name = "Name should be between 3 and 255 characters.";
   }
 
   // Validate title field
@@ -16,7 +16,7 @@ export const ValidateFields = (values) => {
   } else if (values?.title?.trim()?.length === 0) {
     errors.title = "Title cannot be empty or contain only spaces.";
   } else if (values?.title.length < 3 || values?.title.length > 255) {
-    errors.title = "Title should be between 3 and 25 characters.";
+    errors.title = "Title should be between 3 and 255 characters.";
   }
 
   // Validate Designation
@@ -89,7 +89,6 @@ export const ValidateFields = (values) => {
 
   // No of openings validation
   if (!values?.no_of_openings) {
-
     errors.no_of_openings = "Number of openings field is required.";
   } else if (!/^\d+$/.test(values.no_of_openings)) {
     errors.no_of_openings = "Number of openings must be a valid number.";
@@ -140,7 +139,7 @@ export const ValidateFields = (values) => {
   } else if (values?.question?.trim()?.length === 0) {
     errors.question = "Question cannot be empty or contain only spaces.";
   } else if (values?.question.length < 3 || values?.question.length > 255) {
-    errors.question = "Question should be between 3 and 25 characters.";
+    errors.question = "Question should be between 3 and 255 characters.";
   }
 
 
@@ -150,7 +149,7 @@ export const ValidateFields = (values) => {
   } else if (values?.answer?.trim()?.length === 0) {
     errors.answer = "Answer cannot be empty or contain only spaces.";
   } else if (values?.answer.length < 3 || values?.answer.length > 255) {
-    errors.answer = "Answer should be between 3 and 25 characters.";
+    errors.answer = "Answer should be between 3 and 255 characters.";
   }
 
   // Validate type field
@@ -162,6 +161,75 @@ export const ValidateFields = (values) => {
     errors.type = "Each Type should be between 3 and 25 characters.";
   }
 
+  // Validate Title Field
+  if (!values?.title || values.title.length === 0) {
+    errors.title = "Title field is required.";
+  } else if (values?.title?.trim()?.length === 0) {
+    errors.title = "Title cannot be empty or contain only spaces.";
+  } else if (values?.title.length < 3 || values?.title.length > 150) {
+    errors.type = "Each Type should be between 3 and 150 characters.";
+  }
+
+
+  // Validate Content field
+  if (!values?.content) {
+    errors.content = "content field is required.";
+  } else if (values?.content?.trim()?.length === 0) {
+    errors.content = "content cannot be empty or contain only spaces.";
+  } else if (values?.content.length < 3 || values?.content.length > 255) {
+    errors.content = "content should be between 3 and 255 characters.";
+  }
+
+  // Validate Main Content field
+  if (!values?.main_content) {
+    errors.main_content = "Main Content field is required.";
+  } else if (values?.main_content?.trim()?.length === 0) {
+    errors.main_content = "Main Content cannot be empty or contain only spaces.";
+  } else if (values?.main_content.length < 3 || values?.main_content.length > 255) {
+    errors.main_content = "Main Content should be between 3 and 255 characters.";
+  }
+
+  // Validate SEO field
+  if (!values?.seo) {
+    errors.seo = "SEO field is required.";
+  } else if (values?.seo?.trim()?.length === 0) {
+    errors.seo = "SEOcannot be empty or contain only spaces.";
+  } else if (values?.seo.length < 3 || values?.seo.length > 255) {
+    errors.seo = "SEO should be between 3 and 255 characters.";
+  }
+
+  // Views validation
+  if (!values?.views) {
+    errors.views = "Views field is required.";
+  } else if (!/^\d+$/.test(values.views)) {
+    errors.views = "Views must be a valid number.";
+  } else if (parseInt(values.views, 10) < 1) {
+    errors.views = "Views must be at least 1.";
+  }
+
+  // likes validation
+  if (!values?.likes) {
+    errors.likes = "Likes field is required.";
+  } else if (!/^\d+$/.test(values.likes)) {
+    errors.likes = "Likes must be a valid number.";
+  } else if (parseInt(values.likes, 10) < 1) {
+    errors.likes = "Likes must be at least 1.";
+  }
+
+
+  // blog_read_time validation
+  if (!values?.blog_read_time) {
+    errors.blog_read_time = "blog_read_time field is required.";
+  } else if (!/^\d+$/.test(values.blog_read_time)) {
+    errors.blog_read_time = "blog_read_time must be a valid number.";
+  } else if (parseInt(values.blog_read_time, 10) < 1) {
+    errors.blog_read_time = "blog_read_time must be at least 1.";
+  }
+
+  // Date validation
+  if (!values?.date) {
+    errors.date = "Date field is required.";
+  }
 
   return errors;
 };

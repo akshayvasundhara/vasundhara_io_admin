@@ -30,7 +30,8 @@ function CategoriesAdd() {
     const [errors, setErrors] = useState({});
     const serverURL = getServerURL();
     const [submitCount, setSubmitCount] = useState(0);
-    const [status, setStatus] = useState(state.status || 1)
+    // const [status, setStatus] = useState(state.status || 1)
+    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
@@ -82,7 +83,7 @@ function CategoriesAdd() {
                 }
                 if (response?.data.success === true) {
                     toast.info(response?.data.message);
-                    navigate('/categories');
+                    navigate('/category');
                 } else if (response?.data?.success === false) {
                     if (typeof response?.data?.message === "string")
                         toast.error(response?.data?.message);
@@ -97,7 +98,7 @@ function CategoriesAdd() {
     }
     const closeCategory = async (e) => {
         setStates({});
-        navigate('/categories');
+        navigate('/category');
     }
 
     useEffect(() => {
@@ -118,9 +119,9 @@ function CategoriesAdd() {
             )}
             <Layout>
                 <div className='d-flex align-items-center gap-2'>
-                    <LinkButton text={<ImArrowLeft />} to='/categories' className='back-btn d-flex justify-content-center align-items-center' />
+                    <LinkButton text={<ImArrowLeft />} to='/category' className='back-btn d-flex justify-content-center align-items-center' />
                     {/* <h2 className='page-title'>Edit Category</h2> */}
-                    <h2 className='page-title'>{location.pathname === '/categories-edit' ? 'Edit Category' : 'Add Category'} </h2>
+                    <h2 className='page-title'>{location.pathname === '/category-edit' ? 'Edit Category' : 'Add Category'} </h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
