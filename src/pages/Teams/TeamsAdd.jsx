@@ -56,21 +56,15 @@ function TeamsAdd() {
             let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-            if (!validationErrors[name]) {
-                setErrors((prevErrors) => {
-                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
-                    return rest; // Return new errors without the removed error
-                });
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors[name];
+                delete errors.image;
             }
         }
-        if (name === 'image') {
-            setImage(newValue);
-        } else {
-            setStates((prevValues) => ({
-                ...prevValues,
-                [name]: newValue,
-            }));
-        }
+        setStates((prevValues) => ({
+            ...prevValues,
+            [name]: newValue,
+        }));
     }
 
     // Add Edit Api
@@ -80,6 +74,9 @@ function TeamsAdd() {
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
+        if (image) {
+            delete errors.image;
+        }
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
@@ -190,7 +187,7 @@ function TeamsAdd() {
                                                 <SingleError error={errors?.description} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <FileInput label="Image" setImage={setImage} initialImage={image} />
+                                                <FileInput label="Image" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                             <Col md={12} lg={6}>

@@ -49,6 +49,7 @@ function AddTestimonials() {
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
+
         let validationErrors;
         if (submitCount > 0) {
             validationErrors = ValidateFields({ ...states, [name]: value });
@@ -56,19 +57,14 @@ function AddTestimonials() {
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
+                delete errors.image;
             }
         }
-        if (name === 'image') {
-            setImage(newValue);
-            if (Object.keys(validationErrors).length === 0) {
-                delete errors[name];
-            }
-        } else {
-            setStates((prevValues) => ({
-                ...prevValues,
-                [name]: newValue,
-            }));
-        }
+        setStates((prevValues) => ({
+            ...prevValues,
+            [name]: newValue,
+        }));
+
     }
 
     const addTestimonial = async (e) => {
@@ -77,6 +73,10 @@ function AddTestimonials() {
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
+
+        if (image) {
+            delete errors.image;
+        }
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
@@ -185,7 +185,7 @@ function AddTestimonials() {
                                                 <SingleError error={errors?.description} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <FileInput label="Image:" setImage={setImage} initialImage={image} />
+                                                <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                         </Row>

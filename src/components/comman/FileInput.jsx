@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MdOutlineFileUpload } from "react-icons/md";
 
 
-function FileInput({ label, setImage, initialImage }) {
+function FileInput({ label, setImage, initialImage, onChange }) {
     const [selectedImage, setSelectedImage] = useState(null);
 
 
@@ -20,6 +20,14 @@ function FileInput({ label, setImage, initialImage }) {
         };
         reader.readAsDataURL(file);
         setImage(file);
+        if (onChange) {
+            onChange({
+                target: {
+                    name: 'image', // Specify the name of the input field
+                    value: file,
+                },
+            });
+        }
     };
 
     const handleFileSelect = (event) => {

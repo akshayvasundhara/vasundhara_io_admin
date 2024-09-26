@@ -51,8 +51,11 @@ function Sidebar({ className, onToggleSidebar }) {
 
         if (currentCategory) {
             setActiveCategory(currentCategory.id);
+            const subcategoryMatch = currentCategory.subcategories.find(sub => location.pathname === sub.path);
+            const categoryName = subcategoryMatch ? subcategoryMatch.name : currentCategory.name;
+            document.title = `Vasundhara | ${categoryName} `;
         }
-        document.title = `Vasundhara | ${currentCategory.name} `;
+
 
     }, [location.pathname]);
 

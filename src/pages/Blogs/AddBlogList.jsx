@@ -165,22 +165,15 @@ function AddBlogList() {
             let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
-            if (!validationErrors[name]) {
-                setErrors((prevErrors) => {
-                    const { [name]: removedError, ...rest } = prevErrors; // Destructure to remove error
-                    return rest; // Return new errors without the removed error
-                });
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors[name];
+                delete errors.image;
             }
         }
-        if (name === 'image') {
-            setImage(newValue);
-        }
-        else {
-            setStates((prevValues) => ({
-                ...prevValues,
-                [name]: newValue,
-            }));
-        }
+        setStates((prevValues) => ({
+            ...prevValues,
+            [name]: newValue,
+        }));
     }
 
     // Add Edit Blog
@@ -191,6 +184,9 @@ function AddBlogList() {
 
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
+        if (image) {
+            delete errors.image;
+        }
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
@@ -361,7 +357,7 @@ function AddBlogList() {
                                             </Col>
                                             <Col md={6}>
                                                 <div className='d-flex align-items-center gap-3'>
-                                                    <FileInput label="Image:" setImage={setImage} initialImage={image} />
+                                                    <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                     <SingleError error={errors?.image} />
                                                 </div>
                                             </Col>

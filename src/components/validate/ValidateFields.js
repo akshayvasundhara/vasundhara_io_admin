@@ -6,8 +6,8 @@ export const ValidateFields = (values) => {
     errors.name = "Name field is required.";
   } else if (values?.name?.trim()?.length === 0) {
     errors.name = "Name cannot be empty or contain only spaces.";
-  } else if (values?.name.length < 3 || values?.name.length > 255) {
-    errors.name = "Name should be between 3 and 255 characters.";
+  } else if (values?.name.length < 3 || values?.name.length > 25) {
+    errors.name = "Name should be between 3 and 25 characters.";
   }
 
   // Validate title field

@@ -80,17 +80,13 @@ function AddHirings() {
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
+                delete errors.image;
             }
         }
-        if (name === 'image') {
-            setImage(newValue);
-        }
-        else {
-            setStates((prevValues) => ({
-                ...prevValues,
-                [name]: newValue,
-            }));
-        }
+        setStates((prevValues) => ({
+            ...prevValues,
+            [name]: newValue,
+        }));
     }
 
     // Handle array change for location, res, skill
@@ -119,6 +115,9 @@ function AddHirings() {
 
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
+        if (image) {
+            delete errors.image;
+        }
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
@@ -319,7 +318,7 @@ function AddHirings() {
                                                 <SingleError error={errors?.skill} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <FileInput label="Image:" setImage={setImage} initialImage={image} />
+                                                <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                         </Row>
