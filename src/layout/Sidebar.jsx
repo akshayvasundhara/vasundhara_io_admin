@@ -52,6 +52,8 @@ function Sidebar({ className, onToggleSidebar }) {
         if (currentCategory) {
             setActiveCategory(currentCategory.id);
         }
+        document.title = `Vasundhara | ${currentCategory.name} `;
+
     }, [location.pathname]);
 
     const handleCategoryClick = (id, hasSubcategories) => {

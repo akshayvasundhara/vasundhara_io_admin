@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import LinkButton from '../components/comman/LinkButton'
 import LableInput from '../components/comman/LableInput';
@@ -86,6 +86,9 @@ function Login() {
         }
     }
 
+    useEffect(() => {
+        document.title = "Vasundhara | Login";
+    }, [window.location.pathname])
     return (
         <>
             <section className='login font-family-poppins'>
