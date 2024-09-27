@@ -354,11 +354,7 @@ td p {
   list-style: none;
   padding: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0px 20px 20px 20px;
-}
-
-.category-list li {
-  margin: 10px 0;
+  padding: 20px;
 }
 
 .category-header {
@@ -803,7 +799,7 @@ td p {
 .drag-over {
   height: 197px;
   width: 200px;
-  border: 1px dashed var(--primary);
+  border: 2px dashed rgb(204, 204, 204);
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -1024,3 +1020,153 @@ td p {
 }
 
 /* Details End */
+
+.preview-image {
+  height: 197px;
+  width: 200px;
+}
+
+.form-title {
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--secondary);
+}
+
+.upload-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #007BFF;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  width: 300px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s;
+}
+
+.file-input {
+  display: none;
+  /* Hide the default file input */
+}
+
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.image-preview {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 14px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove-button svg {
+  font-size: 20px;
+  color: #fff;
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--bs-accordion-active-color);
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.accordion-button:focus {
+  box-shadow: none !important;
+}
+
+.accordion-button {
+  font-weight: 500;
+}
+
+.career-flight .career-details {
+  border-radius: 10px;
+  padding: 20px 20px;
+}
+
+.career-flight .career-details .career-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  background-color: #F9FBFE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.career-flight .career-details h4 {
+  color: #132028;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.career-flight .career-details p {
+  color: #44464A;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.career-flight .career-details a {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  background-color: var(--primary);
+  padding: 10px 15px;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+#section {
+  width: 500px;
+  height: 400px;
+  word-wrap: break-word;
+}
+
+.moretext {
+  display: none;
+}
+
+.moretext.show {
+  display: block;
+}
+
+@media only screen and (max-width: 767px) and (min-width: 200px) {
+
+  .preview-image {
+    height: 100px;
+    width: 100px;
+  }
+
+  .image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+}

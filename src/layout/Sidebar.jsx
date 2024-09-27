@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { IoHomeOutline } from "react-icons/io5";
 import { FaChevronLeft, FaListOl, FaQuestion } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
-import { LuContact2, LuPackageSearch } from "react-icons/lu";
+import { LuBookMarked, LuContact2, LuPackageSearch } from "react-icons/lu";
 import { VscGitStashApply } from 'react-icons/vsc';
 import { PiUsersThreeBold } from 'react-icons/pi';
 import { TbBrandBlogger } from 'react-icons/tb';
@@ -35,6 +35,7 @@ const categories = [
     },
     { id: 10, name: 'Contact Us', icons: <LuContact2 />, path: '/contact-us', subcategories: [] },
     { id: 11, name: 'Newsletters', icons: <BsFillSendArrowUpFill />, path: '/newsletters', subcategories: [] },
+    { id: 12, name: 'Case Studies', icons: <LuBookMarked />, path: '/case-studies', subcategories: [] },
 
 ];
 

@@ -29,6 +29,9 @@ import ContactUsIndex from '../pages/ContactUs/ContactUsIndex';
 import ContactUsIndexView from '../pages/ContactUs/ContactUsIndexView';
 import NewslettersIndex from '../pages/Newsletters/NewslettersIndex';
 import BlogIndexView from '../pages/Blogs/BlogIndexView';
+import CaseStudiesIndex from '../pages/CaseStudies/CaseStudiesIndex';
+import AddCaseStudiesIndex from '../pages/CaseStudies/AddCaseStudiesIndex';
+import ViewCaseStudiesIndex from '../pages/CaseStudies/ViewCaseStudiesIndex';
 
 export default [
     {
@@ -246,6 +249,30 @@ export default [
         element: (
             <PrivateRoute>
                 <NewslettersIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/case-studies",
+        element: (
+            <PrivateRoute>
+                <CaseStudiesIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/case-studies-add",
+        element: (
+            <PrivateRoute>
+                <AddCaseStudiesIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/case-studies-details",
+        element: (
+            <PrivateRoute>
+                <ViewCaseStudiesIndex />
             </PrivateRoute>
         ),
     },
