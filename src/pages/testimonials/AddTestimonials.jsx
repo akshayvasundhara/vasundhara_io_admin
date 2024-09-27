@@ -181,13 +181,27 @@ function AddTestimonials() {
                                                 <SingleError error={errors?.designation} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
-                                                <SingleError error={errors?.description} />
-                                            </Col>
-                                            <Col md={12} lg={6}>
                                                 <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
+                                            <Col md={12} lg={6}>
+                                                <LableInput
+                                                    label="Rating:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter rating number"
+                                                    type="text"
+                                                    name='name'
+                                                    // value={states?.name || ""}
+                                                    // onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.name} />
+                                            </Col>
+                                            <Col md={12}>
+                                                <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.description} />
+                                            </Col>
+
                                         </Row>
                                     </form>
 

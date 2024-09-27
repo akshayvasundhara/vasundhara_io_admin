@@ -293,6 +293,7 @@ td p {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  margin-bottom: 0px;
 }
 
 .table-image {
@@ -1168,5 +1169,14 @@ td p {
     margin-top: 20px;
     gap: 10px;
   }
-  
+
+}
+
+.rating svg {
+  width: 25px;
+  height: 25px;
+}
+
+.rating svg path {
+  color: #F8A02D;
 }

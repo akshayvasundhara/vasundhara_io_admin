@@ -12,6 +12,7 @@ import LoaderComman from '../../components/comman/LoaderComman';
 import CommanPagination from '../../components/comman/CommanPagination';
 import { toast } from 'react-toastify';
 import NoDataAvailable from '../../components/comman/NoDataAvailable';
+import FractionalRating from '../../components/comman/FractionalRating';
 
 
 
@@ -100,6 +101,7 @@ function Testimonialsindex() {
                                                     <th>Image</th>
                                                     <th>Name</th>
                                                     <th>Designation</th>
+                                                    <th>Rating</th>
                                                     <th>Status</th>
                                                     <th width='100'>Action</th>
                                                 </tr>
@@ -117,6 +119,7 @@ function Testimonialsindex() {
                                                                 </td>
                                                                 <td><p>{test.name}</p></td>
                                                                 <td><p>{test.designation}</p></td>
+                                                                <td><FractionalRating /></td>
                                                                 <td>
                                                                     {/* <Switch mode={test.status} id={test._id} /> */}
                                                                     <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
