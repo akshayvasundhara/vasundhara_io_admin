@@ -5,14 +5,9 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && error.response.status === 403) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-            localStorage.removeItem('first_name');
-            localStorage.removeItem('last_name');
-            localStorage.removeItem('profile_image');
-            localStorage.removeItem('_id');
-            window.location.href = "/";
+        if (error.response && error.response.status === 403 || error.response.status === 401) {
+            localStorage.clear()
+            window.location.href = "/login";
         }
         return Promise.reject(error);
     }

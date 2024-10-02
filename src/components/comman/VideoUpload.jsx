@@ -46,13 +46,13 @@ function VideoUpload({ label, setVideo, initialVideo, onChange }) {
 
     return (
         <div>
-            <label htmlFor="formFile" className="form-label text-default">
+            <label htmlFor="videoFile" className="form-label text-default">
                 {label}
             </label>
             <div
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
-                onClick={() => document.getElementById('formFile').click()}
+                onClick={() => document.getElementById('videoFile').click()}
                 className='drag-over'
             >
                 <div>
@@ -78,8 +78,8 @@ function VideoUpload({ label, setVideo, initialVideo, onChange }) {
             <input
                 className="form-control"
                 type="file"
-                id="formFile"
-                accept="video/*" // Accept video files
+                id="videoFile"
+                accept="video/mp4" // Accept video files
                 onChange={handleFileSelect}
                 style={{ display: 'none' }} // Hide the file input
             />

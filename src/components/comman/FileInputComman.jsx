@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { MdOutlineFileUpload } from "react-icons/md";
 
-
-function FileInput({ label, setImage, initialImage, onChange }) {
-    const [selectedImage, setSelectedImage] = useState(null);
-
+function FileInputComman({ label, setImage, initialImage, name, onChange }) {
+    const [selectedImage, setSelectedImage] = useState(initialImage || null);
 
     useEffect(() => {
         if (initialImage) {
-            setSelectedImage(initialImage); // Set the selected image if an initial image is provided
+            setSelectedImage(initialImage);
         }
     }, [initialImage]);
 
@@ -16,16 +14,15 @@ function FileInput({ label, setImage, initialImage, onChange }) {
         const reader = new FileReader();
         reader.onloadend = () => {
             setSelectedImage(reader.result);
-
+            // Call setImage to update the parent state
+            setImage(file);
         };
         reader.readAsDataURL(file);
 
-
-        setImage(file);
         if (onChange) {
             onChange({
                 target: {
-                    name: 'image', // Specify the name of the input field
+                    name: name, // Use the passed dynamic name
                     value: file,
                 },
             });
@@ -53,40 +50,36 @@ function FileInput({ label, setImage, initialImage, onChange }) {
 
     return (
         <div>
-            <label htmlFor="formFile" className="form-label text-default">
+            <label className="form-label text-default">
                 {label}
             </label>
             <div
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
-                onClick={() => document.getElementById('formFile').click()}
+                onClick={() => document.getElementById(name).click()} // Use the passed name
                 className='drag-over'
             >
                 <div>
                     {selectedImage ? (
-                        <>
-                            <div className="image-upload p-4">
-                                <img
-                                    src={selectedImage}
-                                    alt="Selected"
-                                    className='object-fit-contain w-100 h-100'
-                                />
-                            </div>
-                        </>
+                        <div className="image-upload p-4">
+                            <img
+                                src={selectedImage}
+                                alt="Selected"
+                                className='object-fit-contain w-100 h-100'
+                            />
+                        </div>
                     ) : (
-                        <>
-                            <div className='drag-drop-icons d-flex justify-content-center align-items-center m-auto mb-3'>
-                                <MdOutlineFileUpload />
-                            </div>
+                        <div className='drag-drop-icons d-flex justify-content-center align-items-center m-auto mb-3'>
+                            <MdOutlineFileUpload />
                             <p>Upload image</p>
-                        </>
+                        </div>
                     )}
                 </div>
             </div>
             <input
                 className="form-control"
                 type="file"
-                id="formFile"
+                id={name} // Use the passed name for the ID
                 accept="image/*"
                 onChange={handleFileSelect}
                 style={{ display: 'none' }} // Hide the file input
@@ -95,4 +88,4 @@ function FileInput({ label, setImage, initialImage, onChange }) {
     );
 }
 
-export default FileInput;
+export default FileInputComman;

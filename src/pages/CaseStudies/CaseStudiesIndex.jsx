@@ -6,7 +6,7 @@ import DeleteButton from '../../components/comman/DeleteButton';
 import CommanPagination from '../../components/comman/CommanPagination';
 import { FaLink } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { getServerURL } from '../../helper/envConfig';
+import { getImageURL, getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import NoDataAvailable from '../../components/comman/NoDataAvailable';
 import LoaderComman from '../../components/comman/LoaderComman';
@@ -14,11 +14,13 @@ import Switch from '../../components/comman/Switch';
 import ViewButton from '../../components/comman/ViewButton';
 import EditButton from '../../components/comman/EditButton';
 import LinkButton from '../../components/comman/LinkButton';
+import { toast } from 'react-toastify';
 
 
 function CaseStudiesIndex() {
     const serverURL = getServerURL();
-    const [newsLetter, setNewsLetter] = useState([]);
+    const imageURL = getImageURL();
+    const [caseStudy, setCaseStudy] = useState([]);
     const [paginationData, setPaginationData] = useState({});
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -26,18 +28,18 @@ function CaseStudiesIndex() {
 
 
 
-    // Get News Letter
-    const getNewsLetter = async () => {
+    // Get Case Study
+    const getCaseStudy = async () => {
         setMainLoader(true);
         try {
 
-            const response = await api.getWithToken(`${serverURL}/newsletters?perPage=${limit}&page=${page}`)
+            const response = await api.getWithToken(`${serverURL}/case-study?perPage=${limit}&page=${page}`)
             if (response.data.success === true) {
-                setNewsLetter(response.data.data || []);
+                setCaseStudy(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
                 setPage(response?.data?.data.page);
             } else {
-                setNewsLetter([]);
+                setCaseStudy([]);
             }
 
         } catch (error) {
@@ -48,18 +50,35 @@ function CaseStudiesIndex() {
     }
 
     useEffect(() => {
-        getNewsLetter();
+        getCaseStudy();
     }, [page, limit])
 
 
     // Delete function
     const onSuccessData = () => {
-        if (newsLetter.data.length === 1 && page > 1) {
+        if (caseStudy.data.length === 1 && page > 1) {
             setPage(page - 1);
         } else {
-            getNewsLetter(limit, page);
+            getCaseStudy(limit, page);
         }
     }
+
+
+    // Update status
+    const updateStatus = async (itemId, newStatus) => {
+        try {
+            const response = await api.patchWithToken(`${serverURL}/case-study/${itemId}`, { status: newStatus });
+            if (response.data.success) {
+                toast.info("Status updated successfully.");
+                getCaseStudy(); // Refresh hiring data after updating
+            } else {
+                console.error("Failed to update status:", response.data.message);
+            }
+        } catch (error) {
+            console.error("Error updating status:", error.response ? error.response.data : error.message);
+        }
+    };
+
 
 
     return (
@@ -91,27 +110,40 @@ function CaseStudiesIndex() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1.</td>
-                                                    <td>
-                                                        <div className='table-image'>
-                                                            <img src="https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png" className='w-100 h-100' alt="" />
-                                                        </div>
-                                                    </td>
-                                                    <td><p>Food Delivery Application</p></td>
-                                                    <td><p>The Vasundhara team studied Flashgrid’s product and marketing strategy to make sure all of our requirements were addressed.</p></td>
-                                                    <td><p>Emely Cooper</p></td>
-                                                    <td>
-                                                        <Switch />
-                                                    </td>
-                                                    <td width={100}>
-                                                        <div className='d-flex align-items-center gap-2'>
-                                                            <ViewButton to='/case-studies-details' />
-                                                            <EditButton to='/case-studies-add' />
-                                                            <DeleteButton />
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                {caseStudy?.data?.length > 0 ? (
+                                                    caseStudy?.data?.map((test, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{(page - 1) * limit + index + 1}.</td>
+                                                                <td>
+                                                                    <div className='table-image'>
+                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
+                                                                    </div>
+                                                                </td>
+                                                                <td><p>{test.title}</p></td>
+                                                                <td><p>{test.sub_title}</p></td>
+                                                                <td><p>{test.author.name}</p></td>
+                                                                <td>
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                </td>
+                                                                <td width={100}>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <ViewButton to='/case-studies-details' state={test} />
+                                                                        <EditButton to='/case-studies-edit' state={test} />
+                                                                        <DeleteButton id={test._id}
+                                                                            endpoint={`${serverURL}/case-study`}
+                                                                            onSuccess={onSuccessData} />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="10"><NoDataAvailable /></td>
+                                                    </tr>
+                                                )}
+
                                             </tbody>
                                         </Table>
                                     </div>

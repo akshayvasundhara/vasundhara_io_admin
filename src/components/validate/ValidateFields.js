@@ -7,7 +7,7 @@ export const ValidateFields = (values) => {
   } else if (values?.name?.trim()?.length === 0) {
     errors.name = "Name cannot be empty or contain only spaces.";
   } else if (values?.name.length < 3 || values?.name.length > 25) {
-    errors.name = "Name should be between 3 and 25 characters.";
+    errors.name = "Name must be between 3 and 25 characters.";
   }
 
   // Validate title field
@@ -16,7 +16,7 @@ export const ValidateFields = (values) => {
   } else if (values?.title?.trim()?.length === 0) {
     errors.title = "Title cannot be empty or contain only spaces.";
   } else if (values?.title.length < 3 || values?.title.length > 255) {
-    errors.title = "Title should be between 3 and 255 characters.";
+    errors.title = "Title must be between 3 and 255 characters.";
   }
 
   // Validate Designation
@@ -25,7 +25,7 @@ export const ValidateFields = (values) => {
   } else if (values?.designation?.trim()?.length === 0) {
     errors.designation = "Designation cannot be empty or contain only spaces.";
   } else if (values?.designation.length < 3 || values?.designation.length > 255) {
-    errors.designation = "Designation should be between 3 and 255 characters.";
+    errors.designation = "Designation must be between 3 and 255 characters.";
   }
 
   // Validate Description field
@@ -34,11 +34,11 @@ export const ValidateFields = (values) => {
   } else if (values?.description?.trim()?.length === 0) {
     errors.description = "Description cannot be empty or contain only spaces.";
   } else if (values?.description.trim().length < 3 || values?.description.trim().length > 255) {
-    errors.description = "Description should be between 3 and 255 characters.";
+    errors.description = "Description must be between 3 and 255 characters.";
   }
   // Image validation
   if (!values?.image) {
-    errors.image = "Please select image";
+    errors.image = "Please upload an image";
   }
 
   // Validate Job name field
@@ -46,8 +46,8 @@ export const ValidateFields = (values) => {
     errors.job_name = "Job Name field is required.";
   } else if (values?.job_name?.trim()?.length === 0) {
     errors.job_name = "Job Name cannot be empty or contain only spaces.";
-  } else if (values?.job_name.length < 3 || values?.job_name.length > 25) {
-    errors.job_name = "Job Name should be between 3 and 25 characters.";
+  } else if (values?.job_name.length < 2 || values?.job_name.length > 50) {
+    errors.job_name = "Job Name must be between 3 and 50 characters.";
   }
 
 
@@ -57,7 +57,7 @@ export const ValidateFields = (values) => {
   } else if (values?.experience?.trim()?.length === 0) {
     errors.experience = "Experience cannot be empty or contain only spaces.";
   } else if (values?.experience.length < 3 || values?.experience.length > 25) {
-    errors.experience = "Experience should be between 3 and 25 characters.";
+    errors.experience = "Experience must be between 3 and 25 characters.";
   }
 
   // Validate Qualification field
@@ -66,7 +66,7 @@ export const ValidateFields = (values) => {
   } else if (values?.qualification?.trim()?.length === 0) {
     errors.qualification = "Qualification cannot be empty or contain only spaces.";
   } else if (values?.qualification.length < 3 || values?.qualification.length > 25) {
-    errors.qualification = "Qualification should be between 3 and 25 characters.";
+    errors.qualification = "Qualification must be between 3 and 25 characters.";
   }
 
   // Validate Location field
@@ -74,8 +74,8 @@ export const ValidateFields = (values) => {
     errors.location = "Location field is required.";
   } else if (values.location.some(loc => typeof loc !== 'string' || loc.trim().length === 0)) {
     errors.location = "Location cannot be empty or contain only spaces.";
-  } else if (values.location.some(loc => loc.length < 2)) {
-    errors.location = "Each location should be a minimum of 2 characters.";
+  } else if (values.location.some(loc => loc.length < 2 || loc.length > 25)) {
+    errors.location = "Location must be between 2 and 25 characters";
   }
 
   // Validate responsibilities field
@@ -83,17 +83,17 @@ export const ValidateFields = (values) => {
     errors.responsibilities = "Responsibilities field is required.";
   } else if (values.responsibilities.some(res => typeof res !== 'string' || res.trim().length === 0)) {
     errors.responsibilities = "Responsibilities cannot be empty or contain only spaces.";
-  } else if (values.responsibilities.some(res => res.length < 2)) {
-    errors.responsibilities = "Each responsibility should be a minimum of 2 characters.";
+  } else if (values.responsibilities.some(res => res.length < 2 || res.length > 255)) {
+    errors.responsibilities = "Responsibilities must be between 2 and 255 characters";
   }
 
   // No of openings validation
   if (!values?.no_of_openings) {
     errors.no_of_openings = "Number of openings field is required.";
   } else if (!/^\d+$/.test(values.no_of_openings)) {
-    errors.no_of_openings = "Number of openings must be a valid number.";
+    errors.no_of_openings = "Number of openings must be number.";
   } else if (parseInt(values.no_of_openings, 10) < 1) {
-    errors.no_of_openings = "Number of openings must be at least 1.";
+    errors.no_of_openings = "Number of openings must be 1 or greater";
   }
 
   // Validate skill field
@@ -101,26 +101,18 @@ export const ValidateFields = (values) => {
     errors.skill = "Skill field is required.";
   } else if (values.skill.some(sk => typeof sk !== 'string' || sk.trim().length === 0)) {
     errors.skill = "Skill cannot be empty or contain only spaces.";
-  } else if (values.skill.some(sk => sk.length < 3 || sk.length > 25)) {
-    errors.skill = "Each skill should be between 3 and 25 characters.";
+  } else if (values.skill.some(sk => sk.length < 3 || sk.length > 255)) {
+    errors.skill = "Each skill must be between 3 and 255 characters.";
   }
 
-  // Validate linkedin_link field
-  if (!values?.linkedin_link) {
-    errors.linkedin_link = "Linkedin link is required.";
-  } else if (values?.linkedin_link?.trim()?.length === 0) {
-    errors.linkedin_link = "Linkedin link cannot be empty or contain only spaces.";
-  } else if (values?.linkedin_link.length < 3 || values?.linkedin_link.length > 255) {
-    errors.linkedin_link = "Linkedin link should be between 3 and 255 characters.";
-  }
 
   // Validate facebook_link field
   if (!values?.facebook_link) {
     errors.facebook_link = "Facebook link is required.";
   } else if (values?.facebook_link?.trim()?.length === 0) {
     errors.facebook_link = "Facebook link cannot be empty or contain only spaces.";
-  } else if (values?.facebook_link.length < 3 || values?.facebook_link.length > 255) {
-    errors.facebook_link = "Facebook link should be between 3 and 25 characters.";
+  } else if (values?.facebook_link.length < 3 || values?.facebook_link.length > 25) {
+    errors.facebook_link = "Facebook link must be between 3 and 25 characters.";
   }
 
   // Validate twitter_link field
@@ -128,8 +120,8 @@ export const ValidateFields = (values) => {
     errors.twitter_link = "Twitter link is required.";
   } else if (values?.twitter_link?.trim()?.length === 0) {
     errors.twitter_link = "Twitter link cannot be empty or contain only spaces.";
-  } else if (values?.twitter_link.length < 3 || values?.twitter_link.length > 255) {
-    errors.twitter_link = "Twitter link should be between 3 and 25 characters.";
+  } else if (values?.twitter_link.length < 3 || values?.twitter_link.length > 25) {
+    errors.twitter_link = "Twitter link must be between 3 and 25 characters.";
   }
 
 
@@ -139,7 +131,7 @@ export const ValidateFields = (values) => {
   } else if (values?.question?.trim()?.length === 0) {
     errors.question = "Question cannot be empty or contain only spaces.";
   } else if (values?.question.length < 3 || values?.question.length > 255) {
-    errors.question = "Question should be between 3 and 255 characters.";
+    errors.question = "Question must be between 3 and 255 characters.";
   }
 
 
@@ -149,7 +141,7 @@ export const ValidateFields = (values) => {
   } else if (values?.answer?.trim()?.length === 0) {
     errors.answer = "Answer cannot be empty or contain only spaces.";
   } else if (values?.answer.length < 3 || values?.answer.length > 255) {
-    errors.answer = "Answer should be between 3 and 255 characters.";
+    errors.answer = "Answer must be between 3 and 255 characters.";
   }
 
   // Validate type field
@@ -158,17 +150,17 @@ export const ValidateFields = (values) => {
   } else if (values.type.some(sk => typeof sk !== 'string' || sk.trim().length === 0)) {
     errors.type = "Type cannot be empty or contain only spaces.";
   } else if (values.type.some(sk => sk.length < 3 || sk.length > 25)) {
-    errors.type = "Each Type should be between 3 and 25 characters.";
+    errors.type = "Each Type must be between 3 and 25 characters.";
   }
 
-  // Validate Title Field
-  if (!values?.title || values.title.length === 0) {
-    errors.title = "Title field is required.";
-  } else if (values?.title?.trim()?.length === 0) {
-    errors.title = "Title cannot be empty or contain only spaces.";
-  } else if (values?.title.length < 3 || values?.title.length > 150) {
-    errors.type = "Each Type should be between 3 and 150 characters.";
-  }
+  // // Validate Title Field
+  // if (!values?.title || values.title.length === 0) {
+  //   errors.title = "Title field is required.";
+  // } else if (values?.title?.trim()?.length === 0) {
+  //   errors.title = "Title cannot be empty or contain only spaces.";
+  // } else if (values?.title.length < 3 || values?.title.length > 150) {
+  //   errors.type = "Each Type must be between 3 and 150 characters.";
+  // }
 
 
   // Validate Content field
@@ -177,7 +169,7 @@ export const ValidateFields = (values) => {
   } else if (values?.content?.trim()?.length === 0) {
     errors.content = "content cannot be empty or contain only spaces.";
   } else if (values?.content.length < 3 || values?.content.length > 255) {
-    errors.content = "content should be between 3 and 255 characters.";
+    errors.content = "content must be between 3 and 255 characters.";
   }
 
   // Validate Main Content field
@@ -185,18 +177,16 @@ export const ValidateFields = (values) => {
     errors.main_content = "Main Content field is required.";
   } else if (values?.main_content?.trim()?.length === 0) {
     errors.main_content = "Main Content cannot be empty or contain only spaces.";
-  } else if (values?.main_content.length < 3 || values?.main_content.length > 255) {
-    errors.main_content = "Main Content should be between 3 and 255 characters.";
   }
 
-  // Validate SEO field
-  if (!values?.seo) {
-    errors.seo = "SEO field is required.";
-  } else if (values?.seo?.trim()?.length === 0) {
-    errors.seo = "SEOcannot be empty or contain only spaces.";
-  } else if (values?.seo.length < 3 || values?.seo.length > 255) {
-    errors.seo = "SEO should be between 3 and 255 characters.";
-  }
+  // // Validate SEO field
+  // if (!values?.seo) {
+  //   errors.seo = "SEO field is required.";
+  // } else if (values?.seo?.trim()?.length === 0) {
+  //   errors.seo = "SEOcannot be empty or contain only spaces.";
+  // } else if (values?.seo.length < 3 || values?.seo.length > 255) {
+  //   errors.seo = "SEO must be between 3 and 255 characters.";
+  // }
 
   // Views validation
   if (!values?.views) {

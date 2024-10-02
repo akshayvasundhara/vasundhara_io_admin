@@ -269,6 +269,14 @@ export default [
         ),
     },
     {
+        path: "/case-studies-edit",
+        element: (
+            <PrivateRoute>
+                <AddCaseStudiesIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
         path: "/case-studies-details",
         element: (
             <PrivateRoute>

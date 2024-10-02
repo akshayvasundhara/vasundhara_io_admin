@@ -180,6 +180,7 @@ function AddBlogList() {
     const addBlog = async (e) => {
         e.preventDefault(); // Prevent default form submission
         setSubmitCount(prevCount => prevCount + 1);
+        console.log("states", states);
         const updatedValues = { ...states, image, status };
 
         let validationErrors = ValidateFields(updatedValues);
@@ -191,8 +192,6 @@ function AddBlogList() {
 
         if (Object.keys(validationErrors).length === 0) {
             try {
-
-
                 const formData = new FormData(); // Create FormData for file upload
                 formData.append('title', updatedValues.title);
                 formData.append('seo', updatedValues.seo ? updatedValues.seo : "");
