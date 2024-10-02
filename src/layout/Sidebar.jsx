@@ -16,7 +16,7 @@ import { FaBarsStaggered } from 'react-icons/fa6';
 const categories = [
     { id: 1, name: 'Dashboard', icons: <IoHomeOutline />, path: '/dashboard', subcategories: [] },
     { id: 2, name: 'Testimonials', icons: <RiShieldUserLine />, path: '/testimonials', subcategories: [] },
-    { id: 3, name: 'Portfolios', icons: <CgProfile />, path: '/portfolios', subcategories: [] },
+    { id: 3, name: 'Portfolio', icons: <CgProfile />, path: '/portfolio', subcategories: [] },
     { id: 4, name: 'Hirings', icons: <LuPackageSearch />, path: '/hirings', subcategories: [] },
     { id: 5, name: 'Apply Jobs', icons: <VscGitStashApply />, path: '/apply-jobs', subcategories: [] },
     { id: 6, name: 'Teams', icons: <PiUsersThreeBold />, path: '/teams', subcategories: [] },

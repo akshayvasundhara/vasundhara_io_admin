@@ -12,7 +12,6 @@ import ProtectLoginRoute from './ProtectLoginRoute';
 import PrivateRoute from './PrivateRoute';
 import Testimonialsindex from '../pages/testimonials/Testimonialsindex';
 import AddTestimonials from '../pages/testimonials/AddTestimonials';
-import Portfolios from '../pages/Portfolios/Portfolios';
 import HiringIndex from '../pages/Hirings/HiringIndex';
 import AddHirings from '../pages/Hirings/AddHirings';
 import ViewHirings from '../pages/Hirings/ViewHirings';
@@ -32,6 +31,9 @@ import BlogIndexView from '../pages/Blogs/BlogIndexView';
 import CaseStudiesIndex from '../pages/CaseStudies/CaseStudiesIndex';
 import AddCaseStudiesIndex from '../pages/CaseStudies/AddCaseStudiesIndex';
 import ViewCaseStudiesIndex from '../pages/CaseStudies/ViewCaseStudiesIndex';
+import IndexPortfolio from '../pages/Portfolio/IndexPortfolio';
+import IndexPortfolioEdit from '../pages/Portfolio/IndexPortfolioEdit';
+import ViewIndexPortfolio from '../pages/Portfolio/ViewIndexPortfolio';
 
 export default [
     {
@@ -77,10 +79,34 @@ export default [
         ),
     },
     {
-        path: "/portfolios",
+        path: "/portfolio",
         element: (
             <PrivateRoute>
-                <Portfolios />
+                <IndexPortfolio />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/portfolio-add",
+        element: (
+            <PrivateRoute>
+                <IndexPortfolioEdit />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/portfolio-edit",
+        element: (
+            <PrivateRoute>
+                <IndexPortfolioEdit />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/portfolio-view",
+        element: (
+            <PrivateRoute>
+                <ViewIndexPortfolio />
             </PrivateRoute>
         ),
     },
