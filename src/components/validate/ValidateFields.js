@@ -107,21 +107,27 @@ export const ValidateFields = (values) => {
 
 
   // Validate facebook_link field
-  if (!values?.facebook_link) {
-    errors.facebook_link = "Facebook link is required.";
-  } else if (values?.facebook_link?.trim()?.length === 0) {
-    errors.facebook_link = "Facebook link cannot be empty or contain only spaces.";
-  } else if (values?.facebook_link.length < 3 || values?.facebook_link.length > 25) {
-    errors.facebook_link = "Facebook link must be between 3 and 25 characters.";
+  if (values?.facebook_link) {
+    const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+    if (!appStoreUrlPattern.test(values.facebook_link)) {
+      errors.facebook_link = "Invalid facebook link";
+    }
   }
 
   // Validate twitter_link field
-  if (!values?.twitter_link) {
-    errors.twitter_link = "Twitter link is required.";
-  } else if (values?.twitter_link?.trim()?.length === 0) {
-    errors.twitter_link = "Twitter link cannot be empty or contain only spaces.";
-  } else if (values?.twitter_link.length < 3 || values?.twitter_link.length > 25) {
-    errors.twitter_link = "Twitter link must be between 3 and 25 characters.";
+
+  if (values?.twitter_link) {
+    const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+    if (!appStoreUrlPattern.test(values.twitter_link)) {
+      errors.twitter_link = "Invalid twitter link";
+    }
+  }
+  // linkedin_link 
+  if (values?.linkedin_link) {
+    const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+    if (!appStoreUrlPattern.test(values.linkedin_link)) {
+      errors.linkedin_link = "Invalid linkedin link";
+    }
   }
 
 
@@ -153,15 +159,6 @@ export const ValidateFields = (values) => {
     errors.type = "Each Type must be between 3 and 25 characters.";
   }
 
-  // // Validate Title Field
-  // if (!values?.title || values.title.length === 0) {
-  //   errors.title = "Title field is required.";
-  // } else if (values?.title?.trim()?.length === 0) {
-  //   errors.title = "Title cannot be empty or contain only spaces.";
-  // } else if (values?.title.length < 3 || values?.title.length > 150) {
-  //   errors.type = "Each Type must be between 3 and 150 characters.";
-  // }
-
 
   // Validate Content field
   if (!values?.content) {
@@ -179,14 +176,6 @@ export const ValidateFields = (values) => {
     errors.main_content = "Main Content cannot be empty or contain only spaces.";
   }
 
-  // // Validate SEO field
-  // if (!values?.seo) {
-  //   errors.seo = "SEO field is required.";
-  // } else if (values?.seo?.trim()?.length === 0) {
-  //   errors.seo = "SEOcannot be empty or contain only spaces.";
-  // } else if (values?.seo.length < 3 || values?.seo.length > 255) {
-  //   errors.seo = "SEO must be between 3 and 255 characters.";
-  // }
 
   // Views validation
   if (!values?.views) {
@@ -219,6 +208,14 @@ export const ValidateFields = (values) => {
   // Date validation
   if (!values?.date) {
     errors.date = "Date field is required.";
+  }
+
+  if (values?.rating) {
+    if (!/^\d+$/.test(values.rating)) {
+      errors.rating = "Rating must be a number.";
+    } else if (parseInt(values.rating, 5) < 1) {
+      errors.rating = "Rating must be between 1 and 5";
+    }
   }
 
   return errors;

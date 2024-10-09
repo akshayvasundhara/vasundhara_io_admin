@@ -23,6 +23,7 @@ const requireField = [
     "designation",
     "description",
     "image",
+    "rating"
 ];
 
 function AddTestimonials() {
@@ -52,13 +53,15 @@ function AddTestimonials() {
 
         let validationErrors;
         if (submitCount > 0) {
-            validationErrors = ValidateFields({ ...states, [name]: value });
+            validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
                 delete errors.image;
             }
+            console.log("bame", name);
+
         }
         setStates((prevValues) => ({
             ...prevValues,
@@ -72,6 +75,8 @@ function AddTestimonials() {
         setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
+        console.log("validationErrors", validationErrors);
+
         validationErrors = ErrorFilter(validationErrors, requireField);
 
         if (image) {
@@ -87,6 +92,7 @@ function AddTestimonials() {
                 formData.append('description', updatedValues.description);
                 formData.append('image', image);
                 formData.append('status', status);
+                formData.append('rating', updatedValues.rating);
 
                 setMainLoader(true); // Start loader
                 let response;
@@ -126,6 +132,7 @@ function AddTestimonials() {
                 designation: state.designation,
                 description: state.description,
                 status: state.status,
+                rating: state.rating
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -188,12 +195,13 @@ function AddTestimonials() {
                                                 <LableInput
                                                     label="Rating:"
                                                     className="form-control"
-                                                    id="text"
-                                                    placeholder="Enter rating number"
-                                                    type="text"
-                                                    name='name'
-                                                    // value={states?.name || ""}
-                                                    // onChange={handleChange}
+                                                    placeholder="Enter rating"
+
+                                                    type="number"
+                                                    name='rating'
+                                                    value={states?.rating || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.name} />
                                             </Col>

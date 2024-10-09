@@ -1,62 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
-function MultipleImageUpload({ label, setSampled, initialImage }) {
-    const [images, setImages] = useState([]);
-    const [imagePreviews, setImagePreviews] = useState([]);
+function MultipleImageUpload({ label, setStates, name, states }) {
 
-    useEffect(() => {
-        if (initialImage) {
-            setImages(initialImage); // Set the selected image if an initial image is provided
-            // Create previews using FileReader for initial images if any
-            const initialPreviews = initialImage.map(file => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                return new Promise((resolve) => {
-                    reader.onload = () => {
-                        resolve(reader.result);
-                    };
-                });
-            });
-            Promise.all(initialPreviews).then(previews => setImagePreviews(previews));
-        }
-    }, [initialImage]);
 
     const handleImageChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
-        setImages((prevImages) => {
-            const updatedImages = prevImages.concat(selectedFiles); // Store file objects directly
-            setSampled(updatedImages); // Notify parent about the new images
+        // setImages((prevImages) => prevImages.concat(selectedFiles)); // Store file objects directly
 
-            // Create previews using FileReader for new images
-            const newPreviews = selectedFiles.map(file => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                return new Promise((resolve) => {
-                    reader.onload = () => {
-                        resolve(reader.result);
-                    };
-                });
-            });
-
-            // Update image previews once all file readers are done
-            Promise.all(newPreviews).then(previews => {
-                setImagePreviews((prevPreviews) => prevPreviews.concat(previews));
-            });
-
-            return updatedImages;
+        setStates((prev) => {
+            return {
+                ...prev,
+                [name]: states[name].concat(
+                    selectedFiles.map((v) => ({ image: v })) // Wrap the object in parentheses
+                )
+            };
         });
-    };
-
-    const handleRemoveImage = (index) => {
-        setImages((prevImages) => {
-            const updatedImages = prevImages.filter((_, i) => i !== index);
-            // Remove the corresponding preview
-            setImagePreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
-            return updatedImages;
-        });
-    };
+    }
 
     return (
         <div>
@@ -80,11 +41,11 @@ function MultipleImageUpload({ label, setSampled, initialImage }) {
                     </div>
                 </label>
             </div>
-            <div className="image-preview-container">
-                {imagePreviews.map((preview, index) => (
+            {/* <div className="image-preview-container">
+                {states?.[name].map((image, index) => (
                     <div key={index} className="image-preview">
                         <img
-                            src={preview}
+                            src={image}
                             alt={`preview ${index}`}
                             className="preview-image"
                         />
@@ -96,7 +57,7 @@ function MultipleImageUpload({ label, setSampled, initialImage }) {
                         </button>
                     </div>
                 ))}
-            </div>
+            </div> */}
         </div>
     );
 }

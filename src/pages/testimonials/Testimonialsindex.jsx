@@ -78,6 +78,21 @@ function Testimonialsindex() {
         }
     };
 
+    const updateRating = async (itemId, newRating) => {
+        try {
+            const response = await api.patchWithToken(`${serverURL}/testimonial/${itemId}`, { rating: newRating });
+            if (response.data.success) {
+                toast.info("Ratings updated successfully.");
+                getTestimonials(); // Refresh hiring data after updating
+            } else {
+                toast.error("Failed to update rating:", response.data.message);
+            }
+        } catch (error) {
+            console.error("Error updating rating:", error.response ? error.response.data : error.message);
+        }
+    };
+
+
     return (
         <>
             {mainLoader && (
@@ -119,7 +134,7 @@ function Testimonialsindex() {
                                                                 </td>
                                                                 <td><p>{test.name}</p></td>
                                                                 <td><p>{test.designation}</p></td>
-                                                                <td><FractionalRating /></td>
+                                                                <td><FractionalRating state={test} itemId={test._id} onChange={updateRating} /></td>
                                                                 <td>
                                                                     {/* <Switch mode={test.status} id={test._id} /> */}
                                                                     <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />

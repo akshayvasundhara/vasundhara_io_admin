@@ -97,12 +97,13 @@ function AddHirings() {
         }));
 
         if (submitCount > 0) {
-            const updatedValues = { ...states, [name]: newValues };
+            const updatedValues = { ...states, [name]: newValues, image: newValues };
             let validationErrors = ValidateFields(updatedValues);
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
+                delete errors.image;
             }
         }
     };

@@ -87,9 +87,16 @@ function TeamsAdd() {
                 formData.append('description', updatedValues.description);
                 formData.append('image', image);
                 formData.append('status', status);
-                formData.append('linkedin_link', updatedValues.linkedin_link);
-                formData.append('twitter_link', updatedValues.twitter_link);
-                formData.append('facebook_link', updatedValues.facebook_link);
+                if (updatedValues.linkedin_link) {
+                    formData.append('linkedin_link', updatedValues.linkedin_link);
+                }
+                if (updatedValues.twitter_link) {
+                    formData.append('twitter_link', updatedValues.twitter_link);
+                }
+                if (updatedValues.facebook_link) {
+                    formData.append('facebook_link', updatedValues.facebook_link);
+                }
+
 
                 setMainLoader(true); // Start loader
                 let response;

@@ -160,7 +160,6 @@ function AddBlogList() {
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
-
         if (submitCount > 0) {
             let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
@@ -180,7 +179,6 @@ function AddBlogList() {
     const addBlog = async (e) => {
         e.preventDefault(); // Prevent default form submission
         setSubmitCount(prevCount => prevCount + 1);
-        console.log("states", states);
         const updatedValues = { ...states, image, status };
 
         let validationErrors = ValidateFields(updatedValues);

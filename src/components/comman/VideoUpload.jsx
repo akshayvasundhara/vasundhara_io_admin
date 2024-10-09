@@ -6,14 +6,18 @@ function VideoUpload({ label, setVideo, initialVideo, onChange }) {
 
     useEffect(() => {
         if (initialVideo) {
-            setSelectedVideo(URL.createObjectURL(initialVideo)); // Set the selected video if an initial video is provided
+            setSelectedVideo(initialVideo); // Set the selected video if an initial video is provided
         }
     }, [initialVideo]);
 
     const handleVideoChange = (file) => {
-        const videoURL = URL.createObjectURL(file);
-        setSelectedVideo(videoURL); // Set the selected video URL for preview
-        setVideo(file); // Call the setVideo function with the file
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setSelectedVideo(reader.result);
+        };
+        reader.readAsDataURL(file);
+        setVideo(file);
 
         if (onChange) {
             onChange({

@@ -4,18 +4,21 @@ import Layout from '../../layout/Layout'
 import { Row, Col, Card, Table } from 'react-bootstrap';
 import DeleteButton from '../../components/comman/DeleteButton';
 import CommanPagination from '../../components/comman/CommanPagination';
-import { getServerURL } from '../../helper/envConfig';
+import { getImageURL, getServerURL } from '../../helper/envConfig';
 import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
 import Switch from '../../components/comman/Switch';
 import ViewButton from '../../components/comman/ViewButton';
 import EditButton from '../../components/comman/EditButton';
 import LinkButton from '../../components/comman/LinkButton';
+import { toast } from 'react-toastify';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
 
 function IndexPortfolio() {
     const serverURL = getServerURL();
-    const [newsLetter, setNewsLetter] = useState([]);
+    const imageURL = getImageURL();
+    const [portFolio, setPortFolio] = useState([]);
     const [paginationData, setPaginationData] = useState({});
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -23,18 +26,18 @@ function IndexPortfolio() {
 
 
 
-    // Get News Letter
-    const getNewsLetter = async () => {
+    // Get PortFolio
+    const getPortFolio = async () => {
         setMainLoader(true);
         try {
 
-            const response = await api.getWithToken(`${serverURL}/newsletters?perPage=${limit}&page=${page}`)
+            const response = await api.getWithToken(`${serverURL}/portfolio?perPage=${limit}&page=${page}`)
             if (response.data.success === true) {
-                setNewsLetter(response.data.data || []);
+                setPortFolio(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
                 setPage(response?.data?.data.page);
             } else {
-                setNewsLetter([]);
+                setPortFolio([]);
             }
 
         } catch (error) {
@@ -45,19 +48,34 @@ function IndexPortfolio() {
     }
 
     useEffect(() => {
-        getNewsLetter();
+        getPortFolio();
     }, [page, limit])
+
 
 
     // Delete function
     const onSuccessData = () => {
-        if (newsLetter.data.length === 1 && page > 1) {
+        if (portFolio.data.length === 1 && page > 1) {
             setPage(page - 1);
         } else {
-            getNewsLetter(limit, page);
+            getPortFolio(limit, page);
         }
     }
 
+    // Update status
+    const updateStatus = async (itemId, newStatus) => {
+        try {
+            const response = await api.patchWithToken(`${serverURL}/portFolio/${itemId}`, { status: newStatus });
+            if (response.data.success) {
+                toast.info("Status updated successfully.");
+                getPortFolio(); // Refresh hiring data after updating
+            } else {
+                console.error("Failed to update status:", response.data.message);
+            }
+        } catch (error) {
+            console.error("Error updating status:", error.response ? error.response.data : error.message);
+        }
+    };
 
     return (
         <>
@@ -87,26 +105,39 @@ function IndexPortfolio() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1.</td>
-                                                    <td>
-                                                        <div className='table-image'>
-                                                            <img src="https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png" className='w-100 h-100' alt="" />
-                                                        </div>
-                                                    </td>
-                                                    <td><p>Food Delivery Application</p></td>
-                                                    <td><p>Emely Cooper</p></td>
-                                                    <td>
-                                                        <Switch />
-                                                    </td>
-                                                    <td width={100}>
-                                                        <div className='d-flex align-items-center gap-2'>
-                                                            <ViewButton to='/portfolio-view' />
-                                                            <EditButton to='/portfolio-edit' />
-                                                            <DeleteButton />
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                {portFolio?.data?.length > 0 ? (
+                                                    portFolio.data.map((test, index) => {
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>{(page - 1) * limit + index + 1}.</td>
+                                                                <td>
+                                                                    <div className='table-image'>
+                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
+                                                                    </div>
+                                                                </td>
+                                                                <td><p>{test.title}</p></td>
+                                                                <td><p>{test.category.name}</p></td>
+                                                                <td>
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                </td>
+                                                                <td width={100}>
+                                                                    <div className='d-flex align-items-center gap-2'>
+                                                                        <ViewButton to='/portfolio-view' state={test} />
+                                                                        <EditButton to='/portfolio-edit' state={test} />
+                                                                        <DeleteButton id={test._id}
+                                                                            endpoint={`${serverURL}/portfolio`}
+                                                                            onSuccess={onSuccessData} />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="10"><NoDataAvailable /></td>
+                                                    </tr>
+                                                )}
+
                                             </tbody>
                                         </Table>
                                     </div>

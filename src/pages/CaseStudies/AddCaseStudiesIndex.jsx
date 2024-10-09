@@ -60,7 +60,7 @@ function AddCaseStudiesIndex() {
     const [states, setStates] = useState({
         title: '',
         sub_title: '',
-        author: '',
+        // author: '',
         status: '',
         play_store_link: '',
         app_store_link: '',
@@ -70,8 +70,8 @@ function AddCaseStudiesIndex() {
         features: [{ title: '', desc: '', image: null }],
         content: [{ title: '', desc: '', image: null, redirect_link: '' }],
         faqs: [{ question: '', answer: '' }],
-        sample_images: [{ image: null }],
-        other_image: [{ image: null }],
+        sample_screen_images: [],
+        other_images: [],
     });
 
     // Function to handle the toggle switch
@@ -79,10 +79,10 @@ function AddCaseStudiesIndex() {
         setStatus(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
     };
 
-    // Close FAQ
+    // Close Case Studies
     const closeFaq = async (e) => {
         setStates({});
-        navigate('/faqs');
+        navigate('/case-studies');
     }
 
 
@@ -101,20 +101,65 @@ function AddCaseStudiesIndex() {
                 industry: state.industry || [''],
                 features: state.features || [''],
                 content: state.content || [''],
-                faqs: state.faqs || ['']
+                faqs: state.faqs || [''],
+
             });
             if (state.image) {
-                const fullImageUrl = `${imageURL}${state.image}`;
-                setImage(fullImageUrl);
-            } else {
-                setImage(null); // Clear image if there's no valid image
+                // const fullImageUrl = `${imageURL}${state.image}`;
+                setImage(state.image);
             }
 
             if (state.video) {
-                const fullVideoUrl = `${imageURL}${state.video}`;
-                setVideo(fullVideoUrl);
+                // const fullVideoUrl = `${imageURL}${state.video}`;
+                setVideo(state.video);
             } else {
                 setVideo(null); // Clear video if there's no valid video
+            }
+
+            if (state.industry && Array.isArray(state.industry)) {
+                const updatedIndustry = state.industry.map(ind => ({
+                    ...ind,
+                    // image: ind.image ? `${imageURL}${ind.image}` : null // Construct full image URL
+                    image: ind.image ? ind.image : null
+                }));
+                setStates(prev => ({ ...prev, industry: updatedIndustry }));
+            }
+
+            // Set content images
+            if (state.content && Array.isArray(state.content)) {
+                const updatedContent = state.content.map(cont => ({
+                    ...cont,
+                    image: cont.image ? cont.image : null // Construct full image URL
+                }));
+                setStates(prev => ({ ...prev, content: updatedContent }));
+            }
+
+            // Set features images
+            if (state.features && Array.isArray(state.features)) {
+                const updatedFeatures = state.features.map(feat => ({
+                    ...feat,
+                    image: feat.image ? feat.image : null // Construct full image URL
+                }));
+                setStates(prev => ({ ...prev, features: updatedFeatures }));
+            }
+
+            // set sample images
+            if (state.sample_screen_images && Array.isArray(state.sample_screen_images)) {
+                const updatedSample = state.sample_screen_images.map(samp => ({
+                    ...samp,
+                    // image: samp.image ? `${imageURL}${samp.image}` : null
+                    image: samp.image ? samp.image : null
+                }))
+                setStates(prev => ({ ...prev, sample_screen_images: updatedSample }));
+            }
+
+            // set sample images
+            if (state.other_images && Array.isArray(state.other_images)) {
+                const updatedSample = state.other_images.map(oth => ({
+                    ...oth,
+                    image: oth.image ? oth.image : null
+                }))
+                setStates(prev => ({ ...prev, other_images: updatedSample }));
             }
         }
     }, [state, options]);
@@ -142,7 +187,12 @@ function AddCaseStudiesIndex() {
         label: member.name
     }));
 
-
+    const handleAddTags = () => {
+        setStates((prevStates) => ({
+            ...prevStates,
+            tags: [...prevStates.tags, ''], // Add a new empty tag field
+        }));
+    }
 
     const handleAddIndustry = () => {
         setStates((prevStates) => ({
@@ -201,13 +251,18 @@ function AddCaseStudiesIndex() {
         }));
     };
 
+    const handleRemoveTags = (index) => {
+        setStates((prevStates) => ({
+            ...prevStates,
+            tags: prevStates.tags.filter((_, i) => i !== index)
+        })
+        )
+    };
 
 
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
-
-
         if (submitCount > 0) {
             let validationErrors = BlogValidates({ ...states, [name]: value, image: newValue, video: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
@@ -242,6 +297,7 @@ function AddCaseStudiesIndex() {
             }
         }
     };
+
     const handleImageChange = (type, index) => (file) => {
         const updatedArray = [...states[type]]; // Create a copy of the specified array
         updatedArray[index].image = file; // Update the specific index for the image
@@ -254,91 +310,169 @@ function AddCaseStudiesIndex() {
             return Array.isArray(error) ? error.length === 0 : !error; // Ignore empty arrays
         });
     };
+
+
+
+
     const addCases = async (e) => {
         e.preventDefault(); // Prevent default form submission
         setSubmitCount(prevCount => prevCount + 1);
-
         const updatedValues = { ...states, image, video, status };
 
         let validationErrors = BlogValidates(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
 
         if (image) {
-            delete validationErrors.image;
+            delete errors.image;
         }
         setErrors(validationErrors);
 
         if (isValidationErrorsEmpty(validationErrors)) { // Adjust this condition based on your validation requirements
             try {
                 const formData = new FormData(); // Create FormData for file upload
-
                 // Append top-level fields
                 formData.append('title', updatedValues.title);
                 formData.append('sub_title', updatedValues.sub_title);
                 formData.append('author', updatedValues.author ? updatedValues.author : teamOptions[0].value);
-                formData.append('play_store_link', updatedValues.play_store_link);
-                formData.append('app_store_link', updatedValues.app_store_link);
-                formData.append('desc', updatedValues.desc);
+                // Append play_store_link if not empty
+                if (updatedValues.play_store_link) {
+                    formData.append('play_store_link', updatedValues.play_store_link);
+                }
+
+                // Append app_store_link if not empty
+                if (updatedValues.app_store_link) {
+                    formData.append('app_store_link', updatedValues.app_store_link);
+                }
+                if (updatedValues.desc) {
+                    formData.append('desc', updatedValues.desc);
+                }
                 formData.append('status', status);
                 formData.append('image', image);
                 formData.append('video', video);
 
-
                 // Append tags
-                updatedValues.tags.forEach((tag, index) => {
-                    formData.append(`tags[${index}]`, tag);
-                });
+                if (Array.isArray(updatedValues.tags) && updatedValues.tags.length > 0) {
+                    updatedValues.tags.forEach((tag, index) => {
+                        if (tag && tag.trim().length > 0) { // Check if the tag is not empty or just whitespace
+                            formData.append(`tags[${index}]`, tag);
+                        }
+                    });
+                }
 
                 // Append FAQs
-                updatedValues.faqs.forEach((faq, index) => {
-                    formData.append(`faqs[${index}][question]`, faq.question);
-                    formData.append(`faqs[${index}][answer]`, faq.answer);
-                });
+                if (Array.isArray(updatedValues.faqs)) {
+                    updatedValues.faqs.forEach((faq, index) => {
+                        console.log("updatedValues.faqs", updatedValues.faqs);
 
-                // Append features
-                updatedValues.features.forEach((feature, index) => {
-                    formData.append(`features[${index}][title]`, feature.title);
-                    formData.append(`features[${index}][desc]`, feature.desc);
-                    if (feature.image) {
-                        formData.append(`features[${index}][image]`, feature.image.name);
-                        formData.append('feature_image', feature.image) // Ensure cont.image is valid
-                    }
-                });
+                        if (faq.question && faq.answer) {
+                            formData.append(`faqs[${index}][question]`, faq.question);
+                            formData.append(`faqs[${index}][answer]`, faq.answer);
+                        }
+                    });
+                }
 
-                // Append industry
-                updatedValues.industry.forEach((ind, index) => {
-                    formData.append(`industry[${index}][title]`, ind.title);
-                    formData.append(`industry[${index}][desc]`, ind.desc);
-                    if (ind.image) {
-                        formData.append(`industry[${index}][image]`, ind.image.name);
-                        formData.append('industry_image', ind.image) // Ensure cont.image is valid
-                    }
-                });
+                // Append features if not empty
+                if (Array.isArray(updatedValues.features)) {
+                    updatedValues.features.forEach((feature, index) => {
+                        if (feature.title && feature.desc) {
+                            formData.append(`features[${index}][title]`, feature.title);
+                            formData.append(`features[${index}][desc]`, feature.desc);
+                            if (state._id) {
+                                formData.append(`features[${index}][_id]`, feature._id);
+                                if (feature.image && feature.image.name) {
+                                    formData.append(`features[${index}][image]`, feature.image.name);
+                                    formData.append('feature_image', feature.image || '');
+                                } else {
+                                    formData.append(`features[${index}][image]`, feature.image || '');
+                                }
+                            } else {
+                                formData.append(`features[${index}][image]`, feature.image ? feature.image.name : '');
+                                formData.append('feature_image', feature.image || '');
+                            }
+                        }
+                    });
+                }
 
-                // Append content
-                updatedValues.content.forEach((cont, index) => {
-                    formData.append(`content[${index}][title]`, cont.title);
-                    formData.append(`content[${index}][desc]`, cont.desc);
-                    formData.append(`content[${index}][redirect_link]`, cont.redirect_link);
-                    if (cont.image) {
-                        formData.append(`content[${index}][image]`, cont.image.name);
-                        formData.append('content_image', cont.image) // Ensure cont.image is valid
-                    }
-                });
-                updatedValues.sample_images.forEach((samp, index) => {
-                    if (samp.image) {
-                        formData.append('sample_image', samp.image);
-                        formData.append(`sample_screen_images[${index}][image]`, samp.image.name);
-                    }
-                })
+                // Append industry if not empty
+                if (Array.isArray(updatedValues.industry)) {
+                    updatedValues.industry.forEach((ind, index) => {
+                        if (ind.title && ind.desc) {
+                            formData.append(`industry[${index}][title]`, ind.title);
+                            formData.append(`industry[${index}][desc]`, ind.desc);
+                            if (state._id) {
+                                formData.append(`industry[${index}][_id]`, ind._id);
+                                if (ind.image && ind.image.name) {
+                                    formData.append(`industry[${index}][image]`, ind.image.name);
+                                } else {
+                                    formData.append(`industry[${index}][image]`, ind.image || '');
+                                    formData.append('industry_image', ind.image || '');
+                                }
+                            } else {
+                                formData.append(`industry[${index}][image]`, ind.image ? ind.image.name : '');
+                                formData.append('industry_image', ind.image || '');
+                            }
+                        }
+                    });
+                }
+                // Append content if not empty
+                if (Array.isArray(updatedValues.content)) {
+                    updatedValues.content.forEach((cont, index) => {
+                        if (cont.title && cont.desc && cont.redirect_link) {
+                            formData.append(`content[${index}][title]`, cont.title);
+                            formData.append(`content[${index}][desc]`, cont.desc);
+                            formData.append(`content[${index}][redirect_link]`, cont.redirect_link);
+                            if (state._id) {
+                                formData.append(`content[${index}][_id]`, cont._id);
+                                if (cont.image && cont.image.name) {
+                                    formData.append(`content[${index}][image]`, cont.image.name);
+                                } else {
+                                    formData.append(`content[${index}][image]`, cont.image || '');
+                                    formData.append('content_image', cont.image || '');
+                                }
+                            } else {
+                                formData.append(`content[${index}][image]`, cont.image ? cont.image.name : '');
+                                formData.append('content_image', cont.image || '');
+                            }
+                        }
+                    });
+                }
 
-                updatedValues.other_image.forEach((oth, index) => {
-                    console.log(oth.image);
-                    if (oth.image) {
-                        formData.append('other_image', oth.image);
-                        formData.append(`other_screen_images[${index}][image]`, oth.image.name);
-                    }
-                })
+                if (Array.isArray(updatedValues.sample_screen_images)) {
+                    updatedValues.sample_screen_images.forEach((samp, index) => {
+                        if (samp.image) {
+                            if (state._id) {
+                                formData.append(`sample_screen_images[${index}][_id]`, samp._id);
+                                if (samp._id) {
+                                    formData.append(`sample_screen_images[${index}][image]`, samp.image);
+                                    formData.append('sample_image', samp.image);
+                                } else {
+                                    formData.append(`sample_screen_images[${index}][image]`, samp.image.name);
+                                    formData.append('sample_image', samp.image);
+                                }
+                            } else {
+                                formData.append('sample_image', samp.image);
+                            }
+                        }
+                    });
+                }
+                // Append other_images
+                if (Array.isArray(updatedValues.other_images)) {
+                    updatedValues.other_images.forEach((oth, index) => {
+                        if (state._id) {
+                            if (oth.image) {
+                                if (oth._id) {
+                                    formData.append(`other_images[${index}][image]`, oth.image);
+                                    formData.append(`other_images[${index}][_id]`, oth._id);
+                                } else {
+                                    formData.append(`other_images[${index}][image]`, oth.image.name);
+                                    formData.append('other_image', oth.image);
+                                }
+                            }
+                        } else {
+                            formData.append('other_image', oth.image);
+                        }
+                    });
+                }
 
                 setMainLoader(true); // Start loader
                 let response;
@@ -363,6 +497,14 @@ function AddCaseStudiesIndex() {
             }
         }
     };
+
+    const handleRemoveImage = (e, index, name) => {
+        e.preventDefault()
+        setStates((prev) => {
+            return { ...prev, [name]: states[name].filter((_, i) => i !== index) }
+        })
+    };
+
 
     return (
         <>
@@ -442,7 +584,7 @@ function AddCaseStudiesIndex() {
                                             </Col>
                                             <Col md={12}>
                                                 <Textarea label="Description:" rows="4" type="text" name="desc" value={states.desc || ""}
-                                                    onChange={handleChange}
+                                                    onChange={handleChange} placeholder="Enter description"
                                                 />
                                                 <SingleError error={errors?.desc} />
                                             </Col>
@@ -451,30 +593,65 @@ function AddCaseStudiesIndex() {
                                                 <div className='d-xl-flex align-items-start gap-3'>
                                                     <div className='d-md-flex align-items-start gap-3'>
                                                         <div>
-                                                            <FileInput label="Banner:" setImage={setImage} initialImage={image} onChange={handleChange} />
+                                                            <FileInput label="Banner:" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} />
                                                             <SingleError error={errors?.image} />
                                                         </div>
                                                         <div className='mt-3 mt-md-0'>
                                                             <VideoUpload
                                                                 label="Video:"
                                                                 setVideo={setVideo}
-                                                                initialVideo={video}
+                                                                initialVideo={video !== null && `${imageURL}${video}`}
                                                                 onChange={handleChange}
                                                             />
                                                         </div>
                                                     </div>
                                                     <Row className='w-100 mt-3 mt-xl-0 g-0'>
-                                                        <PlushLableInput
-                                                            label="Tags:"
-                                                            className="form-control"
-                                                            id="text"
-                                                            placeholder="Enter location"
-                                                            type="text"
-                                                            name='tags'
-                                                            value={states?.tags || ""}
-                                                            // onKeyPress={handleKeyPress}
-                                                            onChange={(newValues) => handleArrayChange('tags', newValues)}
-                                                        />
+
+                                                        <Col md={12}>
+                                                            <div className='d-flex justify-content-between align-items-center'>
+                                                                <h5 className='form-title mb-0'>Tags</h5>
+                                                                <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddTags}>
+                                                                    <PiPlusBold />
+                                                                </div>
+                                                            </div>
+                                                        </Col>
+                                                        {states.tags.map((tag, index) => (
+                                                            <Col md={12} key={index}>
+                                                                <div className='d-md-flex align-items-start gap-3 w-100 mt-3'>
+                                                                    <div className='w-100 mt-3 mt-md-0 d-flex align-items-center gap-2'>
+                                                                        <div className='d-flex align-items-end gap-2 w-100 label-none'>
+                                                                            <div className='w-100'>
+                                                                                <LableInput
+                                                                                    className="form-control w-100"
+                                                                                    id={`tag-title-${index}`} // Unique id for each input
+                                                                                    placeholder="Enter title"
+                                                                                    type="text"
+                                                                                    name={`tags[${index}]`} // Use indexed name for formData
+                                                                                    value={tag || ''} // Set value from state
+                                                                                    onChange={(e) =>
+                                                                                        handleArrayChange('tags', [
+                                                                                            ...states.tags.slice(0, index),
+                                                                                            e.target.value, // Update the tag value directly
+                                                                                            ...states.tags.slice(index + 1)
+                                                                                        ])
+                                                                                    } // Use handleArrayChange
+                                                                                />
+                                                                                <SingleError error={errors.tags?.[index]} />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="d-flex justify-content-end">
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => handleRemoveTags(index)} // Ensure `index` is valid
+                                                                                className="btn btn-danger py-2"
+                                                                            >
+                                                                                <RiDeleteBinLine />
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                        ))}
                                                         <SingleError error={errors?.tags} />
                                                     </Row>
                                                 </div>
@@ -537,17 +714,17 @@ function AddCaseStudiesIndex() {
                                                                 <SingleError error={errors.industry?.[index]?.desc} />
                                                             </div>
 
-                                                            {index > 0 && (
-                                                                <div className="d-flex justify-content-end mt-3">
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => handleRemoveIndustry(index)} // Ensure `ind.id` is valid
-                                                                        className="btn btn-danger py-2"
-                                                                    >
-                                                                        <RiDeleteBinLine />
-                                                                    </button>
-                                                                </div>
-                                                            )}
+                                                            {/* {index > 0 && ( */}
+                                                            <div className="d-flex justify-content-end mt-3">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveIndustry(index)} // Ensure `ind.id` is valid
+                                                                    className="btn btn-danger py-2"
+                                                                >
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
+                                                            {/* )} */}
                                                         </div>
                                                     </div>
                                                 </Col>
@@ -611,17 +788,17 @@ function AddCaseStudiesIndex() {
                                                                 <SingleError error={errors.features?.[index]?.desc} />
                                                             </div>
 
-                                                            {index > 0 && (
-                                                                <div className="d-flex justify-content-end mt-3">
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => handleRemoveFeature(index)} // Ensure `ind.id` is valid
-                                                                        className="btn btn-danger py-2"
-                                                                    >
-                                                                        <RiDeleteBinLine />
-                                                                    </button>
-                                                                </div>
-                                                            )}
+                                                            {/* {index > 0 && ( */}
+                                                            <div className="d-flex justify-content-end mt-3">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveFeature(index)} // Ensure `ind.id` is valid
+                                                                    className="btn btn-danger py-2"
+                                                                >
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
+                                                            {/* )} */}
                                                         </div>
                                                     </div>
                                                 </Col>
@@ -638,15 +815,30 @@ function AddCaseStudiesIndex() {
                                                 </div>
                                             </Col>
                                             <Col md={12} className='mb-3'>
-                                                {states?.sample_images?.map((sampleImage, index) => (
+                                                <div>
+                                                    <MultipleImageUpload
+                                                        label="Image:"
+                                                        name={`sample_screen_images`}
+                                                        setStates={setStates}
+                                                        states={states}
+                                                    />
+                                                </div>
+                                                {Array.from(states?.sample_screen_images)?.map((image, index) => (
                                                     <div className='d-flex align-items-start gap-3 w-100' key={index}>
-                                                        <div>
-                                                            <MultipleImageUpload
-                                                                label="Image:"
-                                                                setSampled={(newImages) => handleImageChange('sample_images', index, newImages)} // Pass the new images to your handler
-                                                                initialImage={sampleImage.image ? [sampleImage.image] : []} // Set the initial image if it exists
-                                                                name={`sample_images[${index}][image]`}
-                                                            />
+                                                        <div className="image-preview-container">
+                                                            <div key={index} className="image-preview">
+                                                                <img
+                                                                    src={image?.image?.name ? URL.createObjectURL(image?.image) : `${imageURL}${image.image}`}
+                                                                    alt={`preview ${index}`}
+                                                                    className="preview-image"
+                                                                />
+                                                                <button
+                                                                    onClick={(e) => handleRemoveImage(e, index, 'sample_screen_images')}
+                                                                    className="remove-button"
+                                                                >
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -659,26 +851,36 @@ function AddCaseStudiesIndex() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Other Image</h5>
+                                                    <h5 className='form-title'>Other Screens</h5>
                                                 </div>
                                             </Col>
-                                            {/* <Col md={12}>
-                                                <div className='d-flex align-items-start gap-3 w-100'>
-                                                    <div>
-                                                        <MultipleImageUpload label="Image:" setSampled={setOtherImage} initialImage={otherImage} />
-                                                    </div>
-                                                </div>
-                                            </Col> */}
                                             <Col md={12} className='mb-3'>
-                                                {states?.other_image?.map((otherImage, index) => (
+                                                <div>
+                                                    <MultipleImageUpload
+                                                        label="Image:"
+                                                        name={`other_images`}
+                                                        setStates={setStates}
+                                                        states={states}
+                                                    />
+                                                </div>
+                                                {Array.from(states?.other_images)?.map((image, index) => (
                                                     <div className='d-flex align-items-start gap-3 w-100' key={index}>
-                                                        <div>
-                                                            <MultipleImageUpload
-                                                                label="Image:"
-                                                                setSampled={(newImages) => handleImageChange('other_image', index, newImages)} // Pass the new images to your handler
-                                                                initialImage={otherImage.image ? [otherImage.image] : []} // Set the initial image if it exists
-                                                                name={`other_image[${index}][image]`}
-                                                            />
+                                                        <div className="image-preview-container">
+                                                            <div key={index} className="image-preview">
+                                                                <img
+                                                                    src={image?.image?.name ? URL.createObjectURL(image?.image) : `${imageURL}${image.image}`}
+                                                                    alt={`preview ${index}`}
+                                                                    className="preview-image"
+                                                                />
+
+
+                                                                <button
+                                                                    onClick={(e) => handleRemoveImage(e, index, 'other_images')}
+                                                                    className="remove-button"
+                                                                >
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -749,17 +951,17 @@ function AddCaseStudiesIndex() {
                                                                 />
                                                                 <SingleError error={errors.content?.[index]?.desc} />
                                                             </div>
-                                                            {index > 0 && (
-                                                                <div className="d-flex justify-content-end mt-3">
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => handleRemoveContent(index)}
-                                                                        className="btn btn-danger py-2"
-                                                                    >
-                                                                        <RiDeleteBinLine />
-                                                                    </button>
-                                                                </div>
-                                                            )}
+                                                            {/* {index > 0 && ( */}
+                                                            <div className="d-flex justify-content-end mt-3">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveContent(index)}
+                                                                    className="btn btn-danger py-2"
+                                                                >
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
+                                                            {/* )} */}
                                                         </div>
                                                     </div>
                                                 </Col>
@@ -811,17 +1013,17 @@ function AddCaseStudiesIndex() {
                                                         />
                                                         <SingleError error={errors.faqs?.[index]?.answer} />
                                                     </div>
-                                                    {index > 0 && (
-                                                        <div className="d-flex justify-content-end mt-3">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleRemoveFaqs(index)}
-                                                                className="btn btn-danger py-2"
-                                                            >
-                                                                <RiDeleteBinLine />
-                                                            </button>
-                                                        </div>
-                                                    )}
+                                                    {/* {index > 0 && ( */}
+                                                    <div className="d-flex justify-content-end mt-3">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleRemoveFaqs(index)}
+                                                            className="btn btn-danger py-2"
+                                                        >
+                                                            <RiDeleteBinLine />
+                                                        </button>
+                                                    </div>
+                                                    {/* )} */}
                                                 </Col>
 
                                             ))}

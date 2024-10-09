@@ -4,9 +4,14 @@ import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
 import { ImArrowLeft } from "react-icons/im";
+import { useLocation } from 'react-router-dom';
+import { getImageURL } from '../../helper/envConfig';
 
 
 function ViewIndexPortfolio() {
+    const location = useLocation();
+    const state = location.state || {};
+    const imageURL = getImageURL();
     const careerDetails = [
         {
             id: 1,
@@ -42,30 +47,30 @@ function ViewIndexPortfolio() {
 
                                         <div>
                                             <label>Title:</label>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit..</p>
+                                            <p>{state.title}</p>
                                         </div>
                                         <div>
                                             <label>Description:</label>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit..</p>
+                                            <p>{state.desc}</p>
                                         </div>
                                         <div>
                                             <label>Category:</label>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit..</p>
+                                            <p>{state.category?.name}</p>
                                         </div>
                                         <div>
                                             <label>Google Play Store:</label>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit..</p>
+                                            <p>{state.play_store_link}</p>
                                         </div>
                                         <div>
                                             <label>App Store:</label>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit..</p>
+                                            <p>{state.app_store_link}</p>
                                         </div>
                                         <label className='mb-2'>Icon:</label>
                                         <div className='d-flex gap-3 flex-wrap'>
                                             <div>
                                                 <div className='view-image-box mb-3'>
                                                     <img
-                                                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
+                                                        src={`${imageURL}${state.icon}`}
                                                         alt=""
                                                         className='w-100 h-100'
                                                     />
@@ -77,7 +82,7 @@ function ViewIndexPortfolio() {
                                             <div>
                                                 <div className='view-image-box mb-3'>
                                                     <img
-                                                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
+                                                        src={`${imageURL}${state.image}`}
                                                         alt=""
                                                         className='w-100 h-100'
                                                     />
@@ -87,12 +92,12 @@ function ViewIndexPortfolio() {
                                         <h5 className='form-title'>Features</h5>
                                         <div className="career-flight section-py mt-2 mb-3">
                                             <div className="row g-3">
-                                                {careerDetails.map(detail => (
+                                                {state.features.map(detail => (
                                                     <div className="col-12 col-md-6 col-xl-3" key={detail.id}>
                                                         <div className="card h-100 border-0 shadow-lg">
                                                             <div className="career-details card-body">
                                                                 <div aria-label={detail.title}>
-                                                                    <img src={detail.imageUrl} alt={detail.title} width={200} height={200} /> {/* Adjust size as needed */}
+                                                                    <img src={`${imageURL}${detail.image}`} alt={detail.title} width={200} height={200} className='d-flex justify-content-center m-auto' /> {/* Adjust size as needed */}
                                                                 </div>
                                                                 <h4>{detail.title}</h4>
                                                                 {/* <p>{detail.description}</p> */}
@@ -105,42 +110,31 @@ function ViewIndexPortfolio() {
 
                                         <h5 className='form-title'>Sample Screens</h5>
                                         <div className='d-flex gap-3 flex-wrap'>
-                                            <div>
-                                                <div className='view-image-box mb-3'>
-                                                    <img
-                                                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
-                                                        alt=""
-                                                        className='w-100 h-100'
-                                                    />
+                                            {state.sample_screen_images?.length > 0 ? (
+                                                state.sample_screen_images?.map((sample, index) => {
+                                                    return (
+                                                        <div>
+                                                            <div className='view-image-box mb-3'>
+                                                                <img
+                                                                    src={`${imageURL}${sample.image}`}
+                                                                    alt=""
+                                                                    className='w-100 h-100'
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            ) : (
+                                                <div>
+                                                    <div className='view-image-box mb-3'>
+                                                        <img
+                                                            src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
+                                                            alt=""
+                                                            className='w-100 h-100'
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <div className='view-image-box mb-3'>
-                                                    <img
-                                                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
-                                                        alt=""
-                                                        className='w-100 h-100'
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className='view-image-box mb-3'>
-                                                    <img
-                                                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
-                                                        alt=""
-                                                        className='w-100 h-100'
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className='view-image-box mb-3'>
-                                                    <img
-                                                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
-                                                        alt=""
-                                                        className='w-100 h-100'
-                                                    />
-                                                </div>
-                                            </div>
+                                            )}
                                         </div>
                                     </div>
                                 </Card.Body>
