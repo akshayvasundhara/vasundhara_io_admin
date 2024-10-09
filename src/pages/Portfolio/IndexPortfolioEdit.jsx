@@ -282,12 +282,15 @@ function IndexPortfolioEdit() {
                         if (feature.title) {
                             formData.append(`features[${index}][title]`, feature.title);
                             if (state._id) {
-                                formData.append(`features[${index}][_id]`, feature._id);
                                 if (feature.image && feature.image.name) {
                                     formData.append(`features[${index}][image]`, feature.image.name);
                                     formData.append('feature_image', feature.image || '');
                                 } else {
+                                    formData.append(`features[${index}][_id]`, feature._id);
                                     formData.append(`features[${index}][image]`, feature.image || '');
+                                    if (feature.image.name) {
+                                        formData.append('feature_image', feature.image || '');
+                                    }
                                 }
                             } else {
                                 formData.append(`features[${index}][image]`, feature.image ? feature.image.name : '');
@@ -297,25 +300,25 @@ function IndexPortfolioEdit() {
                     });
                 }
 
+
                 if (Array.isArray(updatedValues.sample_screen_images)) {
                     updatedValues.sample_screen_images.forEach((samp, index) => {
-                        if (samp.image) {
-                            if (state._id) {
-                                formData.append(`sample_screen_images[${index}][_id]`, samp._id);
+                        if (state._id) {
+                            if (samp.image) {
                                 if (samp._id) {
                                     formData.append(`sample_screen_images[${index}][image]`, samp.image);
-                                    formData.append('sample_image', samp.image);
+                                    formData.append(`sample_screen_images[${index}][_id]`, samp._id);
                                 } else {
                                     formData.append(`sample_screen_images[${index}][image]`, samp.image.name);
                                     formData.append('sample_image', samp.image);
                                 }
-                            } else {
-                                formData.append('sample_image', samp.image);
                             }
+                        } else {
+                            formData.append('sample_image', samp.image);
                         }
+
                     });
                 }
-
                 setMainLoader(true); // Start loader
                 let response;
                 if (state._id) {

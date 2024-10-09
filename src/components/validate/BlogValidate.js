@@ -4,21 +4,21 @@ export const BlogValidates = (values) => {
     // Validate title field
     if (!values?.title?.trim()) {
         errors.title = "Title is required";
-    } else if (values?.title.length < 3 || values?.title.length > 50) {
-        errors.title = "Title must be between 3 and 50 characters.";
+    } else if (values?.title.length < 3 || values?.title.length > 100) {
+        errors.title = "Title must be between 3 and 100 characters";
     }
 
     // Validate sub title field
     if (!values?.sub_title?.trim()) {
         errors.sub_title = "Sub title is required";
-    } else if (values?.sub_title.length < 3 || values?.sub_title.length > 150) {
-        errors.sub_title = "Sub title must be between 3 and 150 characters";
+    } else if (values?.sub_title.length < 3 || values?.sub_title.length > 500) {
+        errors.sub_title = "Sub title must be between 3 and 500 characters";
     }
 
     // Validate Description field
     if (values?.desc && values.desc.trim()) {
-        if (values.desc.length < 3 || values.desc.length > 500) {
-            errors.desc = "Description must be between 3 and 500 characters.";
+        if (values.desc.length < 3 || values.desc.length > 1000) {
+            errors.desc = "Description must be between 3 and 1000 characters.";
         }
     }
 
@@ -107,15 +107,23 @@ export const BlogValidates = (values) => {
             }
 
             // Validate Description
-            if (!ind.desc || ind.desc.trim().length === 0) {
-                // Only add error if title or image is provided
-                if ((ind.title && ind.title.trim().length > 0) || ind.image) {
-                    errors.features[index] = errors.features[index] || {}; // Initialize errors for this index
-                    errors.features[index].desc = "Features description is required.";
+            // if (!ind.desc || ind.desc.trim().length === 0) {
+            //     // Only add error if title or image is provided
+            //     if ((ind.title && ind.title.trim().length > 0) || ind.image) {
+            //         errors.features[index] = errors.features[index] || {}; // Initialize errors for this index
+            //         errors.features[index].desc = "Features description is required.";
+            //     }
+            // } else if (ind.desc.length < 3 || ind.desc.length > 50) {
+            //     errors.features[index] = errors.features[index] || {}; // Ensure error object for this index exists
+            //     errors.features[index].desc = "Features description must be between 3 and 50 characters.";
+            // }
+            // Validate Description - remove 'description is required' error
+            if (ind.desc && ind.desc.trim().length > 0) {
+                // Validate description length only if it exists
+                if (ind.desc.length < 3 || ind.desc.length > 50) {
+                    errors.features[index] = errors.features[index] || {}; // Ensure error object for this index exists
+                    errors.features[index].desc = "Features description must be between 3 and 50 characters.";
                 }
-            } else if (ind.desc.length < 3 || ind.desc.length > 50) {
-                errors.features[index] = errors.features[index] || {}; // Ensure error object for this index exists
-                errors.features[index].desc = "Features description must be between 3 and 50 characters.";
             }
 
             // Validate Image

@@ -374,16 +374,23 @@ function AddCaseStudiesIndex() {
                 // Append features if not empty
                 if (Array.isArray(updatedValues.features)) {
                     updatedValues.features.forEach((feature, index) => {
-                        if (feature.title && feature.desc) {
+                        if (feature.title) {
                             formData.append(`features[${index}][title]`, feature.title);
-                            formData.append(`features[${index}][desc]`, feature.desc);
+
+                            // Append desc only if it exists
+                            if (feature.desc) {
+                                formData.append(`features[${index}][desc]`, feature.desc);
+                            }
                             if (state._id) {
-                                formData.append(`features[${index}][_id]`, feature._id);
                                 if (feature.image && feature.image.name) {
                                     formData.append(`features[${index}][image]`, feature.image.name);
                                     formData.append('feature_image', feature.image || '');
                                 } else {
+                                    formData.append(`features[${index}][_id]`, feature._id);
                                     formData.append(`features[${index}][image]`, feature.image || '');
+                                    if (feature.image.name) {
+                                        formData.append('feature_image', feature.image || '');
+                                    }
                                 }
                             } else {
                                 formData.append(`features[${index}][image]`, feature.image ? feature.image.name : '');
@@ -400,12 +407,15 @@ function AddCaseStudiesIndex() {
                             formData.append(`industry[${index}][title]`, ind.title);
                             formData.append(`industry[${index}][desc]`, ind.desc);
                             if (state._id) {
-                                formData.append(`industry[${index}][_id]`, ind._id);
                                 if (ind.image && ind.image.name) {
+                                    formData.append('industry_image', ind.image || '');
                                     formData.append(`industry[${index}][image]`, ind.image.name);
                                 } else {
+                                    formData.append(`industry[${index}][_id]`, ind._id);
                                     formData.append(`industry[${index}][image]`, ind.image || '');
-                                    formData.append('industry_image', ind.image || '');
+                                    if (ind.image.name) {
+                                        formData.append('industry_image', ind.image || '');
+                                    }
                                 }
                             } else {
                                 formData.append(`industry[${index}][image]`, ind.image ? ind.image.name : '');
@@ -422,12 +432,16 @@ function AddCaseStudiesIndex() {
                             formData.append(`content[${index}][desc]`, cont.desc);
                             formData.append(`content[${index}][redirect_link]`, cont.redirect_link);
                             if (state._id) {
-                                formData.append(`content[${index}][_id]`, cont._id);
                                 if (cont.image && cont.image.name) {
                                     formData.append(`content[${index}][image]`, cont.image.name);
-                                } else {
-                                    formData.append(`content[${index}][image]`, cont.image || '');
                                     formData.append('content_image', cont.image || '');
+                                } else {
+                                    formData.append(`content[${index}][_id]`, cont._id);
+                                    formData.append(`content[${index}][image]`, cont.image || '');
+                                    if (cont.image.name) {
+                                        formData.append('content_image', cont.image || '');
+
+                                    }
                                 }
                             } else {
                                 formData.append(`content[${index}][image]`, cont.image ? cont.image.name : '');
@@ -439,20 +453,21 @@ function AddCaseStudiesIndex() {
 
                 if (Array.isArray(updatedValues.sample_screen_images)) {
                     updatedValues.sample_screen_images.forEach((samp, index) => {
-                        if (samp.image) {
-                            if (state._id) {
-                                formData.append(`sample_screen_images[${index}][_id]`, samp._id);
+
+                        if (state._id) {
+                            if (samp.image) {
                                 if (samp._id) {
                                     formData.append(`sample_screen_images[${index}][image]`, samp.image);
-                                    formData.append('sample_image', samp.image);
+                                    formData.append(`sample_screen_images[${index}][_id]`, samp._id);
                                 } else {
                                     formData.append(`sample_screen_images[${index}][image]`, samp.image.name);
                                     formData.append('sample_image', samp.image);
                                 }
-                            } else {
-                                formData.append('sample_image', samp.image);
                             }
+                        } else {
+                            formData.append('sample_image', samp.image);
                         }
+
                     });
                 }
                 // Append other_images

@@ -93,7 +93,7 @@ function AddBlogList() {
     const getCategories = async () => {
         try {
 
-            const response = await api.getWithToken(`${serverURL}/blog-category`)
+            const response = await api.getWithToken(`${serverURL}/blog-category?status=1`)
             if (response.data.success === true) {
                 setCategory(response.data.data.data || []);
             } else {
