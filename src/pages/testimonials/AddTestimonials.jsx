@@ -187,11 +187,7 @@ function AddTestimonials() {
                                                 />
                                                 <SingleError error={errors?.designation} />
                                             </Col>
-                                            <Col md={12} lg={6}>
-                                                <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
-                                                <SingleError error={errors?.image} />
-                                            </Col>
-                                            <Col md={12} lg={6}>
+                                            <Col md={12}>
                                                 <LableInput
                                                     label="Rating:"
                                                     className="form-control"
@@ -204,6 +200,10 @@ function AddTestimonials() {
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.name} />
+                                            </Col>
+                                            <Col md={12} lg={6}>
+                                                <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
+                                                <SingleError error={errors?.image} />
                                             </Col>
                                             <Col md={12}>
                                                 <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />

@@ -624,7 +624,7 @@ function AddCaseStudiesIndex() {
 
                                                         <Col md={12}>
                                                             <div className='d-flex justify-content-between align-items-center'>
-                                                                <h5 className='form-title mb-0'>Tags</h5>
+                                                                <h5 className='form-title mb-0'>Tags:</h5>
                                                                 <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddTags}>
                                                                     <PiPlusBold />
                                                                 </div>
@@ -679,7 +679,7 @@ function AddCaseStudiesIndex() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Industry</h5>
+                                                    <h5 className='form-title'>Industry:</h5>
                                                     <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddIndustry}>
                                                         <PiPlusBold />
                                                     </div>
@@ -754,7 +754,7 @@ function AddCaseStudiesIndex() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Features</h5>
+                                                    <h5 className='form-title'>Features:</h5>
                                                     <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddFeature}>
                                                         <PiPlusBold />
                                                     </div>
@@ -826,7 +826,7 @@ function AddCaseStudiesIndex() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Sample Screens</h5>
+                                                    <h5 className='form-title'>Sample Screens:</h5>
                                                 </div>
                                             </Col>
                                             <Col md={12} className='mb-3'>
@@ -838,14 +838,14 @@ function AddCaseStudiesIndex() {
                                                         states={states}
                                                     />
                                                 </div>
-                                                {Array.from(states?.sample_screen_images)?.map((image, index) => (
-                                                    <div className='d-flex align-items-start gap-3 w-100' key={index}>
-                                                        <div className="image-preview-container">
+                                                <div className='d-flex align-items-start gap-3 w-100' >
+                                                    {Array.from(states?.sample_screen_images)?.map((image, index) => (
+                                                        <div className="image-preview-container" key={index}>
                                                             <div key={index} className="image-preview">
                                                                 <img
                                                                     src={image?.image?.name ? URL.createObjectURL(image?.image) : `${imageURL}${image.image}`}
                                                                     alt={`preview ${index}`}
-                                                                    className="preview-image"
+                                                                    className="preview-image sample-screens-image"
                                                                 />
                                                                 <button
                                                                     onClick={(e) => handleRemoveImage(e, index, 'sample_screen_images')}
@@ -855,8 +855,8 @@ function AddCaseStudiesIndex() {
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                ))}
+                                                    ))}
+                                                </div>
                                             </Col>
                                             <Col md={12}>
                                                 <hr />
@@ -866,7 +866,7 @@ function AddCaseStudiesIndex() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Other Screens</h5>
+                                                    <h5 className='form-title'>Other Screens:</h5>
                                                 </div>
                                             </Col>
                                             <Col md={12} className='mb-3'>
@@ -878,14 +878,14 @@ function AddCaseStudiesIndex() {
                                                         states={states}
                                                     />
                                                 </div>
-                                                {Array.from(states?.other_images)?.map((image, index) => (
-                                                    <div className='d-flex align-items-start gap-3 w-100' key={index}>
-                                                        <div className="image-preview-container">
+                                                <div className='d-flex align-items-start gap-3 w-100'>
+                                                    {Array.from(states?.other_images)?.map((image, index) => (
+                                                        <div className="image-preview-container" key={index}>
                                                             <div key={index} className="image-preview">
                                                                 <img
                                                                     src={image?.image?.name ? URL.createObjectURL(image?.image) : `${imageURL}${image.image}`}
                                                                     alt={`preview ${index}`}
-                                                                    className="preview-image"
+                                                                    className="preview-image sample-screens-image"
                                                                 />
 
 
@@ -897,8 +897,8 @@ function AddCaseStudiesIndex() {
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                ))}
+                                                    ))}
+                                                </div>
                                             </Col>
                                             <Col md={12}>
                                                 <hr />
@@ -908,7 +908,7 @@ function AddCaseStudiesIndex() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Content</h5>
+                                                    <h5 className='form-title'>Content:</h5>
                                                     <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddContent}>
                                                         <PiPlusBold />
                                                     </div>
@@ -992,7 +992,7 @@ function AddCaseStudiesIndex() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Faqs</h5>
+                                                    <h5 className='form-title'>Faqs:</h5>
                                                     <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddFaqs}>
                                                         <PiPlusBold />
                                                     </div>

@@ -880,8 +880,8 @@ td p {
 }
 
 .view-image-box {
-  width: 100px;
-  height: 100px;
+  width: 250px;
+  height: 250px;
   border-radius: 8px;
   border: 1px solid var(--primary);
   overflow: hidden;
@@ -1108,13 +1108,19 @@ td p {
 }
 
 .career-flight .career-details .career-icon {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 5px;
   background-color: #F9FBFE;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.career-flight .career-details .career-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: none;
 }
 
 .career-flight .career-details h4 {
@@ -1179,4 +1185,53 @@ td p {
 
 .rating svg path {
   color: #F8A02D;
+}
+
+.sample-screens-image {
+  height: auto !important;
+}
+
+
+.latest-innovations .innovations-card {
+  height: 300px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.latest-innovations .innovations-card .innovations-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: end;
+  position: relative;
+  z-index: 1;
+}
+
+.latest-innovations .innovations-card .innovations-detail h4 {
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.latest-innovations .innovations-card .innovations-detail p {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.latest-innovations .innovations-card::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 100%);
 }

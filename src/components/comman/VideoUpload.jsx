@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MdOutlineFileUpload } from "react-icons/md";
+import { RiVideoUploadLine } from 'react-icons/ri';
 
 function VideoUpload({ label, setVideo, initialVideo, onChange }) {
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -72,7 +72,7 @@ function VideoUpload({ label, setVideo, initialVideo, onChange }) {
                     ) : (
                         <>
                             <div className='drag-drop-icons d-flex justify-content-center align-items-center m-auto mb-3'>
-                                <MdOutlineFileUpload size={40} />
+                                <RiVideoUploadLine  size={30} />
                             </div>
                             <p>Upload Video</p>
                         </>

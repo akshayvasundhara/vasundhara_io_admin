@@ -484,7 +484,7 @@ function IndexPortfolioEdit() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Features</h5>
+                                                    <h5 className='form-title'>Features:</h5>
                                                     <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddFeature}>
                                                         <PiPlusBold />
                                                     </div>
@@ -517,15 +517,15 @@ function IndexPortfolioEdit() {
                                                                     />
                                                                     <SingleError error={errors.features?.[index]?.title} />
                                                                 </div>
-                                                            </div>
-                                                            <div className="d-flex justify-content-end mt-3">
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => handleRemoveFeature(index)}
-                                                                    className="btn btn-danger py-2"
-                                                                >
-                                                                    <RiDeleteBinLine />
-                                                                </button>
+                                                                <div className="d-flex justify-content-end mt-3">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleRemoveFeature(index)}
+                                                                        className="btn btn-danger py-2"
+                                                                    >
+                                                                        <RiDeleteBinLine />
+                                                                    </button>
+                                                                </div>
                                                             </div>
 
                                                         </div>
@@ -540,7 +540,7 @@ function IndexPortfolioEdit() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Sample Screens</h5>
+                                                    <h5 className='form-title'>Sample Screens:</h5>
                                                 </div>
                                             </Col>
                                             <Col md={12} className='mb-3'>
@@ -554,14 +554,14 @@ function IndexPortfolioEdit() {
                                                         />
                                                     </div>
                                                 </div>
-                                                {Array.from(states?.sample_screen_images)?.map((image, index) => (
-                                                    <div className='d-flex align-items-start gap-3 w-100' key={index}>
-                                                        <div className="image-preview-container">
+                                                <div className='d-flex align-items-start gap-3 w-100'>
+                                                    {Array.from(states?.sample_screen_images)?.map((image, index) => (
+                                                        <div className="image-preview-container" key={index}>
                                                             <div key={index} className="image-preview">
                                                                 <img
                                                                     src={image?.image?.name ? URL.createObjectURL(image?.image) : `${imageURL}${image.image}`}
                                                                     alt={`preview ${index}`}
-                                                                    className="preview-image"
+                                                                    className="preview-image sample-screens-image"
                                                                 />
                                                                 <button
                                                                     onClick={(e) => handleRemoveImage(e, index, 'sample_screen_images')}
@@ -571,8 +571,8 @@ function IndexPortfolioEdit() {
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                ))}
+                                                    ))}
+                                                </div>
                                             </Col>
                                             <Col md={12}>
                                                 <hr />

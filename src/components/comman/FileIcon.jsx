@@ -63,7 +63,7 @@ function FileICon({ label, setIcon, initialIcon, onChange, name }) {
                 <div>
                     {selectedImage ? (
                         <>
-                            <div className="image-upload p-4">
+                            <div className="image-upload">
                                 <img
                                     src={selectedImage}
                                     alt="Selected"

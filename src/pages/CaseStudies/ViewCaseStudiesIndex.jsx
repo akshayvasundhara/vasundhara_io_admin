@@ -84,12 +84,12 @@ function ViewCaseStudiesIndex() {
                                         <label className='mb-2'>Video:</label>
                                         <div className='d-flex flex-wrap gap-3 mb-3'>
                                             <div className='border rounded-3 p-1'>
-                                                <video autoplay="" loop="" controls="" width="150" height="150">
+                                                <video autoplay="" loop="" controls="" width="240" height="240">
                                                     <source type="video/mp4" src={`${imageURL}${state.video}`} />
                                                 </video>
                                             </div>
                                         </div>
-                                        <h5 className='form-title'>Industry</h5>
+                                        <h5 className='form-title pt-3'>Industry:</h5>
                                         <div className="career-flight section-py mt-2 mb-3">
                                             <div className="row g-3">
                                                 {state.industry.map(detail => (
@@ -97,7 +97,7 @@ function ViewCaseStudiesIndex() {
                                                         <div className="card h-100 border-0 shadow-lg">
                                                             <div className="career-details card-body">
                                                                 <div className="career-icon" aria-label={detail.title}>
-                                                                    <img src={`${imageURL}${detail.image}`} alt={detail.title} width={90} height={90} /> {/* Adjust size as needed */}
+                                                                    <img src={`${imageURL}${detail.image}`} alt={detail.title} /> {/* Adjust size as needed */}
                                                                 </div>
                                                                 <h4>{detail.title}</h4>
                                                                 <p>{detail.desc}</p>
@@ -109,15 +109,15 @@ function ViewCaseStudiesIndex() {
                                         </div>
 
 
-                                        <h5 className='form-title'>Features</h5>
-                                        <div className="career-flight section-py mt-2 mb-3">
+                                        <h5 className='form-title pt-3'>Features:</h5>
+                                        {/* <div className="career-flight section-py mt-2 mb-3">
                                             <div className="row g-3">
                                                 {state.features.map(detail => (
                                                     <div className="col-12 col-md-6 col-xl-4" key={detail.id}>
                                                         <div className="card h-100 border-0 shadow-lg">
                                                             <div className="career-details card-body">
                                                                 <div className="career-icon" aria-label={detail.title}>
-                                                                    <img src={`${imageURL}${detail.image}`} alt={detail.title} width={90} height={90} /> {/* Adjust size as needed */}
+                                                                    <img src={`${imageURL}${detail.image}`} alt={detail.title} width={90} height={90} /> 
                                                                 </div>
                                                                 <h4>{detail.title}</h4>
                                                                 <p>{detail.desc}</p>
@@ -126,19 +126,56 @@ function ViewCaseStudiesIndex() {
                                                     </div>
                                                 ))}
                                             </div>
-                                        </div>
+                                        </div> */}
 
-                                        <h5 className='form-title'>Sample Screens</h5>
+                                        {/* <section className="key-features latest-innovations section-py">
+                                            <div className="container">
+                                                <Row className="g-md-4 g-2">
+                                                    {state.features.map(detail => (
+                                                        <Col lg={3} sm={4} xs={6} key={detail.id}>
+                                                            <div className="innovations-card" style={{ backgroundImage: `url(${imageURL}${detail.image} || '-'})` }}>
+                                                                <div className="innovations-detail">
+                                                                    <h4>{detail.title}</h4>
+                                                                    <p>{detail.desc}</p>
+                                                                </div>
+                                                            </div>
+                                                        </Col>
+                                                    ))}
+                                                </Row>
+                                            </div>
+                                        </section> */}
+
+                                        <section className="key-features latest-innovations section-py">
+                                            <Row className="g-md-4 g-2 row-cols-1 row-cols-lg-3 row-cols-xl-5">
+                                                {state.features.map(detail => (
+                                                    <Col key={detail.id}>
+                                                        <div
+                                                            className="innovations-card"
+                                                            style={{
+                                                                backgroundImage: `url(${detail.image ? `${imageURL}${detail.image}` : 'path/to/fallback-image.jpg'})`,
+                                                            }}
+                                                        >
+                                                            <div className="innovations-detail">
+                                                                {/* <h4>{detail.title}</h4> */}
+                                                                <p>{detail.title}</p>
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                ))}
+                                            </Row>
+                                        </section>
+
+                                        <h5 className='form-title pt-3'>Sample Screens:</h5>
                                         <div className='d-flex gap-3 flex-wrap'>
                                             {state.sample_screen_images?.length > 0 ? (
                                                 state.sample_screen_images?.map((sample, index) => {
                                                     return (
                                                         <div>
-                                                            <div className='view-image-box mb-3'>
+                                                            <div className='mb-3'>
                                                                 <img
                                                                     src={`${imageURL}${sample.image}`}
                                                                     alt=""
-                                                                    className='w-100 h-100'
+                                                                    className='preview-image sample-screens-image'
                                                                 />
                                                             </div>
                                                         </div>
@@ -157,7 +194,7 @@ function ViewCaseStudiesIndex() {
                                             )}
                                         </div>
 
-                                        <h5 className='form-title'>Other Image</h5>
+                                        <h5 className='form-title pt-3'>Other Image:</h5>
                                         <div className='d-flex gap-3 flex-wrap'>
 
                                             {state.other_images?.length > 0 ? (
@@ -168,7 +205,7 @@ function ViewCaseStudiesIndex() {
                                                                 <img
                                                                     src={`${imageURL}${other.image}`}
                                                                     alt=""
-                                                                    className='w-100 h-100'
+                                                                    className='w-100 preview-image sample-screens-image'
                                                                 />
                                                             </div>
                                                         </div>
@@ -180,14 +217,14 @@ function ViewCaseStudiesIndex() {
                                                         <img
                                                             src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
                                                             alt=""
-                                                            className='w-100 h-100'
+                                                            className='w-100 preview-image sample-screens-image'
                                                         />
                                                     </div>
                                                 </div>
                                             )}
                                         </div>
 
-                                        <h5 className='form-title'>Content</h5>
+                                        <h5 className='form-title pt-3'>Content:</h5>
 
                                         <div className="career-flight section-py mt-2 mb-3">
                                             <div className="row g-3">
@@ -214,7 +251,7 @@ function ViewCaseStudiesIndex() {
                                             </div>
                                         </div>
 
-                                        <h5 className='form-title mt-4 mb-3'>Faqs</h5>
+                                        <h5 className='form-title pt-3 mb-3'>Faqs:</h5>
                                         <Accordion>
                                             {state.faqs.map((faq, index) => {
                                                 return (

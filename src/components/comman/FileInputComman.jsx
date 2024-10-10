@@ -65,7 +65,7 @@ function FileInputComman({ label, setImage, initialImage, name, onChange }) {
             >
                 <div>
                     {selectedImage ? (
-                        <div className="image-upload p-4">
+                        <div className="image-upload">
                             <img
                                 src={selectedImage}
                                 alt="Selected"
@@ -73,10 +73,12 @@ function FileInputComman({ label, setImage, initialImage, name, onChange }) {
                             />
                         </div>
                     ) : (
-                        <div className='drag-drop-icons d-flex justify-content-center align-items-center m-auto mb-3'>
-                            <MdOutlineFileUpload />
+                        <>
+                            <div className='drag-drop-icons d-flex justify-content-center align-items-center m-auto mb-3'>
+                                <MdOutlineFileUpload />
+                            </div>
                             <p>Upload image</p>
-                        </div>
+                        </>
                     )}
                 </div>
             </div>

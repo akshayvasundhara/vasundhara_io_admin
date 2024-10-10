@@ -89,7 +89,7 @@ function ViewIndexPortfolio() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <h5 className='form-title'>Features</h5>
+                                        <h5 className='form-title mt-3'>Features:</h5>
                                         <div className="career-flight section-py mt-2 mb-3">
                                             <div className="row g-3">
                                                 {state.features.map(detail => (
@@ -108,17 +108,17 @@ function ViewIndexPortfolio() {
                                             </div>
                                         </div>
 
-                                        <h5 className='form-title'>Sample Screens</h5>
+                                        <h5 className='form-title mt-4'>Sample Screens:</h5>
                                         <div className='d-flex gap-3 flex-wrap'>
                                             {state.sample_screen_images?.length > 0 ? (
                                                 state.sample_screen_images?.map((sample, index) => {
                                                     return (
                                                         <div>
-                                                            <div className='view-image-box mb-3'>
+                                                            <div className='mb-3'>
                                                                 <img
                                                                     src={`${imageURL}${sample.image}`}
                                                                     alt=""
-                                                                    className='w-100 h-100'
+                                                                    className='preview-image sample-screens-image'
                                                                 />
                                                             </div>
                                                         </div>
@@ -130,7 +130,7 @@ function ViewIndexPortfolio() {
                                                         <img
                                                             src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
                                                             alt=""
-                                                            className='w-100 h-100'
+                                                            className='preview-image sample-screens-image'
                                                         />
                                                     </div>
                                                 </div>
