@@ -7,7 +7,7 @@ function Textarea({ label, rows, type, name, value, onChange, placeholder }) {
                 {label}
             </label>
             <div className="form-floating">
-                <textarea className="form-control p-2 h-auto" id="floatingTextarea2" rows={rows} type={type} name={name} value={value} onChange={onChange} placeholder={placeholder}></textarea>
+                <textarea className="p-2" id="floatingTextarea2" rows={rows} type={type} name={name} value={value} onChange={onChange} placeholder={placeholder}></textarea>
             </div>
         </>
     )

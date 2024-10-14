@@ -575,9 +575,13 @@ td p {
 .form-select:focus {
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
-  border-color: var(--secondary);
+  border-color: var(--primary);
   outline: 0;
   box-shadow: none !important
+}
+
+.css-t3ipsp-control {
+  border-color: var(--primary) !important;
 }
 
 /* Layout Page End */
@@ -1234,4 +1238,27 @@ td p {
   left: 0;
   top: 0;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+textarea {
+  padding: 9px 10px;
+  color: var(--bs-body-color);
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-clip: padding-box;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  width: 100%;
+}
+
+textarea:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: var(--primary);
+  outline: 0;
+  box-shadow: none !important
+}
+
+.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+  border: 1px solid var(--primary) !important;
 }
