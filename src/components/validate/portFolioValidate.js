@@ -57,9 +57,9 @@ export const PortFolioValidate = (values) => {
                     errors.features[index] = errors.features[index] || {}; // Initialize errors for this index
                     errors.features[index].title = "Features title is required.";
                 }
-            } else if (ind.title.length < 3 || ind.title.length > 50) {
+            } else if (ind.title.length < 3 || ind.title.length > 100) {
                 errors.features[index] = errors.features[index] || {}; // Ensure error object for this index exists
-                errors.features[index].title = "Features title must be between 3 and 50 characters.";
+                errors.features[index].title = "Features title must be between 3 and 100 characters.";
             }
 
 

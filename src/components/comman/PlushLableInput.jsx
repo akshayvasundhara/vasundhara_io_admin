@@ -31,9 +31,17 @@ function PlushLableInput({ label, className, placeholder, type, name, onChange, 
 
     return (
         <>
-            <label htmlFor="signin-username" className="form-label text-default">
-                {label}
-            </label>
+            <div className='d-flex justify-content-between align-items-center gap-3 mb-2'>
+                <label htmlFor="signin-username" className="form-label text-default">
+                    {label}
+                </label>
+                <div
+                    className="input-add d-inline-flex justify-content-center align-items-center"
+                    onClick={addInput}
+                >
+                    <PiPlusBold />
+                </div>
+            </div>
             {inputs.map((value, index) => (
                 <div key={index} className="d-flex align-items-center gap-2 mb-2">
                     <input
@@ -44,13 +52,8 @@ function PlushLableInput({ label, className, placeholder, type, name, onChange, 
                         onChange={(e) => handleChange(index, e.target.value)}
                         value={value}
                     />
-                    <div
-                        className="input-add d-inline-flex justify-content-center align-items-center"
-                        onClick={addInput}
-                    >
-                        <PiPlusBold />
-                    </div>
-                    {inputs.length > 1 && (
+
+                    {inputs && (
                         <div
                             className="input-add d-inline-flex justify-content-center align-items-center bg-danger"
                             onClick={() => removeInput(index)}

@@ -621,7 +621,6 @@ function AddCaseStudiesIndex() {
                                                         </div>
                                                     </div>
                                                     <Row className='w-100 mt-3 mt-xl-0 g-0'>
-
                                                         <Col md={12}>
                                                             <div className='d-flex justify-content-between align-items-center'>
                                                                 <h5 className='form-title mb-0'>Tags:</h5>

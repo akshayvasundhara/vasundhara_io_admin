@@ -101,9 +101,9 @@ export const BlogValidates = (values) => {
                     errors.features[index] = errors.features[index] || {}; // Initialize errors for this index
                     errors.features[index].title = "Features title is required.";
                 }
-            } else if (ind.title.length < 3 || ind.title.length > 25) {
+            } else if (ind.title.length < 3 || ind.title.length > 100) {
                 errors.features[index] = errors.features[index] || {}; // Ensure error object for this index exists
-                errors.features[index].title = "Features title must be between 3 and 25 characters.";
+                errors.features[index].title = "Features title must be between 3 and 100 characters.";
             }
 
             // Validate Description
@@ -153,9 +153,9 @@ export const BlogValidates = (values) => {
                     errors.industry[index] = errors.industry[index] || {}; // Initialize errors for this index
                     errors.industry[index].title = "Industry title is required.";
                 }
-            } else if (ind.title.length < 3 || ind.title.length > 25) {
+            } else if (ind.title.length < 3 || ind.title.length > 50) {
                 errors.industry[index] = errors.industry[index] || {}; // Ensure error object for this index exists
-                errors.industry[index].title = "Industry title must be between 3 and 25 characters.";
+                errors.industry[index].title = "Industry title must be between 3 and 50 characters.";
             }
 
             // Validate description
@@ -165,9 +165,9 @@ export const BlogValidates = (values) => {
                     errors.industry[index] = errors.industry[index] || {}; // Initialize errors for this index
                     errors.industry[index].desc = "Industry description is required.";
                 }
-            } else if (ind.desc.length < 3 || ind.desc.length > 50) {
+            } else if (ind.desc.length < 3 || ind.desc.length > 500) {
                 errors.industry[index] = errors.industry[index] || {}; // Ensure error object for this index exists
-                errors.industry[index].desc = "Industry description must be between 3 and 50 characters.";
+                errors.industry[index].desc = "Industry description must be between 3 and 500 characters.";
             }
 
             // Validate image
@@ -198,9 +198,9 @@ export const BlogValidates = (values) => {
                     errors.content[index] = errors.content[index] || {}; // Initialize errors for this index
                     errors.content[index].title = "Content title is required.";
                 }
-            } else if (ind.title.length < 3 || ind.title.length > 25) {
+            } else if (ind.title.length < 3 || ind.title.length > 100) {
                 errors.content[index] = errors.content[index] || {}; // Ensure error object for this index exists
-                errors.content[index].title = "Content title must be between 3 and 25 characters.";
+                errors.content[index].title = "Content title must be between 3 and 100 characters.";
             }
 
             // Validate description
@@ -210,9 +210,9 @@ export const BlogValidates = (values) => {
                     errors.content[index] = errors.content[index] || {}; // Initialize errors for this index
                     errors.content[index].desc = "Content description is required.";
                 }
-            } else if (ind.desc.length < 3 || ind.desc.length > 50) {
+            } else if (ind.desc.length < 3 || ind.desc.length > 1000) {
                 errors.content[index] = errors.content[index] || {}; // Ensure error object for this index exists
-                errors.content[index].desc = "Content description must be between 3 and 50 characters.";
+                errors.content[index].desc = "Content description must be between 3 and 1000 characters.";
             }
 
             // Validate image

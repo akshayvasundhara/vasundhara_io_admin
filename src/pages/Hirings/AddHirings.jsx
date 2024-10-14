@@ -19,6 +19,7 @@ import SingleError from '../../helper/SingleError';
 import api from '../../API/api';
 import { toast } from 'react-toastify';
 import { errorResponse } from '../../helper/error';
+import { PiPlusBold } from 'react-icons/pi';
 
 const requireField = [
     "job_name",
@@ -196,6 +197,14 @@ function AddHirings() {
         }
     }, [state]);
 
+    const handleAddRes = () => {
+        setStates((prevStates) => ({
+            ...prevStates,
+            responsibilities: [...prevStates.responsibilities, ''], // Add a new empty tag field
+        }));
+    }
+
+
     return (
         <>
             {mainLoader && (
@@ -262,21 +271,7 @@ function AddHirings() {
                                                     onChange={handleChange}  // Call handleChange to update state
                                                 />
                                             </Col>
-                                            <Col md={12} lg={6}>
-                                                <PlushLableInput
-                                                    label="Location:"
-                                                    className="form-control"
-                                                    id="text"
-                                                    placeholder="Enter location"
-                                                    type="text"
-                                                    name='location'
-                                                    value={states?.location || ""}
-                                                    // onKeyPress={handleKeyPress}
-                                                    onChange={(newValues) => handleArrayChange('location', newValues)}
-                                                />
-                                                <SingleError error={errors?.location} />
-                                            </Col>
-                                            <Col md={12} lg={6}>
+                                            <Col md={12}>
                                                 <LableInput
                                                     label="No. of Openings:"
                                                     className="form-control"
@@ -290,6 +285,22 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.no_of_openings} />
                                             </Col>
+                                            <Col md={12}>
+                                                <PlushLableInput
+                                                    label="Location:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter location"
+                                                    type="text"
+                                                    name='location'
+                                                    value={states?.location || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={(newValues) => handleArrayChange('location', newValues)}
+                                                />
+                                                <SingleError error={errors?.location} />
+                                            </Col>
+
+
                                             <Col md={12}>
                                                 <PlushLableInput
                                                     label="Responsibilities:"
