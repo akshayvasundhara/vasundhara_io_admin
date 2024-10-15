@@ -101,13 +101,10 @@ function FaqsIndex() {
         getOptions();
     }, [])
 
-    console.log("options", options);
-
 
     // Handle category change
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
-        console.log("event.target.value", event.target.value);
         // Set the selected category
         setPage(1); // Reset to first page when category changes
     };

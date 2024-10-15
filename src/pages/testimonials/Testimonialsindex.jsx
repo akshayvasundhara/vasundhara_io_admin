@@ -30,8 +30,6 @@ function Testimonialsindex() {
     const getTestimonials = async () => {
         setMainLoader(true);
         try {
-            console.log("serverURL", serverURL);
-
             const response = await api.getWithToken(`${serverURL}/testimonial?perPage=${limit}&page=${page}`)
             if (response.data.success === true) {
                 setTestimonial(response.data.data || []);

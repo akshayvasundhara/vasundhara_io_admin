@@ -362,8 +362,6 @@ function AddCaseStudiesIndex() {
                 // Append FAQs
                 if (Array.isArray(updatedValues.faqs)) {
                     updatedValues.faqs.forEach((faq, index) => {
-                        console.log("updatedValues.faqs", updatedValues.faqs);
-
                         if (faq.question && faq.answer) {
                             formData.append(`faqs[${index}][question]`, faq.question);
                             formData.append(`faqs[${index}][answer]`, faq.answer);

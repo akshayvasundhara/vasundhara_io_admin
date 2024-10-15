@@ -26,6 +26,7 @@ const requireField = [
     "twitter_link",
     "facebook_link",
     "linkedin_link",
+    "other_link"
 ];
 
 
@@ -53,7 +54,7 @@ function TeamsAdd() {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
         if (submitCount > 0) {
-            let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
+            let validationErrors = ValidateFields({ ...states, [name]: value, image });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
@@ -73,6 +74,7 @@ function TeamsAdd() {
         setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
+
         validationErrors = ErrorFilter(validationErrors, requireField);
         if (image) {
             delete errors.image;
@@ -95,6 +97,9 @@ function TeamsAdd() {
                 }
                 if (updatedValues.facebook_link) {
                     formData.append('facebook_link', updatedValues.facebook_link);
+                }
+                if (updatedValues.other_link) {
+                    formData.append('other_link', updatedValues.other_link);
                 }
 
 
@@ -138,7 +143,7 @@ function TeamsAdd() {
                 twitter_link: state.twitter_link,
                 facebook_link: state.facebook_link,
                 linkedin_link: state.linkedin_link,
-
+                other_link: state.other_link
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -210,8 +215,8 @@ function TeamsAdd() {
                                                 <SingleError error={errors?.facebook_link} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Other:" rows="4" type="text" name="other_link" />
-                                                {/* <SingleError error={errors?.facebook_link} /> */}
+                                                <Textarea label="Other:" rows="4" type="text" name="other_link" value={states?.other_link || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.other_link} />
                                             </Col>
                                         </Row>
                                     </form>

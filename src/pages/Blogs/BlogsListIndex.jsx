@@ -171,6 +171,7 @@ function BlogsListIndex() {
                                                     <th>Title</th>
                                                     <th>Content</th>
                                                     <th>Category</th>
+                                                    <th>Unique Route</th>
                                                     <th>Author</th>
                                                     <th width='100'>Status</th>
                                                     <th width='100'>Action</th>
@@ -192,6 +193,7 @@ function BlogsListIndex() {
                                                                 </p></td>
                                                                 <td><p>{test.content}</p></td>
                                                                 <td><p>{test.category.name}</p></td>
+                                                                <td><p>{test.tag}</p></td>
                                                                 <td><p>{test.author.name}</p></td>
                                                                 <td>
                                                                     <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />

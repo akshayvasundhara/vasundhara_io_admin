@@ -41,6 +41,11 @@ export const ValidateFields = (values) => {
     errors.image = "Please upload an image";
   }
 
+  // Tag validation 
+  if (!values?.tag?.trim()) {
+    errors.tag = "Tag is required";
+  }
+
   // Validate Job name field
   if (!values?.job_name) {
     errors.job_name = "Job Name field is required.";
@@ -130,6 +135,13 @@ export const ValidateFields = (values) => {
     }
   }
 
+  //Other link
+  if (values?.other_link) {
+    const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+    if (!appStoreUrlPattern.test(values.other_link)) {
+      errors.other_link = "Invalid other link";
+    }
+  }
 
   // Validate Question field
   if (!values?.question) {

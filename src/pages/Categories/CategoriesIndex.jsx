@@ -26,8 +26,6 @@ function CategoriesIndex() {
     const getCategories = async () => {
         setMainLoader(true);
         try {
-            console.log("serverURL", serverURL);
-
             const response = await api.getWithToken(`${serverURL}/blog-category?perPage=${limit}&page=${page}`)
             if (response.data.success === true) {
                 setCategory(response.data.data || []);

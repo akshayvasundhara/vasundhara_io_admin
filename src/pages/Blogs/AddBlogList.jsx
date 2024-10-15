@@ -32,7 +32,8 @@ const requireField = [
     "author",
     "likes",
     "views",
-    "blog_read_time"
+    "blog_read_time",
+    "tag"
 ];
 
 
@@ -146,6 +147,7 @@ function AddBlogList() {
                 likes: state.likes,
                 views: state.views,
                 blog_read_time: state.blog_read_time,
+                tag: state.tag,
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -204,6 +206,7 @@ function AddBlogList() {
                 formData.append('likes', updatedValues.likes);
                 formData.append('views', updatedValues.views);
                 formData.append('blog_read_time', updatedValues.blog_read_time);
+                formData.append('tag', updatedValues.tag);
                 formData.append('image', image);
                 setMainLoader(true); // Start loader
                 let response;
@@ -331,6 +334,20 @@ function AddBlogList() {
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.blog_read_time} />
+                                            </Col>
+                                            <Col md={12}>
+                                                <LableInput
+                                                    label="Unique Route:"
+                                                    className="form-control"
+                                                    id="text"
+                                                    placeholder="Enter unique"
+                                                    type="text"
+                                                    name='tag'
+                                                    value={states?.tag || ""}
+                                                    // onKeyPress={handleKeyPress}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.tag} />
                                             </Col>
                                             <Col md={6} className='switch-box'>
                                                 <div className='d-flex align-items-center gap-2 mb-3'>

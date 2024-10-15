@@ -53,14 +53,14 @@ function AddTestimonials() {
 
         let validationErrors;
         if (submitCount > 0) {
-            validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
+            validationErrors = ValidateFields({ ...states, [name]: value, image });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
                 delete errors.image;
             }
-            console.log("bame", name);
+
 
         }
         setStates((prevValues) => ({
@@ -75,7 +75,6 @@ function AddTestimonials() {
         setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
-        console.log("validationErrors", validationErrors);
 
         validationErrors = ErrorFilter(validationErrors, requireField);
 

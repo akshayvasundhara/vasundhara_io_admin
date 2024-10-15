@@ -121,26 +121,43 @@ function TeamsIndex() {
                                                                 {/* <td>{test.description}</td> */}
                                                                 <td>
                                                                     <div className='d-flex align-items-center gap-2'>
-                                                                        <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center linked' >
+                                                                        {test.twitter_link && (<a
+                                                                            href={test.linkedin_link}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            to='' className='table-edit-btn d-flex justify-content-center align-items-center linked' >
                                                                             <FaLinkedinIn />
-                                                                        </Link>
-                                                                        <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center twitter' >
+                                                                        </a>)}
+                                                                        {test.twitter_link && (<a
+                                                                            href={test.twitter_link}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            to='' className='table-edit-btn d-flex justify-content-center align-items-center twitter' >
                                                                             <FaXTwitter />
-                                                                        </Link>
-                                                                        <Link to='' className='table-edit-btn d-flex justify-content-center align-items-center facebook' >
-                                                                            <FaFacebookF />
-                                                                        </Link>
-                                                                        <div className='d-flex align-items-center gap-2'>
-
-                                                                            <Link
-                                                                                // href={`${imageURL}${test.file}`}
+                                                                        </a>)}
+                                                                        {test.facebook_link && ( // Check if facebook_link is available
+                                                                            <a
+                                                                                href={test.facebook_link}
+                                                                                className='table-edit-btn d-flex justify-content-center align-items-center facebook'
                                                                                 target="_blank"
                                                                                 rel="noopener noreferrer"
-                                                                                className='table-view-btn d-flex justify-content-center align-items-center'
                                                                             >
-                                                                                <FaLink />
-                                                                            </Link>
-                                                                        </div>
+                                                                                <FaFacebookF />
+                                                                            </a>
+                                                                        )}
+                                                                        {test.other_link && (<a
+                                                                            // href={`${imageURL}${test.file}`}
+                                                                            href={test.other_link}
+
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className='table-view-btn d-flex justify-content-center align-items-center'
+                                                                        >
+                                                                            <FaLink />
+                                                                        </a>)}
+                                                                        {!test.linkedin_link && !test.twitter_link && !test.facebook_link && !test.other_link && (
+                                                                            <span>-</span>
+                                                                        )}
                                                                     </div>
                                                                 </td>
                                                                 <td>

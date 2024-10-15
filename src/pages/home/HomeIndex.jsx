@@ -15,11 +15,11 @@ function HomeIndex() {
 
     const data = [
         { id: 1, title: "Testimonial", to: '/testimonials', icons: <FaUsers />, testimonialCount: 14, activeCount: 14 },
-        { id: 2, title: "Portfolio", icons: <CgProfile />, testimonialCount: 25, activeCount: 20 },
-        { id: 3, title: "Estimation Requests", icons: <FaCodePullRequest />, testimonialCount: 25, activeCount: 20 },
-        { id: 4, title: "Offshore", icons: <GiOffshorePlatform />, testimonialCount: 25, activeCount: 20 },
-        { id: 5, title: "Contact Us", icons: <LuContact />, testimonialCount: 25, activeCount: 20 },
-        { id: 6, title: "Newsletter", icons: <FaRegNewspaper />, testimonialCount: 25, activeCount: 20 },
+        { id: 2, title: "Portfolio", to: '/portfolio', icons: <CgProfile />, testimonialCount: 25, activeCount: 20 },
+        // { id: 3, title: "Estimation Requests", icons: <FaCodePullRequest />, testimonialCount: 25, activeCount: 20 },
+        // { id: 4, title: "Offshore", icons: <GiOffshorePlatform />, testimonialCount: 25, activeCount: 20 },
+        { id: 5, title: "Contact Us", to: '/contact-us', icons: <LuContact />, testimonialCount: 25, activeCount: 20 },
+        { id: 6, title: "Newsletter", to: '/newsletters', icons: <FaRegNewspaper />, testimonialCount: 25, activeCount: 20 },
         // { id: 7, title: "Blogs", testimonialCount: 25, activeCount: 20 },
         // { id: 8, title: "Case Studies", testimonialCount: 25, activeCount: 20 },
         // Add more items as needed
