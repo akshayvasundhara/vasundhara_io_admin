@@ -1262,3 +1262,18 @@ textarea:focus {
 .ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
   border: 1px solid var(--primary) !important;
 }
+
+/* ckEditor css */
+.editor-container {
+  resize: vertical; /* Allow resizing only in the vertical direction */
+  overflow: auto; /* Enable scrollbars if needed */
+  min-width: 300px; /* Set a minimum width */
+  min-height: 200px; /* Set a minimum height */
+  max-height: 600px; /* Set a maximum height if needed */
+  
+  /* Border properties */
+  border: 2px solid #007bff; /* Change the color and thickness as needed */
+  border-radius: 5px; /* Optional: add rounded corners */
+  padding: 10px; /* Optional: add padding inside the border */
+  background-color: #f9f9f9; /* Optional: set a background color */
+}

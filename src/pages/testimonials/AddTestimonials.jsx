@@ -18,12 +18,15 @@ import { errorResponse } from '../../helper/error';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoaderComman from '../../components/comman/LoaderComman';
+import FileICon from '../../components/comman/FileIcon';
 const requireField = [
     "name",
     "designation",
     "description",
     "image",
-    "rating"
+    "rating",
+    "platform_logo",
+    "platform_link"
 ];
 
 function AddTestimonials() {
@@ -39,6 +42,7 @@ function AddTestimonials() {
     const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
+    const [platform_logo, setPlatFormLogo] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
     const navigate = useNavigate();
     // Function to handle the toggle switch
@@ -50,15 +54,23 @@ function AddTestimonials() {
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
+        if (name === 'rating') {
+            if (value === '' || (value >= 1 && value <= 5)) {
+                newValue = value; // Only allow if it's a number between 1 and 5
+            } else {
+                return; // Prevent updating state if the value is invalid
+            }
+        }
 
         let validationErrors;
         if (submitCount > 0) {
-            validationErrors = ValidateFields({ ...states, [name]: value, image });
+            validationErrors = ValidateFields({ ...states, [name]: value, image, platform_logo });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
                 delete errors.image;
+                delete errors.platform_logo;
             }
 
 
@@ -77,6 +89,8 @@ function AddTestimonials() {
         let validationErrors = ValidateFields(updatedValues);
 
         validationErrors = ErrorFilter(validationErrors, requireField);
+        console.log("validationErrors", validationErrors);
+
 
         if (image) {
             delete errors.image;
@@ -89,7 +103,9 @@ function AddTestimonials() {
                 formData.append('name', updatedValues.name);
                 formData.append('designation', updatedValues.designation);
                 formData.append('description', updatedValues.description);
+                formData.append('platform_link', updatedValues.platform_link);
                 formData.append('image', image);
+                formData.append('platform_logo', platform_logo);
                 formData.append('status', status);
                 formData.append('rating', updatedValues.rating);
 
@@ -131,13 +147,18 @@ function AddTestimonials() {
                 designation: state.designation,
                 description: state.description,
                 status: state.status,
-                rating: state.rating
+                rating: state.rating,
+                platform_link: state.platform_link
             });
             if (state.image) {
-                const fullImageUrl = `${imageURL}${state.image}`;
-                setImage(fullImageUrl);
+                setImage(state.image);
             } else {
                 setImage(null); // Clear image if there's no valid image
+            }
+            if (state.platform_logo) {
+                setPlatFormLogo(state.platform_logo);
+            } else {
+                setPlatFormLogo(null); // Clear image if there's no valid image
             }
         }
     }, [state]);
@@ -197,12 +218,23 @@ function AddTestimonials() {
                                                     value={states?.rating || ""}
                                                     // onKeyPress={handleKeyPress}
                                                     onChange={handleChange}
+                                                    min="1"
+                                                    max="5"
                                                 />
-                                                <SingleError error={errors?.name} />
+                                                <SingleError error={errors?.rating} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
+                                                <FileInput label="Image:" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
+                                            </Col>
+                                            <Col md={12} lg={6}>
+                                                <FileICon label="Platform Logo:" setIcon={setPlatFormLogo} initialIcon={platform_logo} onChange={handleChange} name='platform_logo' />
+                                                <SingleError error={errors?.platform_logo} />
+                                            </Col>
+
+                                            <Col md={12}>
+                                                <LableInput label="Platform Link:" className="form-control" placeholder="Enter platform link" type="text" name="platform_link" value={states?.platform_link || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.platform_link} />
                                             </Col>
                                             <Col md={12}>
                                                 <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />

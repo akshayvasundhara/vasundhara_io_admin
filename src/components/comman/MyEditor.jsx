@@ -44,9 +44,6 @@ const debounce = (func, wait) => {
 
 const MyEditor = ({ htmlData, onChangeHtmlData }) => {
     const editorContainerRef = useRef(null);
-    const [isInitialLoad, setIsInitialLoad] = useState(true);
-
-
     useEffect(() => {
         const element = editorContainerRef.current;
 
@@ -65,113 +62,117 @@ const MyEditor = ({ htmlData, onChangeHtmlData }) => {
     }, []);
 
     return (
-        <div ref={editorContainerRef}>
+        <div ref={editorContainerRef} >
             <CKEditor
                 editor={ClassicEditor}
-                config={{
-                    plugins: [
-                        Essentials,
-                        Bold,
-                        Italic,
-                        Paragraph,
-                        Highlight,
-                        CKFinderUploadAdapter,
-                        Autoformat,
-                        BlockQuote,
-                        CKBox,
-                        CKFinder,
-                        CloudServices,
-                        EasyImage,
-                        Heading,
-                        Image,
-                        ImageCaption,
-                        ImageStyle,
-                        ImageToolbar,
-                        ImageUpload,
-                        Indent,
-                        IndentBlock,
-                        Link,
-                        List,
-                        PasteFromOffice,
-                        PictureEditing,
-                        Table,
-                        TableToolbar,
-                        TextTransformation,
-                        Base64UploadAdapter,
-                        FontColor,
-                        FontSize,
-                    ],
-                    toolbar: {
-                        items: [
-                            "undo",
-                            "redo",
-                            "|",
-                            "heading",
-                            "|",
-                            "bold",
-                            "|",
-                            "italic",
-                            "|",
-                            "imageUpload",
-                            "bulletedList",
-                            "numberedList",
-                            "outdent",
-                            "indent",
-                            "fontColor",
-                            "fontSize",
+                config={
+
+                    {
+                        plugins: [
+                            Essentials,
+                            Bold,
+                            Italic,
+                            Paragraph,
+                            Highlight,
+                            CKFinderUploadAdapter,
+                            Autoformat,
+                            BlockQuote,
+                            CKBox,
+                            CKFinder,
+                            CloudServices,
+                            EasyImage,
+                            Heading,
+                            Image,
+                            ImageCaption,
+                            ImageStyle,
+                            ImageToolbar,
+                            ImageUpload,
+                            Indent,
+                            IndentBlock,
+                            Link,
+                            List,
+                            PasteFromOffice,
+                            PictureEditing,
+                            Table,
+                            TableToolbar,
+                            TextTransformation,
+                            Base64UploadAdapter,
+                            FontColor,
+                            FontSize,
                         ],
-                    },
-                    image: {
-                        toolbar: [
-                            "imageStyle:inline",
-                            "imageStyle:block",
-                            "imageStyle:side",
-                            "|",
-                            "toggleImageCaption",
-                            "imageTextAlternative",
-                        ],
-                    },
-                    language: "en",
-                    fontSize: {
-                        options: [
-                            "14",
-                            "16",
-                            "18",
-                            "20",
-                            "22",
-                            "24",
-                            "26",
-                            "28",
-                            "30",
-                            "32",
-                            "34",
-                            "36",
-                            "38",
-                            "40",
-                        ],
-                    },
-                    fontColor: {
-                        colors: [
-                            {
-                                color: "#000000",
-                                label: "Black",
-                            },
-                            {
-                                color: "#FF0000",
-                                label: "Red",
-                            },
-                            {
-                                color: "#00FF00",
-                                label: "Green",
-                            },
-                            {
-                                color: "#0000FF",
-                                label: "Blue",
-                            },
-                            // Add more colors as needed
-                        ],
-                    },
-                }}
+                        toolbar: {
+                            items: [
+                                "undo",
+                                "redo",
+                                "|",
+                                "heading",
+                                "|",
+                                "bold",
+                                "|",
+                                "italic",
+                                "|",
+                                "imageUpload",
+                                "bulletedList",
+                                "numberedList",
+                                "outdent",
+                                "indent",
+                                "fontColor",
+                                "fontSize",
+                            ],
+                        },
+                        image: {
+                            toolbar: [
+                                "imageStyle:inline",
+                                "imageStyle:block",
+                                "imageStyle:side",
+                                "|",
+                                "toggleImageCaption",
+                                "imageTextAlternative",
+                            ],
+                        },
+                        language: "en",
+                        fontSize: {
+                            options: [
+                                "14",
+                                "16",
+                                "18",
+                                "20",
+                                "22",
+                                "24",
+                                "26",
+                                "28",
+                                "30",
+                                "32",
+                                "34",
+                                "36",
+                                "38",
+                                "40",
+                            ],
+                        },
+                        fontColor: {
+                            colors: [
+                                {
+                                    color: "#000000",
+                                    label: "Black",
+                                },
+                                {
+                                    color: "#FF0000",
+                                    label: "Red",
+                                },
+                                {
+                                    color: "#00FF00",
+                                    label: "Green",
+                                },
+                                {
+                                    color: "#0000FF",
+                                    label: "Blue",
+                                },
+                                // Add more colors as needed
+                            ],
+                        },
+                        resize: 'vertical',
+
+                    }}
                 data={htmlData}
                 onChange={(event, editor) => {
                     const data = editor.getData();

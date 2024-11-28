@@ -24,8 +24,8 @@ export const ValidateFields = (values) => {
     errors.designation = "Designation field is required.";
   } else if (values?.designation?.trim()?.length === 0) {
     errors.designation = "Designation cannot be empty or contain only spaces.";
-  } else if (values?.designation.length < 3 || values?.designation.length > 255) {
-    errors.designation = "Designation must be between 3 and 255 characters.";
+  } else if (values?.designation.length < 3 || values?.designation.length > 50) {
+    errors.designation = "Designation must be between 3 and 50 characters.";
   }
 
   // Validate Description field
@@ -39,6 +39,11 @@ export const ValidateFields = (values) => {
   // Image validation
   if (!values?.image) {
     errors.image = "Please upload an image";
+  }
+
+  // Icon validation
+  if (!values?.platform_logo) {
+    errors.icon = "Please upload a platformlogo";
   }
 
   // Tag validation 
@@ -143,6 +148,14 @@ export const ValidateFields = (values) => {
     }
   }
 
+  // PlatForm link Validation 
+  if (values?.platform_link) {
+    const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+    if (!appStoreUrlPattern.test(values.platform_link)) {
+      errors.platform_link = "Invalid plat form link";
+    }
+  }
+
   // Validate Question field
   if (!values?.question) {
     errors.question = "Question field is required.";
@@ -222,11 +235,22 @@ export const ValidateFields = (values) => {
     errors.date = "Date field is required.";
   }
 
+  // if (values?.rating) {
+  //   if (!/^\d+$/.test(values.rating)) {
+  //     errors.rating = "Rating must be a number.";
+  //   } else if (parseInt(values.rating, 5) < 1) {
+  //     errors.rating = "Rating must be between 1 and 5";
+  //   }
+  // }
+
   if (values?.rating) {
     if (!/^\d+$/.test(values.rating)) {
       errors.rating = "Rating must be a number.";
-    } else if (parseInt(values.rating, 5) < 1) {
-      errors.rating = "Rating must be between 1 and 5";
+    } else {
+      const ratingValue = parseInt(values.rating, 10); // Change 5 to 10 for decimal parsing
+      if (ratingValue < 1 || ratingValue > 5) {
+        errors.rating = "Rating must be between 1 and 5.";
+      }
     }
   }
 
