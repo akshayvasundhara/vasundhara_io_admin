@@ -10,6 +10,7 @@ import api from '../../API/api';
 import CommanButton from '../../components/comman/CommanButton';
 import FileICon from '../../components/comman/FileIcon';
 import FileInput from '../../components/comman/FileInput';
+import FileVideo from '../../components/comman/FileVideo';
 import FileInputComman from '../../components/comman/FileInputComman';
 import LableInput from '../../components/comman/LableInput';
 import LinkButton from '../../components/comman/LinkButton';
@@ -24,15 +25,14 @@ import { errorResponse } from '../../helper/error';
 import ErrorFilter from '../../helper/errorFilter';
 import SingleError from '../../helper/SingleError';
 import Layout from '../../layout/Layout';
+import FileImageVideo from '../../components/comman/FileImageVideo';
+import { type } from '@testing-library/user-event/dist/type';
 
 const requireField = [
     "title",
     "desc",
+    "category",
     "image",
-    "icon",
-    "play_store_link",
-    "app_store_link",
-    "features",
 ];
 
 function IndexPortfolioEdit() {
@@ -47,6 +47,7 @@ function IndexPortfolioEdit() {
     const [submitCount, setSubmitCount] = useState(0);
     const [image, setImage] = useState(null);
     const [icon, setIcon] = useState(null);
+    const [video, setVideo] = useState(null);
     // const [status, setStatus] = useState(state.status || 1)
     const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [states, setStates] = useState({
@@ -68,7 +69,6 @@ function IndexPortfolioEdit() {
         setStatus(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
     };
 
-
     // Close PortFOlio
     const closeFaq = async (e) => {
         setStates({});
@@ -79,34 +79,34 @@ function IndexPortfolioEdit() {
     useEffect(() => {
         if (state && Object.keys(state).length > 0) {
             setStates({
-                title: state.title,
-                author: state.category._id,
-                status: state.status,
-                play_store_link: state.play_store_link,
-                app_store_link: state.app_store_link,
-                desc: state.desc,
-                features: state.features || [''],
-                rating: state.rating,
-                reviews: state.reviews,
-                downloads: state.downloads
+                title: state?.title,
+                category: state?.category?._id,
+                status: state?.status,
+                play_store_link: state?.play_store_link,
+                app_store_link: state?.app_store_link,
+                website_link: state?.website_link,
+                desc: state?.desc,
+                features: state?.features || [''],
+                rating: state?.rating,
+                reviews: state?.reviews,
+                downloads: state?.downloads
             });
-            if (state.image) {
-                // const fullImageUrl = `${imageURL}${state.image}`;
-                setImage(state.image);
+            if (state?.image) {
+                setImage(state?.image);
             }
-            if (state.icon) {
-                setIcon(state.icon);
+            if (state?.video !== null && state?.video !== undefined) {
+                setVideo(state?.video);
             }
-            // Set features images
+            if (state?.icon !== null && state?.icon !== undefined) {
+                setIcon(state?.icon);
+            }
             if (state.features && Array.isArray(state.features)) {
                 const updatedFeatures = state.features.map(feat => ({
                     ...feat,
-                    image: feat.image ? feat.image : null // Construct full image URL
+                    image: feat.image ? feat.image : null
                 }));
                 setStates(prev => ({ ...prev, features: updatedFeatures }));
             }
-
-            // set sample images
             if (state.sample_screen_images && Array.isArray(state.sample_screen_images)) {
                 const updatedSample = state.sample_screen_images.map(samp => ({
                     ...samp,
@@ -115,14 +115,8 @@ function IndexPortfolioEdit() {
                 }))
                 setStates(prev => ({ ...prev, sample_screen_images: updatedSample }));
             }
-
-
         }
     }, [state, options]);
-
-
-
-    // Handle Change
 
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
@@ -143,13 +137,13 @@ function IndexPortfolioEdit() {
                     if (!newValue) {
                         validationErrors.image = "Please upload an image";
                     } else {
-                        delete validationErrors.image; // Remove the error if valid
+                        delete validationErrors.image;
                     }
                 } else if (name === "icon") {
                     if (!newValue) {
                         validationErrors.icon = "Please upload an icon";
                     } else {
-                        delete validationErrors.icon; // Remove the error if valid
+                        delete validationErrors.icon;
                     }
                 }
             }
@@ -179,7 +173,6 @@ function IndexPortfolioEdit() {
         }
     };
 
-
     const handleImageChange = (type, index) => (file) => {
         const updatedArray = [...states[type]]; // Create a copy of the specified array
         updatedArray[index].image = file; // Update the specific index for the image
@@ -193,11 +186,10 @@ function IndexPortfolioEdit() {
         });
     };
 
-
     // Get category
     const getOptions = async () => {
         try {
-            const response = await api.getWithToken(`${serverURL}/blog-category?status=1`)
+            const response = await api.getWithToken(`${serverURL}/blog-category?type=portfolio&status=1`)
             if (response.data.success === true) {
                 setOptions(response.data.data.data || []);
             } else {
@@ -220,10 +212,9 @@ function IndexPortfolioEdit() {
     const handleAddFeature = () => {
         setStates((prevStates) => ({
             ...prevStates,
-            features: [...prevStates.features, { title: '', image: '' }], // Add a new empty tag field
+            features: [...prevStates.features, { title: '', image: '' }],
         }));
     };
-
 
     const addCases = async (e) => {
         e.preventDefault(); // Prevent default form submission
@@ -231,21 +222,20 @@ function IndexPortfolioEdit() {
         const updatedValues = { ...states, image, icon, status };
 
         let validationErrors = PortFolioValidate(updatedValues);
-        // console.log("validationErrors", validationErrors);
 
         validationErrors = ErrorFilter(validationErrors, requireField);
 
         if (image) {
             delete errors.image;
         }
-        if (icon) {
-            delete errors.icon;
-        }
+        // if (icon) {
+        //     delete errors.icon;
+        // }
         setErrors(validationErrors);
 
-        if (isValidationErrorsEmpty(validationErrors)) { // Adjust this condition based on your validation requirements
+        if (isValidationErrorsEmpty(validationErrors)) {
             try {
-                const formData = new FormData(); // Create FormData for file upload
+                const formData = new FormData();
                 // Append top-level fields
                 formData.append('title', updatedValues.title);
                 formData.append('category', updatedValues.category ? updatedValues.category : teamOptions[0].value);
@@ -274,6 +264,7 @@ function IndexPortfolioEdit() {
                 formData.append('status', status);
                 formData.append('image', image);
                 formData.append('icon', icon);
+                formData.append('video', video);
 
                 // Append features if not empty
                 if (Array.isArray(updatedValues.features)) {
@@ -298,7 +289,6 @@ function IndexPortfolioEdit() {
                         }
                     });
                 }
-
 
                 if (Array.isArray(updatedValues.sample_screen_images)) {
                     updatedValues.sample_screen_images.forEach((samp, index) => {
@@ -350,13 +340,12 @@ function IndexPortfolioEdit() {
         })
     };
 
-
     const handleRemoveFeature = (index) => {
         setStates((prevStates) => ({
             ...prevStates,
             features: prevStates.features.filter((_, i) => i !== index), // Remove the tag at the specified index
         }));
-    };
+    };  
 
     return (
         <>
@@ -377,7 +366,8 @@ function IndexPortfolioEdit() {
                                         <Row className='g-3'>
                                             <Col md={12}>
                                                 <LableInput
-                                                    label="Title:"
+                                                    required={true}
+                                                    label="Title"
                                                     className="form-control"
                                                     id="text"
                                                     placeholder="Enter title"
@@ -389,19 +379,34 @@ function IndexPortfolioEdit() {
                                                 <SingleError error={errors?.title} />
                                             </Col>
                                             <Col md={12}>
-                                                <Textarea label="Description:" rows="4" type="text" name="desc" value={states.desc || ""}
+                                                <Textarea label="Description" required={true} rows="4" type="text" name="desc" value={states.desc || ""}
                                                     onChange={handleChange} placeholder="Enter description"
                                                 />
                                                 <SingleError error={errors?.desc} />
                                             </Col>
                                             <Col md={12}>
-                                                <SelectInput label="Category:" options={teamOptions} name='category' value={states.category}  // Bind to the state
+                                                <SelectInput required={true} label="Category" select={"Category"} options={teamOptions} name='category' value={states.category}  // Bind to the state
                                                     onChange={handleChange} />
-
+                                                <SingleError error={errors?.category} />
                                             </Col>
+                                            {(states.category == "671f912e59efcf3c988cdbad") &&
+                                                <Col md={12} lg={6}>
+                                                    <LableInput
+                                                        label="Website Link"
+                                                        className="form-control"
+                                                        id="website_link"
+                                                        placeholder="Enter website link"
+                                                        type="text"
+                                                        name='website_link'
+                                                        value={states?.play_store_link || ""}
+                                                        onChange={handleChange}
+                                                    />
+                                                    <SingleError error={errors?.website_link} />
+                                                </Col>
+                                            }
                                             <Col md={12} lg={6}>
                                                 <LableInput
-                                                    label="Google Play Store:"
+                                                    label="Google Play Store"
                                                     className="form-control"
                                                     id="text"
                                                     placeholder="Enter google play store link"
@@ -414,7 +419,7 @@ function IndexPortfolioEdit() {
                                             </Col>
                                             <Col md={12} lg={6}>
                                                 <LableInput
-                                                    label="App Store:"
+                                                    label="App Store"
                                                     className="form-control"
                                                     id="text"
                                                     placeholder="Enter app store link"
@@ -427,7 +432,7 @@ function IndexPortfolioEdit() {
                                             </Col>
                                             <Col md={4}>
                                                 <LableInput
-                                                    label="Rating:"
+                                                    label="Rating"
                                                     className="form-control"
                                                     placeholder="Enter rating"
 
@@ -440,7 +445,7 @@ function IndexPortfolioEdit() {
                                             </Col>
                                             <Col md={4}>
                                                 <LableInput
-                                                    label="Downloads:"
+                                                    label="Downloads"
                                                     className="form-control"
                                                     placeholder="Enter downloads"
                                                     type="text"
@@ -451,7 +456,7 @@ function IndexPortfolioEdit() {
                                             </Col>
                                             <Col md={4}>
                                                 <LableInput
-                                                    label="Reviews:"
+                                                    label="Reviews"
                                                     className="form-control"
                                                     placeholder="Enter reviews"
                                                     type="text"
@@ -460,17 +465,20 @@ function IndexPortfolioEdit() {
                                                     onChange={handleChange}
                                                 />
                                             </Col>
+
                                             <Col md={12}>
                                                 <div className='d-xl-flex align-items-start gap-3'>
                                                     <div className='d-md-flex align-items-start gap-3'>
                                                         <div>
-                                                            <FileInput label="Image:" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} />
+                                                            <FileInput required={true} label="Image" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} name='image' id="image" />
                                                             <SingleError error={errors?.image} />
                                                         </div>
                                                         <div>
-
-                                                            <FileICon label="Icon:" setIcon={setIcon} initialIcon={icon} onChange={handleChange} name='icon' />
-                                                            <SingleError error={errors?.icon} />
+                                                            <FileICon label="Icon" setIcon={setIcon} initialIcon={icon !== null && `${icon}`} onChange={handleChange} name='icon' />
+                                                        </div>
+                                                        <div>
+                                                            <FileVideo label="Video" setImage={setVideo} initialImage={video !== null && `${imageURL}${video}`} onChange={handleChange} name='image' id="video" />
+                                                            {/* <FileVideo label="Video" url={imageURL} setImage={setVideo} initialImage={video !== null && `${video}`} onChange={handleChange} name='video' id={"video"} /> */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -493,8 +501,8 @@ function IndexPortfolioEdit() {
                                                 <Col md={12} className='mb-3' key={index}>
                                                     <div className='d-md-flex align-items-start gap-3 w-100'>
                                                         <div>
-                                                            <FileInputComman
-                                                                label="Image:"
+                                                            <FileImageVideo
+                                                                label="Image/Video"
                                                                 setImage={handleImageChange('features', index)} // Update the image for the specific index
                                                                 initialImage={ind.image || ''}
                                                                 name={`features[${index}][image]`}
@@ -505,7 +513,7 @@ function IndexPortfolioEdit() {
                                                             <div className='d-flex align-items-end gap-2'>
                                                                 <div className='w-100'>
                                                                     <LableInput
-                                                                        label="Title:"
+                                                                        label="Title"
                                                                         className="form-control"
                                                                         id={`industry-title-${index}`} // Unique id for each input
                                                                         placeholder="Enter title"
@@ -539,14 +547,14 @@ function IndexPortfolioEdit() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Sample Screens:</h5>
+                                                    <h5 className='form-title'>Sample Screens</h5>
                                                 </div>
                                             </Col>
                                             <Col md={12} className='mb-3'>
                                                 <div className='d-flex align-items-start gap-3 w-100'>
                                                     <div>
                                                         <MultipleImageUpload
-                                                            label="Image:"
+                                                            label="Image"
                                                             name={`sample_screen_images`}
                                                             setStates={setStates}
                                                             states={states}
@@ -582,7 +590,7 @@ function IndexPortfolioEdit() {
                                     <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                Status:
+                                                Status
                                             </label>
                                             <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>

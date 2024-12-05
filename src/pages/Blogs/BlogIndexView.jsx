@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../../layout/Layout';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Accordion } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
 import { ImArrowLeft } from "react-icons/im";
 import { useLocation } from 'react-router-dom';
 import { getImageURL } from '../../helper/envConfig';
+import { FaCheckCircle, FaClipboard } from 'react-icons/fa';
 
 function BlogIndexView() {
     const location = useLocation();
@@ -70,6 +71,22 @@ strong {
         { label: 'Head Tags By SEO:', value: state.seo || '' },
     ];
 
+    const [isCopied, setIsCopied] = useState(false);
+
+    const handleCopy = () => {
+        const fullURL = imageURL + state.image;
+        navigator?.clipboard?.writeText(fullURL)
+            .then(() => {
+                setIsCopied(true);
+                setTimeout(() => {
+                    setIsCopied(false);
+                }, 2000);
+            })
+            .catch((err) => {
+                console.error("Error copying URL: ", err);
+            });
+    };
+
     return (
         <>
             <Layout>
@@ -89,6 +106,25 @@ strong {
                                             className='w-100 h-100'
                                         />
                                     </div>
+                                    <div className='col-sm-12 col-md-4'>
+                                        <label htmlFor="">{"Image URL:"}</label>
+                                        <div className='d-flex align-items-center justify-content-between mb-3'>
+                                            <p className="image-url-text mb-0">{imageURL + state.image}</p>
+                                            <button
+                                                className="copy-btn"
+                                                onClick={() => handleCopy()}
+                                                title="Copy to clipboard"
+                                            >
+                                                {isCopied ? (
+                                                    <FaCheckCircle className="success-icon" />
+                                                ) : (
+                                                    <FaClipboard className="copy-icon" />
+                                                )}
+                                                {/* {isCopied ? 'Copied!' : 'Copy URL'} */}
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     <div>
                                         {names.map((item, index) => (
                                             <div key={index}>
@@ -98,6 +134,13 @@ strong {
                                         ))}
                                         {/* Render the Main Content separately */}
                                         <div>
+                                            <label>Table of Content:</label>
+                                            {/* <div
+                                                dangerouslySetInnerHTML={{ __html: finalContentBenefit }}
+                                            /> */}
+                                            <span dangerouslySetInnerHTML={{ __html: state?.table_content || "" }} />
+                                        </div>
+                                        <div>
                                             <label>Main Content:</label>
                                             {/* <div
                                                 dangerouslySetInnerHTML={{ __html: finalContentBenefit }}
@@ -105,6 +148,20 @@ strong {
                                             <span dangerouslySetInnerHTML={{ __html: state?.main_content || "" }} />
                                         </div>
                                     </div>
+
+                                    <label htmlFor="">{"Faqs:"}</label>
+                                         <Accordion>
+                                            {state?.faqs?.map((faq, index) => {
+                                                return (
+                                                    <Accordion.Item eventKey={index.toString()} key={index}>
+                                                        <Accordion.Header>{faq.question}</Accordion.Header>
+                                                        <Accordion.Body className='border-top'>
+                                                            {faq.answer}
+                                                        </Accordion.Body>
+                                                    </Accordion.Item>
+                                                )
+                                            })}
+                                        </Accordion> 
                                 </Card.Body>
                             </Card>
                         </Col>

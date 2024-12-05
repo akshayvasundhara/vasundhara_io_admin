@@ -31,6 +31,10 @@ function ViewIndexPortfolio() {
 
     ];
 
+    const isVideo = (url) => {
+        return url.endsWith(".webm") || url.endsWith(".mp4") || url.endsWith(".avi");
+    };
+
     return (
         <>
             <Layout>
@@ -57,26 +61,41 @@ function ViewIndexPortfolio() {
                                             <label>Category:</label>
                                             <p>{state.category?.name}</p>
                                         </div>
-                                        <div>
-                                            <label>Google Play Store:</label>
-                                            <p>{state.play_store_link}</p>
-                                        </div>
-                                        <div>
-                                            <label>App Store:</label>
-                                            <p>{state.app_store_link}</p>
-                                        </div>
-                                        <label className='mb-2'>Icon:</label>
-                                        <div className='d-flex gap-3 flex-wrap'>
+                                        {state.play_store_link &&
                                             <div>
-                                                <div className='view-image-box mb-3'>
-                                                    <img
-                                                        src={`${imageURL}${state.icon}`}
-                                                        alt=""
-                                                        className='w-100 h-100'
-                                                    />
-                                                </div>
+                                                <label>Google Play Store:</label>
+                                                <p>{state.play_store_link}</p>
                                             </div>
-                                        </div>
+                                        }
+                                        {state?.app_store_link &&
+                                            <div>
+                                                <label>App Store:</label>
+                                                <p>{state.app_store_link}</p>
+                                            </div>
+                                        }
+                                        {state?.website_link &&
+                                            <div>
+                                                <label>Website Link:</label>
+                                                <p>{state.website_link}</p>
+                                            </div>
+                                        }
+                                        {state.icon &&
+                                            <>
+                                                <label className='mb-2'>Icon:</label>
+                                                <div className='d-flex gap-3 flex-wrap'>
+                                                    <div>
+                                                        <div className='view-image-box mb-3'>
+                                                            <img
+                                                                src={`${imageURL}${state.icon}`}
+                                                                alt=""
+                                                                className='w-100 h-100'
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        }
+
                                         <label className='mb-2'>Banner:</label>
                                         <div className='d-flex gap-3 flex-wrap'>
                                             <div>
@@ -89,18 +108,60 @@ function ViewIndexPortfolio() {
                                                 </div>
                                             </div>
                                         </div>
+                                        {state.video &&
+                                            <>
+                                                <label className='mb-2'>Video:</label>
+                                                <div className='d-flex gap-3 flex-wrap'>
+                                                    <div>
+                                                        <div className='view-image-box mb-3'>
+                                                            <video
+                                                                src={`${imageURL}${state.video}`}
+                                                                alt={"video"}
+                                                                width={200}
+                                                                height={200}
+                                                                className='w-100 h-100'
+                                                                controls
+                                                            />
+                                                            {/* <img
+                                                        src={`${imageURL}${state.image}`}
+                                                        alt=""
+                                                        className='w-100 h-100'
+                                                    /> */}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        }
+
                                         <h5 className='form-title mt-3'>Features:</h5>
                                         <div className="career-flight section-py mt-2 mb-3">
                                             <div className="row g-3">
-                                                {state.features.map(detail => (
-                                                    <div className="col-12 col-md-6 col-xl-3" key={detail.id}>
+                                                {state?.features?.map((detail) => (
+                                                    <div className="col-12 col-md-6 col-xl-3" key={detail._id}>
                                                         <div className="card h-100 border-0 shadow-lg">
                                                             <div className="career-details card-body">
                                                                 <div aria-label={detail.title}>
-                                                                    <img src={`${imageURL}${detail.image}`} alt={detail.title} width={200} height={200} className='d-flex justify-content-center m-auto' /> {/* Adjust size as needed */}
+                                                                    {/* Check if it's a video or an image and render accordingly */}
+                                                                    {isVideo(detail.image) ? (
+                                                                        <video
+                                                                            src={`${imageURL}${detail.image}`}
+                                                                            alt={detail.title}
+                                                                            width={200}
+                                                                            height={200}
+                                                                            className="d-flex justify-content-center m-auto"
+                                                                            controls
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={`${imageURL}${detail.image}`}
+                                                                            alt={detail.title}
+                                                                            width={200}
+                                                                            height={200}
+                                                                            className="d-flex justify-content-center m-auto"
+                                                                        />
+                                                                    )}
                                                                 </div>
                                                                 <h4>{detail.title}</h4>
-                                                                {/* <p>{detail.description}</p> */}
                                                             </div>
                                                         </div>
                                                     </div>

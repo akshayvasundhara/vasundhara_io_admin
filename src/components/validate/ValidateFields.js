@@ -254,5 +254,13 @@ export const ValidateFields = (values) => {
     }
   }
 
+  if (!values?.category) {
+    errors.category = "Please select a category.";
+  }
+
+  if (!values?.author) {
+    errors.author = "Please select an author.";
+  }
+
   return errors;
 };

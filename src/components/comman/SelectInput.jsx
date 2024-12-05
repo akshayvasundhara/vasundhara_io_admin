@@ -1,15 +1,22 @@
 import React from 'react';
 
-
-
-function SelectInput({ label, options, name, value, onChange }) {
+function SelectInput({ select, label, id, options, name, value, onChange, required = false }) {
 
     return (
         <>
-            <label htmlFor="industry-select" className="form-label text-default">
+            <label htmlFor={id} className="form-label text-default">
                 {label}
+                {required && <span className="star">*</span>}
             </label>
-            <select id="industry-select" className="form-select" aria-label={`Select ${label.toLowerCase()}`} name={name} value={value} onChange={onChange}>
+            <select
+                id={id}
+                className="form-select"
+                aria-label={`Select ${label.toLowerCase()}`}
+                name={name}
+                value={value}
+                onChange={onChange}
+            >
+                <option value="" disabled selected>Select {select}</option> 
                 {options.map(option => (
                     <option key={option.value} value={option.value}>
                         {option.label}

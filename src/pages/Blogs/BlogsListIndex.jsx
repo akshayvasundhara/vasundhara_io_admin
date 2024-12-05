@@ -69,7 +69,6 @@ function BlogsListIndex() {
             } else {
                 setBlog([]);
             }
-
         } catch (error) {
             console.error("Error fetching products:", error.response ? error.response.data : error.message);
         } finally {
@@ -100,7 +99,7 @@ function BlogsListIndex() {
             const response = await api.patchWithToken(`${serverURL}/blog/${itemId}`, { status: newStatus });
             if (response.data.success) {
                 toast.info("Status updated successfully.");
-                getBlogs(); // Refresh hiring data after updating
+                getBlogs();
             } else {
                 toast.error("Failed to update status:", response.data.message);
             }
@@ -122,7 +121,6 @@ function BlogsListIndex() {
     };
     return (
         <>
-
             {mainLoader && (
                 <LoaderComman />
             )}

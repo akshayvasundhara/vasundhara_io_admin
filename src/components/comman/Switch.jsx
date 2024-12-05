@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 
-function Switch({ mode, index, onToggle, itemId }) {
+function Switch({ mode, index, onToggle, itemId,data="" }) {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [currentMode, setCurrentMode] = useState(mode);
 
@@ -15,7 +15,7 @@ function Switch({ mode, index, onToggle, itemId }) {
         const newMode = currentMode === 0 ? 1 : 0;
         setCurrentMode(newMode);
         if (onToggle) {
-            onToggle(itemId, newMode); // Call onToggle with item ID and new status
+            onToggle(itemId, newMode,{[data]:newMode}); // Call onToggle with item ID and new status
         }
     };
     return (
@@ -24,12 +24,12 @@ function Switch({ mode, index, onToggle, itemId }) {
                 <div className="toggle">
                     <input
                         type="checkbox"
-                        id={`mode-toggle-${index}`}
+                        id={`mode-toggle-${index+data}`}
                         className="toggle__input"
                         checked={currentMode === 1}
                         onChange={handleToggle}
                     />
-                    <label htmlFor={`mode-toggle-${index}`} className="toggle__label"></label>
+                    <label htmlFor={`mode-toggle-${index+data}`} className="toggle__label"></label>
                 </div>
             </div>
         </>

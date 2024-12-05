@@ -72,14 +72,11 @@ function AddTestimonials() {
                 delete errors.image;
                 delete errors.platform_logo;
             }
-
-
         }
         setStates((prevValues) => ({
             ...prevValues,
             [name]: newValue,
         }));
-
     }
 
     const addTestimonial = async (e) => {
@@ -87,10 +84,7 @@ function AddTestimonials() {
         setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
-
         validationErrors = ErrorFilter(validationErrors, requireField);
-        console.log("validationErrors", validationErrors);
-
 
         if (image) {
             delete errors.image;

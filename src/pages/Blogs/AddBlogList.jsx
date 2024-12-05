@@ -20,20 +20,17 @@ import ErrorFilter from '../../helper/errorFilter';
 import { errorResponse } from '../../helper/error';
 import { toast } from 'react-toastify';
 import LoaderComman from '../../components/comman/LoaderComman';
+import { FaPlus, FaTrash } from 'react-icons/fa';
+import { PiPlusBold } from 'react-icons/pi';
 const requireField = [
     "title",
-    "seo",
+    "category",
+    "date",
+    "author",
+    "tag",
+    "image",
     "content",
     "main_content",
-    "status",
-    "date",
-    "image",
-    "category",
-    "author",
-    "likes",
-    "views",
-    "blog_read_time",
-    "tag"
 ];
 
 
@@ -45,12 +42,24 @@ function AddBlogList() {
     const [team, setTeam] = useState([]);
     const [category, setCategory] = useState([]);
     const [main_content, setMainContent] = useState("");
+    const [table_content, setTableContent] = useState("");
     const [errors, setErrors] = useState({});
 
     const serverURL = getServerURL();
     const imageURL = getImageURL();
     const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [submitCount, setSubmitCount] = useState(0);
+
+    // const [faqList, setFaqList] = useState(state?.faqs || [{ question: '', answer: '' }]);
+    const [faqList, setFaqList] = useState(() => {
+        if (state?.faqs && state.faqs.length > 0) {
+            return [...state.faqs, { question: '', answer: '' }];
+        } else {
+            return [{ question: '', answer: '' }];
+        }
+    });
+
+    // console.log('faqList: ', faqList,state);
 
     const [isFeatured, setIsFeatured] = useState(state.isFeatured !== undefined ? state.isFeatured : 1);
     const [isTrending, setIsTrending] = useState(state.isTrending !== undefined ? state.isTrending : 1);
@@ -72,7 +81,6 @@ function AddBlogList() {
         setIsTrending(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
     };
 
-
     // Get Member
     const getMember = async () => {
         try {
@@ -86,6 +94,7 @@ function AddBlogList() {
             console.error("Error fetching products:", error.response ? error.response.data : error.message);
         }
     }
+
     useEffect(() => {
         getMember();
     }, [])
@@ -110,12 +119,10 @@ function AddBlogList() {
         getCategories();
     }, [])
 
-
     const teamOptions = team.map(member => ({
         value: member._id,
         label: member.name
     }));
-
 
     const categoryOptions = category.map(cat => ({
         value: cat._id,
@@ -128,11 +135,11 @@ function AddBlogList() {
         navigate('/blogs-list');
     }
 
-
     // Get State 
     useEffect(() => {
         if (state && Object.keys(state).length > 0) {
-            setMainContent(state.main_content);
+            setMainContent(state?.main_content);
+            setTableContent(state?.table_content);
             setStates({
                 title: state.title,
                 seo: state.seo,
@@ -142,18 +149,19 @@ function AddBlogList() {
                 isFeatured: state.isFeatured,
                 isTrending: state.isTrending,
                 date: state.date ? new Date(state.date).toISOString().split("T")[0] : "",
-                category: state.category._id,
-                author: state.author._id,  // Set default to empty array if not available
+                category: state.category?._id,
+                author: state?.author?._id,
                 likes: state.likes,
                 views: state.views,
                 blog_read_time: state.blog_read_time,
                 tag: state.tag,
+                faqs: state?.faqs || [{ question: '', answer: '' }],
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
                 setImage(fullImageUrl);
             } else {
-                setImage(null); // Clear image if there's no valid image
+                setImage(null);
             }
         }
     }, [state]);
@@ -163,12 +171,12 @@ function AddBlogList() {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
         if (submitCount > 0) {
-            let validationErrors = ValidateFields({ ...states, [name]: value, image: newValue });
+            let validationErrors = ValidateFields({ ...states, [name]: value });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
-                delete errors.image;
+                // delete errors.image;
             }
         }
         setStates((prevValues) => ({
@@ -190,6 +198,13 @@ function AddBlogList() {
         }
         setErrors(validationErrors);
 
+        if (Object.keys(validationErrors)?.length) {
+            Object.entries(validationErrors)?.map(([key], i) => {
+                if (i == 0)
+                    document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
+            });
+        }
+
         if (Object.keys(validationErrors).length === 0) {
             try {
                 const formData = new FormData(); // Create FormData for file upload
@@ -197,18 +212,21 @@ function AddBlogList() {
                 formData.append('seo', updatedValues.seo ? updatedValues.seo : "");
                 formData.append('content', updatedValues.content);
                 formData.append('main_content', updatedValues.main_content);
+                formData.append('table_content', updatedValues?.table_content);
                 formData.append('date', updatedValues.date);
                 formData.append('category', updatedValues.category ? updatedValues.category : categoryOptions[0].value);
                 formData.append('author', updatedValues.author ? updatedValues.author : teamOptions[0].value);
                 formData.append('status', status);
                 formData.append('isFeatured', isFeatured);
                 formData.append('isTrending', isTrending);
-                formData.append('likes', updatedValues.likes);
-                formData.append('views', updatedValues.views);
-                formData.append('blog_read_time', updatedValues.blog_read_time);
+                formData.append('likes', updatedValues.likes || 0);
+                formData.append('views', updatedValues.views || 0);
+                formData.append('blog_read_time', updatedValues.blog_read_time || 0);
                 formData.append('tag', updatedValues.tag);
                 formData.append('image', image);
-                setMainLoader(true); // Start loader
+                if (updatedValues?.faqs?.length > 0)
+                    formData.append('faqs', JSON.stringify(updatedValues?.faqs));
+                setMainLoader(true);
                 let response;
                 if (state._id) {
                     response = await api.patchWithToken(`${serverURL}/blog/${state._id}`, formData);
@@ -235,8 +253,58 @@ function AddBlogList() {
     const handleChangeHtmlData = (data) => {
         setStates((prevValues) => ({
             ...prevValues,
-            main_content: data, // Also update the states object
+            main_content: data,
         }));
+    };
+    const handleChangeTableHtmlData = (data) => {
+        setStates((prevValues) => ({
+            ...prevValues,
+            table_content: data,
+        }));
+    };
+
+
+    // const addFAQ = () => {
+    //     const newFaq = faqList[faqList.length - 1];
+    //     if (newFaq.question && newFaq.answer) {
+    //         setStates({ ...states, faqs: faqList });
+    //         setFaqList([...faqList, { question: '', answer: '' }]);
+    //     } else {
+    //         alert('Please fill both question and answer before adding.');
+    //     }
+    // };
+
+    const addFAQ = () => {
+        const newFaq = faqList[faqList.length - 1];
+
+        // Trim spaces from question and answer
+        const trimmedQuestion = newFaq.question.trim();
+        const trimmedAnswer = newFaq.answer.trim();
+
+        // Validate question and answer lengths after trimming spaces
+        if (trimmedQuestion && trimmedAnswer) {
+            if (
+                trimmedQuestion.length >= 3 &&
+                trimmedQuestion.length <= 255 &&
+                trimmedAnswer.length >= 3 &&
+                trimmedAnswer.length <= 500
+            ) {
+                // Add the new FAQ to the list
+                setFaqList([...faqList, { question: '', answer: '' }]);
+                setStates({ ...states, faqs: faqList });
+            } else {
+                alert('Question must be between 3 and 255 characters, and answer must be between 3 and 500 characters.');
+            }
+        } else {
+            // Show message when both question and answer contain only spaces or are empty
+            alert('Please fill both question and answer with valid content. Spaces are not considered valid.');
+        }
+    };
+
+
+    const deleteFAQ = (index) => {
+        const updatedFaqList = faqList.filter((_, i) => i !== index);
+        setFaqList(updatedFaqList);
     };
 
     return (
@@ -254,13 +322,14 @@ function AddBlogList() {
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <form action="">
+                                    <form>
                                         <Row className='g-4'>
-                                            <Col md={6}>
+                                            <Col md={6} >
                                                 <LableInput
-                                                    label="Title:"
+                                                    required={true}
+                                                    label="Title"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="title"
                                                     placeholder="Enter title"
                                                     type="text"
                                                     name='title'
@@ -270,13 +339,15 @@ function AddBlogList() {
                                                 <SingleError error={errors?.title} />
                                             </Col>
                                             <Col md={6}>
-                                                <SelectInput label="Category:" options={categoryOptions} name="category" value={states.category} onChange={handleChange} />
+                                                <SelectInput id={"category"} required={true} select={"category"} label="Category" options={categoryOptions} name="category" value={states.category} onChange={handleChange} />
+                                                <SingleError error={errors?.category} />
                                             </Col>
                                             <Col md={6}>
                                                 <LableInput
-                                                    label="Date:"
+                                                    required={true}
+                                                    label="Date"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="date"
                                                     placeholder="Enter date"
                                                     type="date"
                                                     name='date'
@@ -287,16 +358,18 @@ function AddBlogList() {
                                                 <SingleError error={errors?.date} />
                                             </Col>
                                             <Col md={6}>
-                                                <SelectInput label="Author:" options={teamOptions} name="author"  // Add name here
-                                                    value={states.author}  // Bind to the state
+                                                <SelectInput id="author" required={true} select={"author"} label="Author:" options={teamOptions} name="author"  // Add name here
+                                                    value={states.author}
                                                     onChange={handleChange}
                                                 />
+                                                <SingleError error={errors?.author} />
                                             </Col>
                                             <Col md={4}>
                                                 <LableInput
-                                                    label="View:"
+                                                    required={false}
+                                                    label="View"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="views"
                                                     placeholder="Enter view"
                                                     type="number"
                                                     name='views'
@@ -309,9 +382,10 @@ function AddBlogList() {
 
                                             <Col md={4}>
                                                 <LableInput
-                                                    label="Likes:"
+                                                    required={false}
+                                                    label="Likes"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="likes"
                                                     placeholder="Enter likes"
                                                     type="number"
                                                     name='likes'
@@ -323,9 +397,10 @@ function AddBlogList() {
                                             </Col>
                                             <Col md={4}>
                                                 <LableInput
-                                                    label="Blog Read Time:"
+                                                    required={false}
+                                                    label="Blog Read Time"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="blog_read_time"
                                                     placeholder="Enter blog read time (In minutes)"
                                                     type="number"
                                                     name='blog_read_time'
@@ -337,9 +412,10 @@ function AddBlogList() {
                                             </Col>
                                             <Col md={12}>
                                                 <LableInput
-                                                    label="Unique Route:"
+                                                    required={true}
+                                                    label="Unique Route"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="tag"
                                                     placeholder="Enter unique"
                                                     type="text"
                                                     name='tag'
@@ -352,50 +428,128 @@ function AddBlogList() {
                                             <Col md={6} className='switch-box'>
                                                 <div className='d-flex align-items-center gap-2 mb-3'>
                                                     <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                        Status:
+                                                        Status
                                                     </label>
                                                     <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                                 </div>
                                                 <div className='d-flex align-items-center gap-2 mb-3'>
                                                     <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                        Featured:
+                                                        Featured
                                                     </label>
                                                     <Switch mode={state.isFeatured} onToggle={handleToggleFeature} index={1} />
                                                 </div>
                                                 <div className='d-flex align-items-center gap-2 mb-3'>
                                                     <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                        Trending:
+                                                        Trending
                                                     </label>
                                                     <Switch mode={state.isTrending} onToggle={handleToggleTrending} index={2} />
                                                 </div>
                                             </Col>
                                             <Col md={6}>
                                                 <div className='d-flex align-items-center gap-3'>
-                                                    <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
+                                                    <FileInput name="image" id="image" required={true} label="Image" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                     <SingleError error={errors?.image} />
                                                 </div>
                                             </Col>
                                             <Col md={12}>
-                                                <Textarea label="Content:" rows="9" type="text" name="content" value={states.content} onChange={handleChange} />
+                                                <Textarea id="content" required={true} label="Content" rows="9" type="text" name="content" value={states.content} onChange={handleChange} />
                                                 <SingleError error={errors?.content} />
                                             </Col>
                                             <Col md={12}>
                                                 <label htmlFor="industry-select" className="form-label text-default">
-                                                    Main Content:
+                                                    Table of Content
+                                                </label>
+                                                <MyEditor
+                                                    htmlData={table_content}
+                                                    onChangeHtmlData={handleChangeTableHtmlData}
+                                                />
+                                            </Col>
+                                            <Col md={12}>
+                                                <label htmlFor="industry-select" className="form-label text-default" id="main_content">
+                                                    Main Content
+                                                    <span className="star">*</span>
                                                 </label>
                                                 <MyEditor
                                                     htmlData={main_content}
                                                     onChangeHtmlData={handleChangeHtmlData}
+                                                    className={true}
                                                 />
                                                 <SingleError error={errors?.main_content} />
                                             </Col>
 
                                             <Col md={12}>
-                                                <Textarea label="Head Tags By SEO:" rows="9" type="text" name="seo" value={states.seo} onChange={handleChange} />
+                                                <Textarea id={"seo"} label="Head Tags By SEO" rows="9" type="text" name="seo" value={states.seo} onChange={handleChange} />
                                                 <SingleError error={errors?.seo} />
                                             </Col>
-
                                         </Row>
+
+                                        <div className='d-flex justify-content-between align-items-center'>
+                                            <label htmlFor="industry-select" className="form-label text-default mt-3">
+                                                FAQs
+                                            </label>
+                                            <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={addFAQ}>
+                                                <PiPlusBold />
+                                            </div>
+                                        </div>
+                                        {faqList.map((faq, index) => (
+                                            <Row key={index} className="g-4">
+                                                <Col md={12} className='mb-4'>
+                                                    <div className='d-flex align-items-end gap-2'>
+                                                        <div className='w-100'>
+                                                            <LableInput
+                                                                label="Question"
+                                                                className="form-control"
+                                                                id="text"
+                                                                placeholder="Enter question"
+                                                                type="text"
+                                                                name="question"
+                                                                value={faq.question}
+                                                                onChange={(e) => {
+                                                                    const updatedFaqList = [...faqList];
+                                                                    updatedFaqList[index].question = e.target.value;
+                                                                    setFaqList(updatedFaqList);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className='mt-3'>
+                                                        <Textarea
+                                                            label="Answer"
+                                                            className="form-control"
+                                                            id="answer"
+                                                            rows="4"
+                                                            placeholder="Enter answer"
+                                                            type="text"
+                                                            name="answer"
+                                                            value={faq.answer}
+                                                            onChange={(e) => {
+                                                                const updatedFaqList = [...faqList];
+                                                                updatedFaqList[index].answer = e.target.value;
+                                                                setFaqList(updatedFaqList);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="d-flex justify-content-end mt-3">
+                                                        {faqList.length > 1 && index !== faqList.length - 1 ? (
+                                                            <button type="button"
+                                                                className="btn btn-danger py-2"
+                                                                onClick={() => deleteFAQ(index)}>
+                                                                <FaTrash />
+                                                            </button>
+                                                        ) : null}
+                                                    </div>
+                                                </Col>
+                                                {/* <Col md={4} className="d-flex justify-content-between align-items-center">
+
+                                                    {index === faqList.length - 1 ? (
+                                                        <button type="button" onClick={addFAQ}>
+                                                           <PiPlusBold />
+                                                        </button>
+                                                    ) : null}
+                                                </Col> */}
+                                            </Row>
+                                        ))}
+
                                     </form>
 
                                     <div className="d-flex justify-content-between align-items-center mt-5">

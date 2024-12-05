@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MdOutlineFileUpload } from "react-icons/md";
 import { getImageURL } from '../../helper/envConfig';
 
-function FileInputComman({ label, setImage, initialImage, name, onChange }) {
+function FileInputComman({ label, setImage, initialImage, name, onChange,required=false }) {
     const [selectedImage, setSelectedImage] = useState(initialImage || null);
     const imageURL = getImageURL();
     useEffect(() => {
@@ -56,6 +56,7 @@ function FileInputComman({ label, setImage, initialImage, name, onChange }) {
         <div>
             <label className="form-label text-default">
                 {label}
+                {required && <span className='text-danger'>*</span>}
             </label>
             <div
                 onDragOver={handleDragOver}

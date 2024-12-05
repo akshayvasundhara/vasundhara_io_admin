@@ -87,15 +87,10 @@ function AddCaseStudiesIndex() {
         setStates({});
         navigate('/case-studies');
     }
-
-
-    console.log(states?.content);
     
     // Get State 
     useEffect(() => {
         if (state && Object.keys(state)?.length > 0) {
-            // console.log("===================",state?.content?.length);
-            
             setStates({
                 title: state?.title,
                 sub_title: state?.sub_title,
@@ -139,41 +134,41 @@ function AddCaseStudiesIndex() {
             }
 
             // Set content images
-            // if (state.content && Array.isArray(state.content)) {
-            //     const updatedContent = state.content.map(cont => ({
-            //         ...cont,
-            //         image: cont.image ? cont.image : null // Construct full image URL
-            //     }));
-            //     setStates(prev => ({ ...prev, content: updatedContent }));
-            // }
+            if (state.content && Array.isArray(state.content)) {
+                const updatedContent = state.content.map(cont => ({
+                    ...cont,
+                    image: cont.image ? cont.image : null // Construct full image URL
+                }));
+                setStates(prev => ({ ...prev, content: updatedContent }));
+            }
 
             // Set features images
-            // if (state.features && Array.isArray(state.features)) {
-            //     const updatedFeatures = state.features.map(feat => ({
-            //         ...feat,
-            //         image: feat.image ? feat.image : null // Construct full image URL
-            //     }));
-            //     setStates(prev => ({ ...prev, features: updatedFeatures }));
-            // }
+            if (state.features && Array.isArray(state.features)) {
+                const updatedFeatures = state.features.map(feat => ({
+                    ...feat,
+                    image: feat.image ? feat.image : null // Construct full image URL
+                }));
+                setStates(prev => ({ ...prev, features: updatedFeatures }));
+            }
 
             // set sample images
-            // if (state.sample_screen_images && Array.isArray(state.sample_screen_images)) {
-            //     const updatedSample = state.sample_screen_images.map(samp => ({
-            //         ...samp,
-            //         // image: samp.image ? `${imageURL}${samp.image}` : null
-            //         image: samp.image ? samp.image : null
-            //     }))
-            //     setStates(prev => ({ ...prev, sample_screen_images: updatedSample }));
-            // }
+            if (state.sample_screen_images && Array.isArray(state.sample_screen_images)) {
+                const updatedSample = state.sample_screen_images.map(samp => ({
+                    ...samp,
+                    // image: samp.image ? `${imageURL}${samp.image}` : null
+                    image: samp.image ? samp.image : null
+                }))
+                setStates(prev => ({ ...prev, sample_screen_images: updatedSample }));
+            }
 
             // set sample images
-            // if (state.other_images && Array.isArray(state.other_images)) {
-            //     const updatedSample = state.other_images.map(oth => ({
-            //         ...oth,
-            //         image: oth.image ? oth.image : null
-            //     }))
-            //     setStates(prev => ({ ...prev, other_images: updatedSample }));
-            // }
+            if (state.other_images && Array.isArray(state.other_images)) {
+                const updatedSample = state.other_images.map(oth => ({
+                    ...oth,
+                    image: oth.image ? oth.image : null
+                }))
+                setStates(prev => ({ ...prev, other_images: updatedSample }));
+            }
         }
     }, [state, options]);
 
@@ -240,6 +235,7 @@ function AddCaseStudiesIndex() {
                 alert('Please enter title, description and image');
             }
         }
+
     };
 
     const handleAddFaqs = () => {

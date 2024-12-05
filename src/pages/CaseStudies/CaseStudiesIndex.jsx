@@ -26,8 +26,6 @@ function CaseStudiesIndex() {
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
 
-
-
     // Get Case Study
     const getCaseStudy = async () => {
         setMainLoader(true);
@@ -53,7 +51,6 @@ function CaseStudiesIndex() {
         getCaseStudy();
     }, [page, limit])
 
-
     // Delete function
     const onSuccessData = () => {
         if (caseStudy.data.length === 1 && page > 1) {
@@ -63,13 +60,16 @@ function CaseStudiesIndex() {
         }
     }
 
-
     // Update status
-    const updateStatus = async (itemId, newStatus) => {
+    const updateStatus = async (itemId, newStatus, object) => {
         try {
-            const response = await api.patchWithToken(`${serverURL}/case-study/${itemId}`, { status: newStatus });
+            const response = await api.patchWithToken(`${serverURL}/case-study/${itemId}`, object);
             if (response.data.success) {
-                toast.info("Status updated successfully.");
+                if(object?.status){
+                    toast.info("Status updated successfully.");
+                }
+                else 
+                toast.info("isFeatured updated successfully.");
                 getCaseStudy(); // Refresh hiring data after updating
             } else {
                 console.error("Failed to update status:", response.data.message);
@@ -78,8 +78,6 @@ function CaseStudiesIndex() {
             console.error("Error updating status:", error.response ? error.response.data : error.message);
         }
     };
-
-
 
     return (
         <>
@@ -103,8 +101,9 @@ function CaseStudiesIndex() {
                                                     <th width="50px">No.</th>
                                                     <th width="100px">Banner</th>
                                                     <th>Title</th>
-                                                    <th>Subtitle</th>
-                                                    <th>Author</th>
+                                                    <th>Client Name</th>
+                                                    <th>Tag</th>
+                                                    <th>Is Feature</th>
                                                     <th>Status</th>
                                                     <th width='100'>Action</th>
                                                 </tr>
@@ -120,11 +119,14 @@ function CaseStudiesIndex() {
                                                                         <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
                                                                     </div>
                                                                 </td>
-                                                                <td><p>{test.title}</p></td>
-                                                                <td><p>{test.sub_title}</p></td>
-                                                                <td><p>{test.author.name}</p></td>
+                                                                <td><p>{test?.title}</p></td>
+                                                                <td><p>{test?.client?.name || "-"}</p></td>
+                                                                <td><p>{test?.tags?.length ? test?.tags?.join(', ') : "-"}</p></td>
                                                                 <td>
-                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                    <Switch mode={test.isFeatured} index={index} itemId={test._id} onToggle={updateStatus} data={"isFeatured"} />
+                                                                </td>
+                                                                <td>
+                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} data={"status"} />
                                                                 </td>
                                                                 <td width={100}>
                                                                     <div className='d-flex align-items-center gap-2'>

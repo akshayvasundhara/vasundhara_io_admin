@@ -51,8 +51,6 @@ function IndexPortfolio() {
         getPortFolio();
     }, [page, limit])
 
-
-
     // Delete function
     const onSuccessData = () => {
         if (portFolio.data.length === 1 && page > 1) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MdOutlineFileUpload } from "react-icons/md";
 import { getImageURL } from '../../helper/envConfig';
+import { RiDeleteBinLine } from 'react-icons/ri';
 
 
 function FileICon({ label, setIcon, initialIcon, onChange, name }) {
@@ -49,6 +50,12 @@ function FileICon({ label, setIcon, initialIcon, onChange, name }) {
         }
     };
 
+    const handleRemoveFile = (e) => {
+        e.stopPropagation();
+        setSelectedImage(null);
+        setIcon(null)
+    };
+
     return (
         <div>
             <label htmlFor="formFile" className="form-label text-default">
@@ -60,7 +67,7 @@ function FileICon({ label, setIcon, initialIcon, onChange, name }) {
                 onClick={() => document.getElementById(name).click()}
                 className='drag-over'
             >
-                <div>
+                <div className='position-relative'>
                     {selectedImage ? (
                         <>
                             <div className="image-upload">
@@ -70,6 +77,9 @@ function FileICon({ label, setIcon, initialIcon, onChange, name }) {
                                     className='object-fit-contain w-100 h-100'
                                 />
                             </div>
+                            <button onClick={handleRemoveFile} className="remove-button">
+                                <RiDeleteBinLine />
+                            </button>
                         </>
                     ) : (
                         <>

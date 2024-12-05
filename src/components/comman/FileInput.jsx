@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MdOutlineFileUpload } from "react-icons/md";
 
-
-function FileInput({ label, setImage, initialImage, onChange }) {
+function FileInput({ name, label, id, setImage, initialImage, onChange, required = false }) {
     const [selectedImage, setSelectedImage] = useState(null);
-
 
     useEffect(() => {
         if (initialImage) {
@@ -19,7 +17,6 @@ function FileInput({ label, setImage, initialImage, onChange }) {
 
         };
         reader.readAsDataURL(file);
-
 
         setImage(file);
         if (onChange) {
@@ -53,8 +50,9 @@ function FileInput({ label, setImage, initialImage, onChange }) {
 
     return (
         <div>
-            <label htmlFor="formFile" className="form-label text-default">
+            <label htmlFor="formFile" className="form-label text-default" id={id}>
                 {label}
+                {required && <span className="star">*</span>}
             </label>
             <div
                 onDragOver={handleDragOver}
@@ -85,6 +83,7 @@ function FileInput({ label, setImage, initialImage, onChange }) {
             </div>
             <input
                 className="form-control"
+                name='image'
                 type="file"
                 id="formFile"
                 accept="image/*"

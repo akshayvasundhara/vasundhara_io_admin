@@ -1265,15 +1265,84 @@ textarea:focus {
 
 /* ckEditor css */
 .editor-container {
-  resize: vertical; /* Allow resizing only in the vertical direction */
-  overflow: auto; /* Enable scrollbars if needed */
-  min-width: 300px; /* Set a minimum width */
-  min-height: 200px; /* Set a minimum height */
-  max-height: 600px; /* Set a maximum height if needed */
-  
+  resize: vertical;
+  /* Allow resizing only in the vertical direction */
+  overflow: auto;
+  /* Enable scrollbars if needed */
+  min-width: 300px;
+  /* Set a minimum width */
+  min-height: 200px;
+  /* Set a minimum height */
+  max-height: 600px;
+  /* Set a maximum height if needed */
+
   /* Border properties */
-  border: 2px solid #007bff; /* Change the color and thickness as needed */
-  border-radius: 5px; /* Optional: add rounded corners */
-  padding: 10px; /* Optional: add padding inside the border */
-  background-color: #f9f9f9; /* Optional: set a background color */
+  border: 2px solid #007bff;
+  /* Change the color and thickness as needed */
+  border-radius: 5px;
+  /* Optional: add rounded corners */
+  padding: 10px;
+  /* Optional: add padding inside the border */
+  background-color: #f9f9f9;
+  /* Optional: set a background color */
+}
+
+/* Styling for the Copy Button */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  gap: 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* .copy-btn:hover {
+  background-color: #0056b3;
+} */
+
+.copy-btn:focus {
+  outline: none;
+}
+
+/* .copy-btn:active {
+  background-color: var(--secondary);
+} */
+
+/* Icon Styling */
+.copy-icon,
+.success-icon {
+  font-size: 18px;
+}
+
+.success-icon {
+  color: #28a745;
+}
+
+/* Ensure text stays on one line */
+.image-url-text {
+  white-space: nowrap;
+  /* Ensures the text doesn't wrap to the next line */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Adds '...' if the text is too long */
+  max-width: calc(100% - 50px);
+  /* Makes sure the text doesn't take up all space and leaves room for the button */
+}
+
+.star {
+  color: #dc3545;
+}
+
+.ck-editor__editable {
+  resize: both !important;
+  overflow: auto !important;
+  width: 100% !important;
+}
+
+.ctm-editor .ck-editor__editable {
+  min-height: 600px !important;
 }

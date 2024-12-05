@@ -13,6 +13,11 @@ export const PortFolioValidate = (values) => {
         if (values.desc.length < 3 || values.desc.length > 1000) {
             errors.desc = "Description must be between 3 and 1000 characters.";
         }
+    } else
+        errors.desc = "Description is required";
+
+    if (!values?.category) {
+        errors.category = "Please select a category.";
     }
 
     // Image validation
