@@ -113,17 +113,24 @@ function ViewCaseStudiesIndex() {
 
                                         <h5 className='form-title pt-3'>Process:</h5>
 
-                                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+                                        <div className='row studies_details_cards mb-3 g-3'>
                                             {state?.process.map((item) => (
-                                                <div key={item._id} style={{ width: '100px', margin: '10px' }}>
-                                                    <div className='mb-3'>
-                                                        <img
-                                                            src={`${imageURL}${item.image}`}
-                                                            alt={item.title}
-                                                            className='preview-image'
-                                                        />
+                                                <div className='col-12 col-md-6 col-xl-3' key={item._id}>
+                                                    <div className='card'>
+                                                        <div className="card-body">
+                                                            <div className='d-flex align-items-center gap-3'>
+                                                                <div className='process_icons d-flex justify-content-center align-items-center'>
+                                                                    <img
+                                                                        src={`${imageURL}${item.image}`}
+                                                                        width={30}
+                                                                        height={30}
+                                                                        alt={item.title}
+                                                                    />
+                                                                </div>
+                                                                <h4 className='mb-0'>{item?.title}</h4>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <p>{item?.title}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -132,11 +139,17 @@ function ViewCaseStudiesIndex() {
                                             <label>Solution main title</label>
                                             <p>{state?.solution_main_title}</p>
                                         </div>
-                                        <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                                        <div className='row studies_details_cards my-3 g-3'>
                                             {state?.solution.map((item) => (
-                                                <div key={item?._id} style={{ margin: '15px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', width: '80%', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                                                    <h4 style={{ color: '#007bff' }}>{item.title}</h4>
-                                                    <p>{item.desc}</p>
+                                                <div className="col-3 col-md-6 col-lg-6 col-xl-3">
+                                                    <div className="card rounded-2">
+                                                        <div className="card-body">
+                                                            <div key={item?._id}>
+                                                                <h4>{item.title}</h4>
+                                                                <p>{item.desc}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
@@ -145,9 +158,9 @@ function ViewCaseStudiesIndex() {
 
                                         <div style={{ marginTop: '20px' }}>
                                             <label>Technologies name:</label>
-                                            <ul >
+                                            <ul className='technologies_name'>
                                                 {state?.technology?.tech.map((technology, index) => (
-                                                    <li key={index} style={{ padding: '5px', fontSize: '1.1rem', color: '#333' }}>
+                                                    <li key={index}>
                                                         {technology}
                                                     </li>
                                                 ))}
@@ -310,29 +323,29 @@ function ViewCaseStudiesIndex() {
 
                                         <h5 className='form-title pt-3'>Content:</h5>
 
-                                        <div className="career-flight section-py mt-2 mb-3">
-                                            <div className="row g-3">
-                                                {state.content.map(detail => (
-                                                    <div className="col-12 col-md-6 col-xl-4" key={detail.id}>
-                                                        <div className="card h-100 shadow-lg career-details">
-                                                            <div className="card-body p-0">
-                                                                <div className="career-icon" aria-label={detail.title}>
-                                                                    <img src={`${imageURL}${detail.image}`} alt={detail.title} width={90} height={90} /> {/* Adjust size as needed */}
-                                                                </div>
+                                        <div className="career-flight section-py mt-2 mb-3 mt-3">
+                                            {state.content.map(detail => (
+                                                <div className="card mb-4">
+                                                    <div className="card-body">
+                                                        <div className="row g-3 align-items-center" key={detail.id}>
+
+                                                            <div className="col-12 col-md-12 col-lg-6 career-details order-2 order-lg-1">
                                                                 <h4>{detail.title}</h4>
-                                                                {/* <p>{detail.description}</p> */}
-                                                                {isReadMore ? renderTextWithList(detail.desc.slice(0, 100)) : renderTextWithList(detail.desc)}
-                                                                <p onClick={toggleReadMore} style={{ color: "blue", cursor: "pointer" }}>
+                                                                {/* {isReadMore ? detail.desc.slice(0, 100) : detail.desc} */}
+                                                                {/* <p onClick={toggleReadMore} style={{ color: "blue", cursor: "pointer" }}>
                                                                     {isReadMore ? " ...Read More" : " Read Less"}
+                                                                </p> */}
+                                                                <p>
+                                                                    {renderTextWithList(detail.desc)}
                                                                 </p>
                                                             </div>
-                                                            {/* <div className="card-footer bg-transparent border-0 px-0">
-                                                                <Link className='mt-2 text-decoration-none' to='/case-studies'>Get A Free Demo</Link>
-                                                            </div> */}
+                                                            <div className='col-12 col-lg-6 order-1 order-lg-2' aria-label={detail.title}>
+                                                                <img className='rounded-3 w-100 h-100' src={`${imageURL}${detail.image}`} alt={detail.title} />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                ))}
-                                            </div>
+                                                </div>
+                                            ))}
                                         </div>
 
                                         {/* <h5 className='form-title pt-3 mb-3'>Faqs:</h5> */}

@@ -50,87 +50,87 @@ body {
 /* Font Weight Custom Class End */
 /* Font Size Custom Class Start */
 .fs-10 {
-  font-size: 10px;
+  font-size: 10px !important;
 }
 
 .fs-11 {
-  font-size: 11px;
+  font-size: 11px !important;
 }
 
 .fs-12 {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 .fs-13 {
-  font-size: 13px;
+  font-size: 13px !important;
 }
 
 .fs-14 {
-  font-size: 14px;
+  font-size: 14px !important;
 }
 
 .fs-15 {
-  font-size: 15px;
+  font-size: 15px !important;
 }
 
 .fs-16 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 .fs-17 {
-  font-size: 17px;
+  font-size: 17px !important;
 }
 
 .fs-18 {
-  font-size: 18px;
+  font-size: 18px !important;
 }
 
 .fs-19 {
-  font-size: 19px;
+  font-size: 19px !important;
 }
 
 .fs-20 {
-  font-size: 20px;
+  font-size: 20px !important;
 }
 
 .fs-21 {
-  font-size: 21px;
+  font-size: 21px !important;
 }
 
 .fs-22 {
-  font-size: 22px;
+  font-size: 22px !important;
 }
 
 .fs-23 {
-  font-size: 23px;
+  font-size: 23px !important;
 }
 
 .fs-24 {
-  font-size: 24px;
+  font-size: 24px !important;
 }
 
 .fs-25 {
-  font-size: 25px;
+  font-size: 25px !important;
 }
 
 .fs-26 {
-  font-size: 26px;
+  font-size: 26px !important;
 }
 
 .fs-27 {
-  font-size: 27px;
+  font-size: 27px !important;
 }
 
 .fs-28 {
-  font-size: 28px;
+  font-size: 28px !important;
 }
 
 .fs-29 {
-  font-size: 29px;
+  font-size: 29px !important;
 }
 
 .fs-30 {
-  font-size: 30px;
+  font-size: 30px !important;
 }
 
 .font-family-poppins {
@@ -538,7 +538,7 @@ td p {
 .search-icon {
   width: 40px;
   height: 41px;
-  background-color: var(--primary);
+  background-color: rgba(92, 103, 247, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -550,8 +550,8 @@ td p {
 }
 
 .search-icon svg {
-  color: #fff;
-  font-size: 20px;
+  color: var(--secondary);
+  font-size: 25px;
 }
 
 .form-check-input:checked {
@@ -1058,7 +1058,7 @@ td p {
 .image-preview-container {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   gap: 20px;
 }
 
@@ -1067,6 +1067,11 @@ td p {
   border-radius: 5px;
   overflow: hidden;
   border: 1px solid #ddd;
+  height: 197px;
+  width: 200px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 
 .remove-button {
@@ -1129,16 +1134,16 @@ td p {
 
 .career-flight .career-details h4 {
   color: #132028;
-  font-size: 16px;
-  font-weight: 700;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 .career-flight .career-details p {
   color: #44464A;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   margin-bottom: 0;
 }
 
@@ -1178,6 +1183,10 @@ td p {
     flex-wrap: wrap;
     margin-top: 20px;
     gap: 10px;
+  }
+
+  .career-flight .career-details {
+    padding: 0px;
   }
 
 }
@@ -1345,4 +1354,48 @@ textarea:focus {
 
 .ctm-editor .ck-editor__editable {
   min-height: 600px !important;
+}
+
+
+.studies_details_cards .card {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  height: 100%;
+}
+
+.studies_details_cards .card h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #132028;
+}
+
+.studies_details_cards .card p {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.studies_details_cards .card .process_icons {
+  min-width: 60px;
+  height: 60px;
+  background-color: #F4FBFF;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.technologies_name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0px;
+  margin-top: 10px;
+}
+
+.technologies_name li {
+  padding: 5px 10px;
+  border: 1px solid var(--secondary);
+  border-radius: 5px;
+  list-style-type: none;
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
 }

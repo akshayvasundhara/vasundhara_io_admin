@@ -345,7 +345,7 @@ function IndexPortfolioEdit() {
             ...prevStates,
             features: prevStates.features.filter((_, i) => i !== index), // Remove the tag at the specified index
         }));
-    };  
+    };
 
     return (
         <>
@@ -417,7 +417,7 @@ function IndexPortfolioEdit() {
                                                 />
                                                 <SingleError error={errors?.play_store_link} />
                                             </Col>
-                                            <Col md={12} lg={6}>
+                                            <Col md={12} lg={12}>
                                                 <LableInput
                                                     label="App Store"
                                                     className="form-control"
@@ -491,7 +491,7 @@ function IndexPortfolioEdit() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Features:</h5>
+                                                    <h5 className='form-title'>Features</h5>
                                                     <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddFeature}>
                                                         <PiPlusBold />
                                                     </div>
@@ -547,11 +547,11 @@ function IndexPortfolioEdit() {
                                         <Row className='mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Sample Screens</h5>
                                                 </div>
                                             </Col>
+                                            <h5 className='form-title'>Sample Screens</h5>
                                             <Col md={12} className='mb-3'>
-                                                <div className='d-flex align-items-start gap-3 w-100'>
+                                                <div className='d-flex flex-wrap align-items-start gap-3 w-100'>
                                                     <div>
                                                         <MultipleImageUpload
                                                             label="Image"
@@ -560,15 +560,13 @@ function IndexPortfolioEdit() {
                                                             states={states}
                                                         />
                                                     </div>
-                                                </div>
-                                                <div className='d-flex align-items-start gap-3 w-100'>
                                                     {Array.from(states?.sample_screen_images)?.map((image, index) => (
-                                                        <div className="image-preview-container" key={index}>
+                                                        <div className="image-preview-container mt-4 pt-2" key={index}>
                                                             <div key={index} className="image-preview">
                                                                 <img
                                                                     src={image?.image?.name ? URL.createObjectURL(image?.image) : `${imageURL}${image.image}`}
                                                                     alt={`preview ${index}`}
-                                                                    className="preview-image sample-screens-image"
+                                                                    className="preview-image sample-screens-image object-fit-scale"
                                                                 />
                                                                 <button
                                                                     onClick={(e) => handleRemoveImage(e, index, 'sample_screen_images')}

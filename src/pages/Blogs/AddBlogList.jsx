@@ -332,7 +332,7 @@ function AddBlogList() {
                             <Card>
                                 <Card.Body>
                                     <form>
-                                        <Row className='g-4'>
+                                        <Row className='g-3'>
                                             <Col md={6} >
                                                 <LableInput
                                                     required={true}
@@ -367,7 +367,7 @@ function AddBlogList() {
                                                 <SingleError error={errors?.date} />
                                             </Col>
                                             <Col md={6}>
-                                                <SelectInput id="author" required={true} select={"author"} label="Author:" options={teamOptions} name="author"  // Add name here
+                                                <SelectInput id="author" required={true} select={"author"} label="Author" options={teamOptions} name="author"  // Add name here
                                                     value={states.author}
                                                     onChange={handleChange}
                                                 />
@@ -493,8 +493,10 @@ function AddBlogList() {
                                             </Col>
                                         </Row>
 
-                                        <div className='d-flex justify-content-between align-items-center'>
-                                            <label htmlFor="industry-select" className="form-label text-default mt-3">
+                                        <hr />
+
+                                        <div className='d-flex justify-content-between align-items-center mb-3'>
+                                            <label htmlFor="industry-select" className="form-label text-default form-title mb-0">
                                                 FAQs
                                             </label>
                                             <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={addFAQ}>
@@ -505,21 +507,33 @@ function AddBlogList() {
                                             <Row key={index} className="g-4">
                                                 <Col md={12} className='mb-4'>
                                                     <div className='d-flex align-items-end gap-2'>
-                                                        <div className='w-100'>
-                                                            <LableInput
-                                                                label="Question"
-                                                                className="form-control"
-                                                                id="text"
-                                                                placeholder="Enter question"
-                                                                type="text"
-                                                                name="question"
-                                                                value={faq.question}
-                                                                onChange={(e) => {
-                                                                    const updatedFaqList = [...faqList];
-                                                                    updatedFaqList[index].question = e.target.value;
-                                                                    setFaqList(updatedFaqList);
-                                                                }}
-                                                            />
+                                                        <div className='w-100 d-flex align-items-end gap-2'>
+                                                            <div className='w-100'>
+                                                                <label htmlFor="signin-username" className="form-label text-default" id="email">Question</label>
+                                                                <div className='label-none'>
+                                                                    <LableInput
+                                                                        label="Question"
+                                                                        className="form-control"
+                                                                        id="text"
+                                                                        placeholder="Enter question"
+                                                                        type="text"
+                                                                        name="question"
+                                                                        value={faq.question}
+                                                                        onChange={(e) => {
+                                                                            const updatedFaqList = [...faqList];
+                                                                            updatedFaqList[index].question = e.target.value;
+                                                                            setFaqList(updatedFaqList);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            {faqList.length > 1 && index !== faqList.length - 1 ? (
+                                                                <button type="button"
+                                                                    className="btn btn-danger py-2"
+                                                                    onClick={() => deleteFAQ(index)}>
+                                                                    <FaTrash />
+                                                                </button>
+                                                            ) : null}
                                                         </div>
                                                     </div>
                                                     <div className='mt-3'>
@@ -539,15 +553,6 @@ function AddBlogList() {
                                                             }}
                                                         />
                                                     </div>
-                                                    <div className="d-flex justify-content-end mt-3">
-                                                        {faqList.length > 1 && index !== faqList.length - 1 ? (
-                                                            <button type="button"
-                                                                className="btn btn-danger py-2"
-                                                                onClick={() => deleteFAQ(index)}>
-                                                                <FaTrash />
-                                                            </button>
-                                                        ) : null}
-                                                    </div>
                                                 </Col>
                                                 {/* <Col md={4} className="d-flex justify-content-between align-items-center">
 
@@ -562,7 +567,7 @@ function AddBlogList() {
 
                                     </form>
 
-                                    <div className="d-flex justify-content-between align-items-center mt-5">
+                                    <div className="d-flex justify-content-between align-items-center">
                                         <div></div>
                                         <div className='d-flex gap-2'>
                                             <CommanButton className="save-btn" text="Save" handleSubmit={addBlog} />

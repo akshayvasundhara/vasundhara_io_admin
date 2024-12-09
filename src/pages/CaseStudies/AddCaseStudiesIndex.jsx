@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
@@ -977,53 +977,87 @@ function AddCaseStudiesIndex() {
                                             <Col md={12}>
                                                 <hr />
                                             </Col>
-                                            <Row className='w-100 mt-3 mt-xl-0 g-0'>
-                                                <Col md={12}>
-                                                    <div className='d-flex justify-content-between align-items-center'>
-                                                        <h5 className='form-title mb-0'>Tags</h5>
-                                                        <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddTags}>
-                                                            <PiPlusBold />
+                                            <Col md={12}>
+                                                <div className='d-flex justify-content-between align-items-center'>
+                                                    <h5 className='form-title mb-0'>Tags</h5>
+                                                    <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddTags}>
+                                                        <PiPlusBold />
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                            {states?.tags?.map((tag, index) => (
+                                                <Col md={12} key={index + "tag"}>
+                                                    <div className='d-md-flex align-items-start gap-3 w-100 mt-3'>
+                                                        <div className='w-100 mt-3 mt-md-0 d-flex align-items-center gap-2'>
+                                                            <div className='d-flex align-items-end gap-2 w-100 label-none'>
+                                                                <div className='w-100'>
+                                                                    <LableInput
+                                                                        className="form-control w-100"
+                                                                        id={`tags[${index}]`}
+                                                                        placeholder="Enter title"
+                                                                        type="text"
+                                                                        name={`tags[${index}]`}
+                                                                        value={tag || ''}
+                                                                        onChange={(e) =>
+                                                                            handleArrayChange('tags', [
+                                                                                ...states.tags.slice(0, index),
+                                                                                e.target.value,
+                                                                                ...states.tags.slice(index + 1)
+                                                                            ])
+                                                                        }
+                                                                    />
+                                                                    <SingleError error={errors.tags?.[index]} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="d-flex justify-content-end">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveTags(index)}
+                                                                    className="btn btn-danger py-2">
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </Col>
-                                                {states?.tags?.map((tag, index) => (
-                                                    <Col md={12} key={index + "tag"}>
-                                                        <div className='d-md-flex align-items-start gap-3 w-100 mt-3'>
-                                                            <div className='w-100 mt-3 mt-md-0 d-flex align-items-center gap-2'>
-                                                                <div className='d-flex align-items-end gap-2 w-100 label-none'>
-                                                                    <div className='w-100'>
-                                                                        <LableInput
-                                                                            className="form-control w-100"
-                                                                            id={`tags[${index}]`}
-                                                                            placeholder="Enter title"
-                                                                            type="text"
-                                                                            name={`tags[${index}]`}
-                                                                            value={tag || ''}
-                                                                            onChange={(e) =>
-                                                                                handleArrayChange('tags', [
-                                                                                    ...states.tags.slice(0, index),
-                                                                                    e.target.value,
-                                                                                    ...states.tags.slice(index + 1)
-                                                                                ])
-                                                                            }
-                                                                        />
-                                                                        <SingleError error={errors.tags?.[index]} />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="d-flex justify-content-end">
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => handleRemoveTags(index)}
-                                                                        className="btn btn-danger py-2">
-                                                                        <RiDeleteBinLine />
-                                                                    </button>
+                                            ))}
+                                            <SingleError error={errors?.tags} />
+                                            {/* {states?.tags?.map((tag, index) => (
+                                                <Col md={12} key={index}>
+                                                    <div className='d-md-flex align-items-start gap-3 w-100'>
+                                                        <div className='w-100 mt-3 mt-md-0 d-flex align-items-center gap-2'>
+                                                            <div className='d-flex align-items-end gap-2 w-100 label-none'>
+                                                                <div className='w-100'>
+                                                                    <LableInput
+                                                                        className="form-control w-100"
+                                                                        id={`tags[${index}]`}
+                                                                        placeholder="Enter title"
+                                                                        type="text"
+                                                                        name={`tags[${index}]`}
+                                                                        value={tag || ''}
+                                                                        onChange={(e) =>
+                                                                            handleArrayChange('tags', [
+                                                                                ...states.tags.slice(0, index),
+                                                                                e.target.value,
+                                                                                ...states.tags.slice(index + 1)
+                                                                            ])
+                                                                        }
+                                                                    />
+                                                                    <SingleError error={errors.tags?.[index]} />
                                                                 </div>
                                                             </div>
+                                                            <div className="d-flex justify-content-end">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveTags(index)}
+                                                                    className="btn btn-danger py-2">
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                    </Col>
-                                                ))}
-                                                <SingleError error={errors?.tags} />
-                                            </Row>
+                                                    </div>
+                                                </Col> */}
+
                                             <Col md={12}>
                                                 <hr />
                                             </Col>
@@ -1244,22 +1278,20 @@ function AddCaseStudiesIndex() {
                                             </Col>
                                         </Row> */}
 
-                                        <Row className='mt-2'>
-                                            <Col md={12}>
-                                                <div className='d-flex justify-content-between align-items-center'>
-                                                    <h5 className='form-title'>Detail</h5>
-                                                    <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddDetails}>
-                                                        <PiPlusBold />
-                                                    </div>
-                                                </div>
-                                            </Col>
+                                        <div className='d-flex justify-content-between align-items-center'>
+                                            <h5 className='form-title'>Detail</h5>
+                                            <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddDetails}>
+                                                <PiPlusBold />
+                                            </div>
+                                        </div>
+                                        <Row className='g-3'>
                                             {states?.details?.map((ind, index) => (
                                                 // <Col md={12} className='mb-4' key={ind.id}>
-                                                <Row key={index + "details"}>
-                                                    <Col xl={5}>
+                                                <Fragment key={index + "details"}>
+                                                    <Col xl={6}>
                                                         <LableInput
                                                             required={true}
-                                                            label="key"
+                                                            label="Key"
                                                             className="form-control"
                                                             id={`details[${index}][key]`}
                                                             placeholder="Enter key name"
@@ -1270,30 +1302,33 @@ function AddCaseStudiesIndex() {
                                                         />
                                                     </Col>
                                                     <Col xl={6}>
-                                                        <LableInput
-                                                            required={true}
-                                                            label="Value"
-                                                            className="form-control"
-                                                            id={`details[${index}][value]`}
-                                                            placeholder="Enter key value"
-                                                            type="text"
-                                                            name={`details[${index}][value]`}
-                                                            value={ind.value || ''}
-                                                            onChange={(e) => handleArrayChange('details', [...states.details.slice(0, index), { ...ind, value: e.target.value }, ...states.details.slice(index + 1)])}
-                                                        />
+                                                        <div className='d-flex align-items-end gap-2 w-100'>
+                                                            <div className='w-100'>
+                                                                <label htmlFor="signin-username" className="form-label text-default" id={`details[${index}][value]`}>Value<span className="star">*</span></label>
+                                                                <div className='label-none'>
+                                                                    <LableInput
+                                                                        required={true}
+                                                                        label="Value"
+                                                                        className="form-control"
+                                                                        id={`details[${index}][value]`}
+                                                                        placeholder="Enter key value"
+                                                                        type="text"
+                                                                        name={`details[${index}][value]`}
+                                                                        value={ind.value || ''}
+                                                                        onChange={(e) => handleArrayChange('details', [...states.details.slice(0, index), { ...ind, value: e.target.value }, ...states.details.slice(index + 1)])}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleRemoveDetails(index)}
+                                                                className="btn btn-danger py-2"
+                                                            >
+                                                                <RiDeleteBinLine />
+                                                            </button>
+                                                        </div>
                                                     </Col>
-                                                    <Col xl={1} className="d-flex align-items-end">
-                                                        {/* <div className="d-flex justify-content-end mt-3"> */}
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleRemoveDetails(index)}
-                                                            className="btn btn-danger py-2"
-                                                        >
-                                                            <RiDeleteBinLine />
-                                                        </button>
-                                                        {/* </div> */}
-                                                    </Col>
-                                                </Row>
+                                                </Fragment>
                                             ))}
                                             <Col md={12}>
                                                 <hr />
@@ -1309,22 +1344,25 @@ function AddCaseStudiesIndex() {
                                                     </div> */}
                                                 </div>
                                             </Col>
-                                            <div className='w-100'>
-                                                <LableInput
-                                                    required={true}
-                                                    label="Main Title"
-                                                    className="form-control"
-                                                    id={`solution_main_title`}
-                                                    placeholder="Enter main title"
-                                                    type="text"
-                                                    name={`solution_main_title`}
-                                                    value={states?.solution_main_title || ''}
-                                                    onChange={handleChange}
-                                                // onChange={(e) => handleArrayChange('faqs', [...states.faqs.slice(0, index), { ...ind, question: e.target.value }, ...states.faqs.slice(index + 1)])} // Use handleArrayChange
-                                                />
-                                                <SingleError error={errors.solution_main_title} />
-                                            </div>
-                                            <div className='d-flex justify-content-between align-items-center mt-2'>
+                                            <Col md={12}>
+                                                <div className='w-100'>
+                                                    <LableInput
+                                                        required={true}
+                                                        label="Main Title"
+                                                        className="form-control"
+                                                        id={`solution_main_title`}
+                                                        placeholder="Enter main title"
+                                                        type="text"
+                                                        name={`solution_main_title`}
+                                                        value={states?.solution_main_title || ''}
+                                                        onChange={handleChange}
+                                                    // onChange={(e) => handleArrayChange('faqs', [...states.faqs.slice(0, index), { ...ind, question: e.target.value }, ...states.faqs.slice(index + 1)])} // Use handleArrayChange
+                                                    />
+                                                    <SingleError error={errors.solution_main_title} />
+                                                </div>
+                                                <hr className='mt-4' />
+                                            </Col>
+                                            <div className='d-flex justify-content-between align-items-center'>
                                                 <h5 className='form-title'>{""}</h5>
                                                 <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddSolutions}>
                                                     <PiPlusBold />
@@ -1332,22 +1370,32 @@ function AddCaseStudiesIndex() {
                                             </div>
 
                                             {states?.solution?.map((ind, index) => (
-                                                <Col md={12} className='mb-4' key={"solution" + index}>
+                                                <Col md={12} key={"solution" + index}>
                                                     <div className='d-flex align-items-end gap-2'>
                                                         <div className='w-100'>
-                                                            <LableInput
-                                                                required={true}
-                                                                label="Title"
-                                                                className="form-control"
-                                                                id={`solution[${index}][title]`}
-                                                                placeholder="Enter question"
-                                                                type="text"
-                                                                name={`solution[${index}][title]`}
-                                                                value={ind.title || ''}
-                                                                onChange={(e) => handleArrayChange('solution', [...states.solution.slice(0, index), { ...ind, title: e.target.value }, ...states.solution.slice(index + 1)])} // Use handleArrayChange
-                                                            />
-                                                            <SingleError error={errors.solution?.[index]?.title} />
+                                                            <label htmlFor="signin-username" className="form-label text-default" id={`solution[${index}][title]`}>Title<span className="star">*</span></label>
+                                                            <div className="label-none">
+                                                                <LableInput
+                                                                    required={true}
+                                                                    label="Title"
+                                                                    className="form-control"
+                                                                    id={`solution[${index}][title]`}
+                                                                    placeholder="Enter question"
+                                                                    type="text"
+                                                                    name={`solution[${index}][title]`}
+                                                                    value={ind.title || ''}
+                                                                    onChange={(e) => handleArrayChange('solution', [...states.solution.slice(0, index), { ...ind, title: e.target.value }, ...states.solution.slice(index + 1)])} // Use handleArrayChange
+                                                                />
+                                                                <SingleError error={errors.solution?.[index]?.title} />
+                                                            </div>
                                                         </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleRemoveSolutions(index)}
+                                                            className="btn btn-danger py-2"
+                                                        >
+                                                            <RiDeleteBinLine />
+                                                        </button>
                                                     </div>
                                                     <div className='mt-3'>
                                                         <Textarea
@@ -1361,15 +1409,6 @@ function AddCaseStudiesIndex() {
                                                             onChange={(e) => handleArrayChange('solution', [...states.solution.slice(0, index), { ...ind, desc: e.target.value }, ...states.solution.slice(index + 1)])} // Use handleArrayChange
                                                         />
                                                         <SingleError error={errors.solution?.[index]?.desc} />
-                                                    </div>
-                                                    <div className="d-flex justify-content-end mt-3">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleRemoveSolutions(index)}
-                                                            className="btn btn-danger py-2"
-                                                        >
-                                                            <RiDeleteBinLine />
-                                                        </button>
                                                     </div>
                                                 </Col>
                                             ))}
@@ -1398,12 +1437,12 @@ function AddCaseStudiesIndex() {
                                                                 initialImage={ind.image || ''}
                                                                 name={`process[${index}][image]`}
                                                             />
-                                                            <singleError error={errors.process?.[index]?.image} />
+                                                            <SingleError error={errors.process?.[index]?.image} />
                                                             {/* <SingleError error={errors.content?.[index]?.image} /> */}
                                                         </div>
                                                         <div className='w-100 mt-3 mt-md-0'>
                                                             <Row className='g-3'>
-                                                                <Col xl={6}>
+                                                                <Col xl={12}>
                                                                     <LableInput
                                                                         label="Title"
                                                                         className="form-control"
@@ -1438,7 +1477,7 @@ function AddCaseStudiesIndex() {
                                                 <hr />
                                             </Col>
                                         </Row>
-                                        <Row className="mt-2">
+                                        <Row className="mt-2 g-3">
                                             <Col md={12}>
                                                 <div className="d-flex justify-content-between align-items-center">
                                                     <h5 className="form-title">Technology</h5>
@@ -1464,10 +1503,10 @@ function AddCaseStudiesIndex() {
                                             </div>
 
                                             <Col md={12}>
-                                                <div className="d-flex justify-content-between align-items-center mt-2">
+                                                <div className="d-flex justify-content-between align-items-center mt-3">
                                                     <label
                                                         htmlFor="signin-username"
-                                                        className="form-label text-default"
+                                                        className="form-label text-default mb-0 form-title"
                                                     >
                                                         Technology Name
                                                     </label>
@@ -1478,11 +1517,12 @@ function AddCaseStudiesIndex() {
                                                 </div>
                                             </Col>
 
+                                            {/* Technology Names */}
                                             {states?.technology?.tech.map((tech, index) => (
-                                                <Row key={index + "tech"}>
-                                                    <Col xl={4}>
+                                                <Col xl={4} key={index + "tech"} className="mb-3">
+                                                    <div className='d-flex align-items-center gap-1'>
                                                         <input
-                                                            className="form-control mb-2"
+                                                            className="form-control"
                                                             id={`text-${index}`}
                                                             placeholder="Enter technology name"
                                                             type="text"
@@ -1490,11 +1530,8 @@ function AddCaseStudiesIndex() {
                                                             value={tech}
                                                             onChange={(e) => handleArrayChange1(index, e.target.value)} // Update tech array at the specified index
                                                         />
-                                                        <SingleError error={null} />
-                                                    </Col>
-
-                                                    {states.technology.tech.length > 1 && (
-                                                        <Col xl={1} className="d-flex align-items-end">
+                                                        <SingleError error={null /* Add your error handling here */} />
+                                                        {states.technology.tech.length > 1 && (
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleRemoveTechnology(index)}
@@ -1502,15 +1539,15 @@ function AddCaseStudiesIndex() {
                                                             >
                                                                 <RiDeleteBinLine />
                                                             </button>
-                                                        </Col>
-                                                    )}
-                                                </Row>
-                                            ))}
-
+                                                        )}
+                                                    </div>
+                                                </Col>
+                                            ))
+                                            }
                                             <Col md={12}>
                                                 <hr />
                                             </Col>
-                                        </Row>
+                                        </Row >
 
                                         <Row className='mt-2'>
                                             <Col md={12}>
@@ -1536,18 +1573,33 @@ function AddCaseStudiesIndex() {
                                                         </div>
                                                         <div className='w-100 mt-3 mt-md-0'>
                                                             <Row className='g-3'>
-                                                                <Col xl={6}>
-                                                                    <LableInput
-                                                                        label="Title"
-                                                                        className="form-control"
-                                                                        id={`text-${index}`}
-                                                                        placeholder="Enter title"
-                                                                        type="text"
-                                                                        name={`content[${index}][title]`}
-                                                                        value={ind.title || ''}
-                                                                        onChange={(e) => handleArrayChange('content', [...states.content.slice(0, index), { ...ind, title: e.target.value }, ...states.content.slice(index + 1)])} // Use handleArrayChange
-                                                                    />
-                                                                    <SingleError error={errors.content?.[index]?.title} />
+                                                                <Col xl={12}>
+                                                                    <div className='d-flex align-items-end gap-2'>
+                                                                        <div className='w-100'>
+                                                                            <label htmlFor="signin-username" className="form-label text-default" id={`text-${index}`}>Title<span className="star">*</span></label>
+                                                                            <div className='label-none'>
+                                                                                <LableInput
+                                                                                    label="Title"
+                                                                                    className="form-control"
+                                                                                    id={`text-${index}`}
+                                                                                    placeholder="Enter title"
+                                                                                    type="text"
+                                                                                    name={`content[${index}][title]`}
+                                                                                    value={ind.title || ''}
+                                                                                    onChange={(e) => handleArrayChange('content', [...states.content.slice(0, index), { ...ind, title: e.target.value }, ...states.content.slice(index + 1)])} // Use handleArrayChange
+                                                                                />
+                                                                                <SingleError error={errors.content?.[index]?.title} />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => handleRemoveContent(index)}
+                                                                            className="btn btn-danger py-2"
+                                                                        >
+                                                                            <RiDeleteBinLine />
+                                                                        </button>
+                                                                    </div>
                                                                 </Col>
                                                                 {/* <Col xl={6}>
                                                                     <LableInput
@@ -1574,17 +1626,6 @@ function AddCaseStudiesIndex() {
                                                                 />
                                                                 <SingleError error={errors.content?.[index]?.desc} />
                                                             </div>
-                                                            {/* {index > 0 && ( */}
-                                                            <div className="d-flex justify-content-end mt-3">
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => handleRemoveContent(index)}
-                                                                    className="btn btn-danger py-2"
-                                                                >
-                                                                    <RiDeleteBinLine />
-                                                                </button>
-                                                            </div>
-                                                            {/* )} */}
                                                         </div>
                                                     </div>
                                                 </Col>
@@ -1594,7 +1635,7 @@ function AddCaseStudiesIndex() {
                                             </Col>
                                         </Row>
 
-                                        <Row className='mt-2'>
+                                        <Row className='g-3 mt-2'>
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
                                                     <h5 className='form-title'>Client Feedback</h5>
@@ -1719,7 +1760,7 @@ function AddCaseStudiesIndex() {
                                                 </Col>
                                             ))}
                                         </Row> */}
-                                    </form>
+                                    </form >
 
                                     <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
@@ -1733,12 +1774,12 @@ function AddCaseStudiesIndex() {
                                             <CommanButton className="cancel-btn" text="Cancel" handleSubmit={closeFaq} />
                                         </div>
                                     </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                                </Card.Body >
+                            </Card >
+                        </Col >
 
-                    </Row>
-                </div>
+                    </Row >
+                </div >
             </Layout >
         </>
     )

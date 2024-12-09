@@ -68,9 +68,9 @@ function FileInput({ name, label, url, id, setImage, initialImage, onChange, req
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
                 onClick={() => document.getElementById(id).click()}
-                className='drag-over'
+                className='drag-over position-relative'
             >
-                <div className='position-relative'>
+                <div className=''>
                     {selectedFile ? (
                         selectedFile?.type?.startsWith("video") ? (
                             <>
@@ -92,7 +92,7 @@ function FileInput({ name, label, url, id, setImage, initialImage, onChange, req
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
-                                <button onClick={handleRemoveFile}>
+                                <button  className="remove-button" onClick={handleRemoveFile}>
                                     <RiDeleteBinLine />
                                 </button>
                             </>

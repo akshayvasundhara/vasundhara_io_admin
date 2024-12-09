@@ -99,11 +99,11 @@ function ViewIndexPortfolio() {
                                         <label className='mb-2'>Banner:</label>
                                         <div className='d-flex gap-3 flex-wrap'>
                                             <div>
-                                                <div className='view-image-box mb-3'>
+                                                <div className='view-image-box mb-3 d-flex justify-content-center align-items-center'>
                                                     <img
                                                         src={`${imageURL}${state.image}`}
                                                         alt=""
-                                                        className='w-100 h-100'
+                                                        className='object-fit-contain'
                                                     />
                                                 </div>
                                             </div>
@@ -118,7 +118,7 @@ function ViewIndexPortfolio() {
                                                                 src={`${imageURL}${state.video}`}
                                                                 alt={"video"}
                                                                 width={200}
-                                                                height={200}
+                                                                // height={200}
                                                                 className='w-100 h-100'
                                                                 controls
                                                             />
@@ -138,26 +138,25 @@ function ViewIndexPortfolio() {
                                             <div className="row g-3">
                                                 {state?.features?.map((detail) => (
                                                     <div className="col-12 col-md-6 col-xl-3" key={detail._id}>
-                                                        <div className="card h-100 border-0 shadow-lg">
-                                                            <div className="career-details card-body">
-                                                                <div aria-label={detail.title}>
+                                                        <div className="card h-100 border-0 border">
+                                                            <div className="career-details card-body p-2">
+                                                                <div aria-label={detail.title} >
                                                                     {/* Check if it's a video or an image and render accordingly */}
                                                                     {isVideo(detail.image) ? (
                                                                         <video
                                                                             src={`${imageURL}${detail.image}`}
                                                                             alt={detail.title}
-                                                                            width={200}
+                                                                            className='rounded-3 overflow-hidden object-fit-cover'
+                                                                            width='100%'
                                                                             height={200}
-                                                                            className="d-flex justify-content-center m-auto"
                                                                             controls
                                                                         />
                                                                     ) : (
                                                                         <img
                                                                             src={`${imageURL}${detail.image}`}
                                                                             alt={detail.title}
-                                                                            width={200}
                                                                             height={200}
-                                                                            className="d-flex justify-content-center m-auto"
+                                                                            className="d-flex justify-content-center m-auto w-100 rounded-3"
                                                                         />
                                                                     )}
                                                                 </div>

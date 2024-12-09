@@ -108,20 +108,22 @@ strong {
                                     </div>
                                     <div className='col-sm-12 col-md-4'>
                                         <label htmlFor="">{"Image URL:"}</label>
-                                        <div className='d-flex align-items-center justify-content-between mb-3'>
-                                            <p className="image-url-text mb-0">{imageURL + state.image}</p>
-                                            <button
-                                                className="copy-btn"
-                                                onClick={() => handleCopy()}
-                                                title="Copy to clipboard"
-                                            >
-                                                {isCopied ? (
-                                                    <FaCheckCircle className="success-icon" />
-                                                ) : (
-                                                    <FaClipboard className="copy-icon" />
-                                                )}
-                                                {/* {isCopied ? 'Copied!' : 'Copy URL'} */}
-                                            </button>
+                                        <div className='d-flex justify-content-between mb-3 border rounded-2 mt-2'>
+                                            <p className="image-url-text mb-0 py-2 px-2">{imageURL + state.image}</p>
+                                            <div className='border-start'>
+                                                <button
+                                                    className="copy-btn h-100 rounded-0"
+                                                    onClick={() => handleCopy()}
+                                                    title="Copy to clipboard"
+                                                >
+                                                    {isCopied ? (
+                                                        <FaCheckCircle className="success-icon" />
+                                                    ) : (
+                                                        <FaClipboard className="copy-icon" />
+                                                    )}
+                                                    {/* {isCopied ? 'Copied!' : 'Copy URL'} */}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -149,19 +151,19 @@ strong {
                                         </div>
                                     </div>
 
-                                    <label htmlFor="">{"Faqs:"}</label>
-                                         <Accordion>
-                                            {state?.faqs?.map((faq, index) => {
-                                                return (
-                                                    <Accordion.Item eventKey={index.toString()} key={index}>
-                                                        <Accordion.Header>{faq.question}</Accordion.Header>
-                                                        <Accordion.Body className='border-top'>
-                                                            {faq.answer}
-                                                        </Accordion.Body>
-                                                    </Accordion.Item>
-                                                )
-                                            })}
-                                        </Accordion> 
+                                    <label className='mb-3' htmlFor="">{"Faqs:"}</label>
+                                    <Accordion>
+                                        {state?.faqs?.map((faq, index) => {
+                                            return (
+                                                <Accordion.Item eventKey={index.toString()} key={index}>
+                                                    <Accordion.Header>{faq.question}</Accordion.Header>
+                                                    <Accordion.Body className='border-top'>
+                                                        {faq.answer}
+                                                    </Accordion.Body>
+                                                </Accordion.Item>
+                                            )
+                                        })}
+                                    </Accordion>
                                 </Card.Body>
                             </Card>
                         </Col>
