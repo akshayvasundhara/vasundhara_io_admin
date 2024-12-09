@@ -29,13 +29,20 @@ export const ValidateFields = (values) => {
   }
 
   // Validate Description field
-  if (!values?.description) {
-    errors.description = "Description field is required.";
-  } else if (values?.description?.trim()?.length === 0) {
-    errors.description = "Description cannot be empty or contain only spaces.";
-  } else if (values?.description.trim().length < 3 || values?.description.trim().length > 255) {
-    errors.description = "Description must be between 3 and 255 characters.";
+  // if (!values?.description) {
+  //   errors.description = "Description field is required.";
+  // } else if (values?.description?.trim()?.length === 0) {
+  //   errors.description = "Description cannot be empty or contain only spaces.";
+  // } else if (values?.description.trim().length < 3 || values?.description.trim().length > 255) {
+  //   errors.description = "Description must be between 3 and 255 characters.";
+  // }
+
+  if (!values?.email) {
+    errors.email = "Email field is required.";
+  } else if (!/\S+@\S+\.\S+/.test(values?.email)) {
+    errors.email = "Invalid email format. Please provide a valid email address.";
   }
+
   // Image validation
   if (!values?.image) {
     errors.image = "Please upload an image";

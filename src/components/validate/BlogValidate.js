@@ -113,14 +113,14 @@ export const BlogValidates = (values) => {
 
             if (!ind.desc || ind.desc.trim().length === 0) {
                 errors.solution[index].desc = "Solution description is required.";
-            } else if (ind.desc.length < 3 || ind.desc.length > 255) {
-                errors.solution[index].desc = "Solution description must be between 3 and 255 characters.";
+            } else if (ind.desc.length < 3 || ind.desc.length > 500) {
+                errors.solution[index].desc = "Solution description must be between 3 and 500 characters.";
             }
         });
         if (errors.solution.every((error) => Object.keys(error).length === 0)) {
             delete errors.solution;
         }
-    } 
+    }
 
     // Validate features field
     if (values?.features && values.features.length > 0) {
@@ -278,27 +278,35 @@ export const BlogValidates = (values) => {
         });
     }
 
-    // validate client field
-  if (!values?.client?.name || values?.client?.name.trim().length === 0) {
-        errors.client = errors.client || {};  // Initialize errors.client object if not already
+    const client = values?.client || {};
+
+    // Validate client name
+    if (!client?.name || client?.name.trim().length === 0) {
+        errors.client = errors.client || {};
         errors.client.name = "Client name is required.";
-    } else if (values.client.name.length < 3 || values.client.name.length > 50) {
+    } else if (client?.name?.length < 3 || client?.name?.length > 50) {
+        errors.client = errors.client || {};
         errors.client.name = "Client name must be between 3 and 50 characters.";
     }
 
-    // Validate Client Designation
-    if (!values?.client?.designation || values?.client?.designation.trim().length === 0) {
-        errors.client = errors.client || {};  // Initialize errors.client object if not already
+    console.log(errors);
+    
+
+    // Validate client designation
+    if (!client?.designation || client?.designation.trim().length === 0) {
+        errors.client = errors.client || {};
         errors.client.designation = "Client designation is required.";
-    } else if (values.client.designation.length < 3 || values.client.designation.length > 50) {
+    } else if (client?.designation?.length < 3 || client?.designation?.length > 50) {
+        errors.client = errors.client || {}
         errors.client.designation = "Client designation must be between 3 and 50 characters.";
     }
 
-    // Validate Client Feedback
-    if (!values?.client?.feedback || values?.client?.feedback.trim().length === 0) {
-        errors.client = errors.client || {};  // Initialize errors.client object if not already
+    // Validate client feedback
+    if (!client?.feedback || client?.feedback.trim().length === 0) {
+        errors.client = errors.client || {}; 
         errors.client.feedback = "Client feedback is required.";
-    } else if (values.client.feedback.length < 3 || values.client.feedback.length > 500) {
+    } else if (client?.feedback?.length < 3 || client?.feedback?.length > 500) {
+        errors.client = errors.client || {}
         errors.client.feedback = "Client feedback must be between 3 and 500 characters.";
     }
 
@@ -312,31 +320,31 @@ export const BlogValidates = (values) => {
     if (Object.keys(errors.client || {}).length === 0) {
         delete errors.client;
     }
-    
 
-// Validate detail field
-if (values?.detail && values.detail.length > 0) {
-    values.detail.forEach((ind, index) => {
-        errors.detail = errors.detail || [];
-        errors.detail[index] = errors.detail[index] || {};
 
-        if (typeof ind !== 'object' || Array.isArray(ind)) {
-            errors.detail[index].details = "Detail must be an object.";
-        } else {
-            Object.entries(ind).forEach(([key, value]) => {
-                if (typeof key !== 'string') {
-                    errors.detail[index].key = `The key '${key}' must be a string.`;
-                }
-                if (typeof value !== 'string') {
-                    errors.detail[index][key] = `The value of '${key}' must be a string.`;
-                }
-            });
+    // Validate detail field
+    if (values?.detail && values.detail.length > 0) {
+        values.detail.forEach((ind, index) => {
+            errors.detail = errors.detail || [];
+            errors.detail[index] = errors.detail[index] || {};
+
+            if (typeof ind !== 'object' || Array.isArray(ind)) {
+                errors.detail[index].details = "Detail must be an object.";
+            } else {
+                Object.entries(ind).forEach(([key, value]) => {
+                    if (typeof key !== 'string') {
+                        errors.detail[index].key = `The key '${key}' must be a string.`;
+                    }
+                    if (typeof value !== 'string') {
+                        errors.detail[index][key] = `The value of '${key}' must be a string.`;
+                    }
+                });
+            }
+        });
+        if (errors.detail.every((error) => Object.keys(error).length === 0)) {
+            delete errors.detail;
         }
-    });
-    if (errors.detail.every((error) => Object.keys(error).length === 0)) {
-        delete errors.detail;
     }
-}
 
     return errors;
 };

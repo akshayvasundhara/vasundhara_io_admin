@@ -90,12 +90,12 @@ function AddCaseStudiesIndex() {
 
 
     console.log(states?.content);
-    
+
     // Get State 
     useEffect(() => {
         if (state && Object.keys(state)?.length > 0) {
             // console.log("===================",state?.content?.length);
-            
+
             setStates({
                 title: state?.title,
                 sub_title: state?.sub_title,
@@ -423,22 +423,20 @@ function AddCaseStudiesIndex() {
         })
         )
     };
-
     const handleChange = async (e) => {
-
         const { name, value, checked, type, files } = e.target;
         let newValue = type === "checkbox" ? checked : value;
+
         if (submitCount > 0) {
             let validationErrors = BlogValidates({ ...states, [name]: value });
-            // let validationErrors = BlogValidates({ ...states, [name]: value, image: newValue, video: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
+
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
-                // delete errors.image;
-                // delete errors.video
             }
         }
+
         if (type === "file") {
             setStates((prevStates) => ({
                 ...prevStates,
@@ -447,22 +445,67 @@ function AddCaseStudiesIndex() {
                     [name]: files[0]
                 }
             }));
-        }
-        else if (name.startsWith('client_')) {
-            // Handle fields like client_name, client_designation, etc.
+        } else if (name.startsWith('client_')) {
             setStates((prevStates) => ({
                 ...prevStates,
                 client: {
                     ...prevStates.client,
-                    [name.split('_')[1]]: value // Remove 'client_' prefix and update corresponding field
+                    [name.split('_')[1]]: value // Update the correct client field
                 }
             }));
-        } else
+        } else {
             setStates((prevValues) => ({
                 ...prevValues,
                 [name]: newValue,
             }));
-    }
+        }
+    };
+
+    const handleClientChange = async (e) => {
+        const { name, value, checked, type, files } = e.target;
+        console.log('name, value,: ', name, value,);
+        let newValue = type === "checkbox" ? checked : value;
+
+        // Only trigger validation on submit
+        if (submitCount > 0) {
+            const validationErrors = BlogValidates({ ...states, client: { ...states?.client, [name]: newValue } });
+            const filteredErrors = ErrorFilter(validationErrors, requireField);
+            setErrors(filteredErrors);
+            console.log(filteredErrors, "==filteredErrors");
+
+            // If there are no errors, remove error for this field
+            if (Object.keys(filteredErrors).length === 0) {
+                delete errors?.client[name];
+                // setErrors((prevErrors) => {
+                //     // const { [name]: omitted, ...restErrors } = prevErrors;
+                //     // return restErrors;
+                // });
+            }
+        }
+
+        // Handle file input separately
+        if (type === "file") {
+            setStates((prevStates) => ({
+                ...prevStates,
+                client: {
+                    ...prevStates?.client,
+                    [name]: files[0], // Assuming only one file is selected
+                },
+            }));
+        } else {
+            // For other input types (text, checkbox, etc.)
+            setStates((prevStates) => ({
+                ...prevStates,
+                client: {
+                    ...prevStates?.client,
+                    [name]: newValue,
+                },
+            }));
+        }
+    };
+
+    console.log("=====states", states);
+
 
     // Handle array change for tags
     const handleArrayChange = (name, newValues) => {
@@ -944,7 +987,7 @@ function AddCaseStudiesIndex() {
                                                     </div>
                                                 </Col>
                                                 {states?.tags?.map((tag, index) => (
-                                                    <Col md={12} key={index}>
+                                                    <Col md={12} key={index + "tag"}>
                                                         <div className='d-md-flex align-items-start gap-3 w-100 mt-3'>
                                                             <div className='w-100 mt-3 mt-md-0 d-flex align-items-center gap-2'>
                                                                 <div className='d-flex align-items-end gap-2 w-100 label-none'>
@@ -1210,9 +1253,9 @@ function AddCaseStudiesIndex() {
                                                     </div>
                                                 </div>
                                             </Col>
-                                            {states?.details.map((ind, index) => (
+                                            {states?.details?.map((ind, index) => (
                                                 // <Col md={12} className='mb-4' key={ind.id}>
-                                                <Row className=''>
+                                                <Row key={index + "details"}>
                                                     <Col xl={5}>
                                                         <LableInput
                                                             required={true}
@@ -1289,7 +1332,7 @@ function AddCaseStudiesIndex() {
                                             </div>
 
                                             {states?.solution?.map((ind, index) => (
-                                                <Col md={12} className='mb-4' key={ind.id}>
+                                                <Col md={12} className='mb-4' key={"solution" + index}>
                                                     <div className='d-flex align-items-end gap-2'>
                                                         <div className='w-100'>
                                                             <LableInput
@@ -1344,8 +1387,8 @@ function AddCaseStudiesIndex() {
                                                     </div>
                                                 </div>
                                             </Col>
-                                            {states.process.map((ind, index) => (
-                                                <Col md={12} className='mb-3' key={ind.id}>
+                                            {states?.process?.map((ind, index) => (
+                                                <Col md={12} className='mb-3' key={index + "process"}>
                                                     <div className='d-md-flex align-items-start gap-3 w-100'>
                                                         <div>
                                                             <FileInputComman
@@ -1435,9 +1478,8 @@ function AddCaseStudiesIndex() {
                                                 </div>
                                             </Col>
 
-                                            {/* Technology Names */}
-                                            {states.technology.tech.map((tech, index) => (
-                                                <Row key={index}>
+                                            {states?.technology?.tech.map((tech, index) => (
+                                                <Row key={index + "tech"}>
                                                     <Col xl={4}>
                                                         <input
                                                             className="form-control mb-2"
@@ -1448,10 +1490,9 @@ function AddCaseStudiesIndex() {
                                                             value={tech}
                                                             onChange={(e) => handleArrayChange1(index, e.target.value)} // Update tech array at the specified index
                                                         />
-                                                        <SingleError error={null /* Add your error handling here */} />
+                                                        <SingleError error={null} />
                                                     </Col>
 
-                                                    {/* Remove Technology Button */}
                                                     {states.technology.tech.length > 1 && (
                                                         <Col xl={1} className="d-flex align-items-end">
                                                             <button
@@ -1481,7 +1522,7 @@ function AddCaseStudiesIndex() {
                                                 </div>
                                             </Col>
                                             {states?.content?.map((ind, index) => (
-                                                <Col md={12} className='mb-3' key={ind.id}>
+                                                <Col md={12} className='mb-3' key={index + "content"}>
                                                     <div className='d-md-flex align-items-start gap-3 w-100'>
                                                         <div>
                                                             <FileInputComman
@@ -1568,9 +1609,9 @@ function AddCaseStudiesIndex() {
                                                             label="Image"
                                                             initialImage={states.client?.image || ''}
                                                             id="client_image"
-                                                            name="client_image"
+                                                            name="image"
                                                             setImage={handleImageChange1}
-                                                            onChange={handleChange} // Pass handleChange to the FileInput component
+                                                            onChange={handleClientChange} // Pass handleChange to the FileInput component
                                                         />
                                                         <SingleError error={errors.client?.image} />
                                                     </div>
@@ -1582,12 +1623,12 @@ function AddCaseStudiesIndex() {
                                                                     required={true}
                                                                     label="Name"
                                                                     className="form-control"
-                                                                    id="client-name"
+                                                                    id={`client.[name]`}
                                                                     placeholder="Enter name"
                                                                     type="text"
-                                                                    name="client_name"
-                                                                    value={states.client?.name || ''}
-                                                                    onChange={handleChange} // Attach handleChange here
+                                                                    name="name"
+                                                                    value={states?.client?.name || ''}
+                                                                    onChange={handleClientChange} // Attach handleChange here
                                                                 />
                                                                 <SingleError error={errors.client?.name} />
                                                             </div>
@@ -1596,12 +1637,12 @@ function AddCaseStudiesIndex() {
                                                                     required={true}
                                                                     label="Designation"
                                                                     className="form-control"
-                                                                    id="client-designation"
+                                                                    id={`client.[designation]`}
                                                                     placeholder="Enter designation"
                                                                     type="text"
-                                                                    name="client_designation"
+                                                                    name="designation"
                                                                     value={states.client?.designation || ''}
-                                                                    onChange={handleChange} // Attach handleChange here
+                                                                    onChange={handleClientChange} // Attach handleChange here
                                                                 />
                                                                 <SingleError error={errors.client?.designation} />
                                                             </div>
@@ -1614,9 +1655,9 @@ function AddCaseStudiesIndex() {
                                                                 rows="4"
                                                                 type="text"
                                                                 placeholder="Enter feedback"
-                                                                name="client_feedback"
+                                                                name="feedback"
                                                                 value={states.client?.feedback || ''}
-                                                                onChange={handleChange} // Attach handleChange here
+                                                                onChange={handleClientChange} // Attach handleChange here
                                                             />
                                                             <SingleError error={errors.client?.feedback} />
                                                         </div>

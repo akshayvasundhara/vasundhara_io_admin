@@ -145,7 +145,7 @@ function TeamsIndex() {
                                                                                 <FaFacebookF />
                                                                             </a>
                                                                         )}
-                                                                        {test.other_link && (<a
+                                                                        {/* {test.other_link && (<a
                                                                             // href={`${imageURL}${test.file}`}
                                                                             href={test.other_link}
 
@@ -154,7 +154,7 @@ function TeamsIndex() {
                                                                             className='table-view-btn d-flex justify-content-center align-items-center'
                                                                         >
                                                                             <FaLink />
-                                                                        </a>)}
+                                                                        </a>)} */}
                                                                         {!test.linkedin_link && !test.twitter_link && !test.facebook_link && !test.other_link && (
                                                                             <span>-</span>
                                                                         )}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MdOutlineFileUpload } from "react-icons/md";
 import { getImageURL } from '../../helper/envConfig';
 
-function FileInputComman({ label, setImage, initialImage, name, onChange,required=false }) {
+function FileInputComman({ label, id, setImage, initialImage, name, onChange, required = false }) {
     const [selectedImage, setSelectedImage] = useState(initialImage || null);
     const imageURL = getImageURL();
     useEffect(() => {
@@ -61,7 +61,7 @@ function FileInputComman({ label, setImage, initialImage, name, onChange,require
             <div
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
-                onClick={() => document.getElementById(name).click()} // Use the passed name
+                onClick={() => document.getElementById(id).click()} // Use the passed name
                 className='drag-over'
             >
                 <div>
@@ -86,10 +86,10 @@ function FileInputComman({ label, setImage, initialImage, name, onChange,require
             <input
                 className="form-control"
                 type="file"
-                id={name} // Use the passed name for the ID
+                id={id}
                 accept="image/*"
                 onChange={handleFileSelect}
-                style={{ display: 'none' }} // Hide the file input
+                style={{ display: 'none' }}
             />
         </div>
     );

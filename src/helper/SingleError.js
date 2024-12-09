@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SingleError = ({ error,mb=true }) => {
+const SingleError = ({ error, mb = true }) => {
     return (
         <>
             <span className={`error text-danger ${Boolean(mb) ? "mb-0" : "mb-0"} d-flex align-items-center`}>

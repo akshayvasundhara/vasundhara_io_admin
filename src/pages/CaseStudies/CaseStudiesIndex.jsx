@@ -63,7 +63,8 @@ function CaseStudiesIndex() {
     // Update status
     const updateStatus = async (itemId, newStatus, object) => {
         try {
-            const response = await api.patchWithToken(`${serverURL}/case-study/${itemId}`, object);
+            const response = await api.postWithToken(`${serverURL}/case-study-status`, 
+                {id:itemId,...object});
             if (response.data.success) {
                 if(object?.status){
                     toast.info("Status updated successfully.");

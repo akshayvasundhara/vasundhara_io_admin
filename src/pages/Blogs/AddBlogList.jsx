@@ -251,10 +251,19 @@ function AddBlogList() {
 
     // Main content change
     const handleChangeHtmlData = (data) => {
+        if (submitCount > 0) {
+            let validationErrors = ValidateFields({ ...states, main_content: data });
+            validationErrors = ErrorFilter(validationErrors, requireField);
+            setErrors(validationErrors);
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors["main_content"];
+            }
+        }
         setStates((prevValues) => ({
             ...prevValues,
             main_content: data,
         }));
+
     };
     const handleChangeTableHtmlData = (data) => {
         setStates((prevValues) => ({
@@ -473,6 +482,7 @@ function AddBlogList() {
                                                     htmlData={main_content}
                                                     onChangeHtmlData={handleChangeHtmlData}
                                                     className={true}
+                                                    name="main_content"
                                                 />
                                                 <SingleError error={errors?.main_content} />
                                             </Col>

@@ -8,8 +8,6 @@ import { ImArrowLeft } from "react-icons/im";
 import { Link, useLocation } from 'react-router-dom';
 import { getImageURL, getServerURL } from '../../helper/envConfig';
 
-
-
 function ViewCaseStudiesIndex() {
     const location = useLocation();
     const state = location.state || {};
@@ -20,6 +18,17 @@ function ViewCaseStudiesIndex() {
 
     const toggleReadMore = () => {
         setIsReadMore(!isReadMore);
+    };
+
+    const renderTextWithList = (text) => {
+        const lines = text.split('\n');
+        const formattedLines = lines.map((line, index) => {
+            if (line.startsWith('- ')) {
+                return <li key={index}>{line.slice(2)}</li>;
+            }
+            return <span key={index}>{line}</span>;
+        });
+        return formattedLines;
     };
 
     return (
@@ -35,7 +44,6 @@ function ViewCaseStudiesIndex() {
                             <Card>
                                 <Card.Body className='details-box'>
                                     <div>
-
                                         <div>
                                             <label>Title:</label>
                                             <p>{state.title}</p>
@@ -44,7 +52,6 @@ function ViewCaseStudiesIndex() {
                                             <label>Subtitle:</label>
                                             <p>{state?.sub_title}</p>
                                         </div>
-
                                         <div>
                                             <label>Google Play Store:</label>
                                             <p><Link>{state.play_store_link}</Link></p>
@@ -151,7 +158,7 @@ function ViewCaseStudiesIndex() {
                                         <div>
                                             <label>Client Image</label>
                                             <p>
-                                            <img src={imageURL+state?.client?.image} alt="Client Image" width={100} height={100} />
+                                                <img src={imageURL + state?.client?.image} alt="Client Image" width={100} height={100} />
                                             </p>
                                         </div>
                                         <div>
@@ -314,7 +321,7 @@ function ViewCaseStudiesIndex() {
                                                                 </div>
                                                                 <h4>{detail.title}</h4>
                                                                 {/* <p>{detail.description}</p> */}
-                                                                {isReadMore ? detail.desc.slice(0, 100) : detail.desc}
+                                                                {isReadMore ? renderTextWithList(detail.desc.slice(0, 100)) : renderTextWithList(detail.desc)}
                                                                 <p onClick={toggleReadMore} style={{ color: "blue", cursor: "pointer" }}>
                                                                     {isReadMore ? " ...Read More" : " Read Less"}
                                                                 </p>

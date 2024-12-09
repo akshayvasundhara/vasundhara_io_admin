@@ -17,16 +17,15 @@ import ErrorFilter from '../../helper/errorFilter';
 import { errorResponse } from '../../helper/error';
 import { toast } from 'react-toastify';
 import api from '../../API/api';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { PiPlusBold } from 'react-icons/pi';
+import FileInputComman from '../../components/comman/FileInputComman';
+
 const requireField = [
     "name",
     "designation",
-    "description",
-    "status",
     "image",
-    "twitter_link",
-    "facebook_link",
-    "linkedin_link",
-    "other_link"
+    "email",
 ];
 
 
@@ -40,7 +39,7 @@ function TeamsAdd() {
     const [submitCount, setSubmitCount] = useState(0);
     // const [status, setStatus] = useState(state.status || 1)
     const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
-    const [states, setStates] = useState({});
+    const [states, setStates] = useState({ description: [''], expertise: [{ image: null, title: '' }] });
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
     const navigate = useNavigate();
@@ -54,23 +53,33 @@ function TeamsAdd() {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
         if (submitCount > 0) {
-            let validationErrors = ValidateFields({ ...states, [name]: value, image });
+            let validationErrors = ValidateFields({ ...states, [name]: value });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
-                delete errors.image;
             }
         }
-        setStates((prevValues) => ({
-            ...prevValues,
-            [name]: newValue,
-        }));
+        if (name === "mobile_no") {
+            let numericValue = newValue.replace(/\D/g, '');
+            if (numericValue.length > 10) {
+                numericValue = numericValue.slice(0, 10);
+            }
+            setStates((prevValues) => ({
+                ...prevValues,
+                [name]: numericValue,
+            }));
+        } else {
+            setStates((prevValues) => ({
+                ...prevValues,
+                [name]: newValue,
+            }));
+        }
     }
 
     // Add Edit Api
     const addTeam = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
         let validationErrors = ValidateFields(updatedValues);
@@ -79,6 +88,65 @@ function TeamsAdd() {
         if (image) {
             delete errors.image;
         }
+        if (states?.mobile_number) {
+            const mobileNumberPattern = /^\d{10}$/; // Exactly 10 digits
+            if (!mobileNumberPattern.test(states?.mobile_number)) {
+                validationErrors.mobile_number = "Invalid mobile number, must be exactly 10 digits";
+            }
+        }
+
+        if (states?.twitter_link) {
+            const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/i;
+            if (!urlPattern.test(states?.twitter_link)) {
+                validationErrors.twitter_link = "Invalid Twitter link";
+            }
+        }
+
+        if (states?.linkedin_link) {
+            const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/i;
+            if (!urlPattern.test(states?.linkedin_link)) {
+                validationErrors.linkedin_link = "Invalid LinkedIn link";
+            }
+        }
+
+        if (states?.facebook_link) {
+            const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/i;
+            if (!urlPattern.test(states?.facebook_link)) {
+                validationErrors.facebook_link = "Invalid Facebook link";
+            }
+        }
+
+        if (Object.keys(validationErrors)?.length) {
+            Object.entries(validationErrors)?.map(([key], i) => {
+                if (i == 0)
+                    document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
+            });
+        }
+
+
+
+        if (Array.isArray(updatedValues?.expertise)) {
+            updatedValues?.expertise.forEach((item, index) => {
+                const { title, image } = item;
+                let expertiseErrors = {};
+
+                // Check if any field is filled and validate
+                if (title || image) {
+                    if (!title) expertiseErrors.title = "Title is required if any field is filled";
+                    if (!image) expertiseErrors.image = "Image is required if any field is filled";
+                }
+
+                // Only assign expertiseErrors if it has any errors
+                if (Object.keys(expertiseErrors).length > 0) {
+                    validationErrors.expertise[index] = expertiseErrors;
+                }
+            });
+
+            // Remove expertise entry if it's empty
+            if (validationErrors?.expertise?.every((error) => Object.keys(error).length === 0)) {
+                delete validationErrors.expertise;
+            }
+        }
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
@@ -86,8 +154,10 @@ function TeamsAdd() {
                 const formData = new FormData(); // Create FormData for file upload
                 formData.append('name', updatedValues.name);
                 formData.append('designation', updatedValues.designation);
-                formData.append('description', updatedValues.description);
+                // formData.append('description', updatedValues.description);
                 formData.append('image', image);
+                formData.append('email', updatedValues?.email);
+                formData.append('mobile_no', updatedValues?.mobile_no);
                 formData.append('status', status);
                 if (updatedValues.linkedin_link) {
                     formData.append('linkedin_link', updatedValues.linkedin_link);
@@ -102,6 +172,26 @@ function TeamsAdd() {
                     formData.append('other_link', updatedValues.other_link);
                 }
 
+                if (Array.isArray(updatedValues.description) && updatedValues.description.length > 0) {
+                    updatedValues.description.forEach((desc, index) => {
+                        if (desc && desc.trim().length > 0) {
+                            formData.append(`description[${index}]`, desc);
+                        }
+                    });
+                }
+
+                if (Array.isArray(updatedValues.expertise)) {
+                    updatedValues.expertise.forEach((expertise, index) => {
+                        if (expertise?.title && expertise.image) {
+                            formData.append(`expertise[${index}][title]`, expertise?.title);
+                            if (expertise?._id)
+                                formData.append(`expertise[${index}][_id]`, expertise?._id);
+                            formData.append(`expertise[${index}][image]`, expertise?.image?.name ? expertise?.image?.name : expertise?.image);
+                            formData.append(`expertise_image`, expertise?.image);
+                        }
+
+                    });
+                }
 
                 setMainLoader(true); // Start loader
                 let response;
@@ -138,12 +228,15 @@ function TeamsAdd() {
             setStates({
                 name: state.name,
                 designation: state.designation,
-                description: state.description,
+                description: state.description || [''],
                 status: state.status,
                 twitter_link: state.twitter_link,
                 facebook_link: state.facebook_link,
                 linkedin_link: state.linkedin_link,
-                other_link: state.other_link
+                other_link: state.other_link,
+                email: state.email,
+                mobile_no: state.mobile_no,
+                expertise: state?.expertise?.length ? state?.expertise : [{ image: null, title: '' }],
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -153,6 +246,68 @@ function TeamsAdd() {
             }
         }
     }, [state]);
+
+    const handleAddExpertise = () => {
+        const data = states?.expertise
+        if (data?.length > 0) {
+            if (data[data?.length - 1]?.image !== null && !data[data?.length - 1]?.title !== '') {
+                setStates((prevStates) => ({
+                    ...prevStates,
+                    expertise: [...prevStates.expertise, { image: null, title: '' }],
+                }));
+            }
+            else {
+                alert('Please enter image and title');
+            }
+        }
+    }
+
+    const handleRemoveExpertise = (index) => {
+        setStates((prevStates) => ({
+            ...prevStates,
+            expertise: prevStates.expertise.filter((_, i) => i !== index),
+        }));
+    };
+
+
+    const handleArrayChange = (name, newValues) => {
+        setStates((prevValues) => ({
+            ...prevValues,
+            [name]: newValues,
+        }));
+
+        if (submitCount > 0) {
+            const updatedValues = { ...states, [name]: newValues };
+            let validationErrors = ValidateFields(updatedValues);
+            validationErrors = ErrorFilter(validationErrors, requireField);
+            setErrors(validationErrors);
+            if (Object.keys(validationErrors).length === 0) {
+                delete errors[name];
+            }
+        }
+    };
+
+    const handleImageChange = (type, index) => (file) => {
+        const updatedArray = [...states[type]]; // Create a copy of the specified array
+        updatedArray[index].image = file; // Update the specific index for the image
+        setStates({ ...states, [type]: updatedArray }); // Update the state with the modified array
+    };
+
+    const handleAddDescription = () => {
+        setStates((prevStates) => ({
+            ...prevStates,
+            description: [...prevStates.description, ''], // Add a new empty tag field
+        }));
+    }
+
+    const handleRemoveDescription = (index) => {
+        setStates((prevStates) => ({
+            ...prevStates,
+            description: prevStates.description.filter((_, i) => i !== index)
+        })
+        )
+    };
+
 
     return (
         <>
@@ -170,9 +325,10 @@ function TeamsAdd() {
                                         <Row className='g-3'>
                                             <Col md={12} lg={6}>
                                                 <LableInput
-                                                    label="Name:"
+                                                    required={true}
+                                                    label="Name"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="name"
                                                     placeholder="Enter name"
                                                     type="text"
                                                     name='name'
@@ -183,9 +339,10 @@ function TeamsAdd() {
                                             </Col>
                                             <Col md={12} lg={6}>
                                                 <LableInput
-                                                    label="Designation:"
+                                                    required={true}
+                                                    label="Designation"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="designation"
                                                     placeholder="Enter designation"
                                                     type="text"
                                                     name='designation'
@@ -195,28 +352,163 @@ function TeamsAdd() {
                                                 <SingleError error={errors?.designation} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
-                                                <SingleError error={errors?.description} />
+                                                <LableInput
+                                                    required={true}
+                                                    label="Email"
+                                                    className="form-control"
+                                                    id="email"
+                                                    placeholder="Enter email"
+                                                    type="email"
+                                                    name='email'
+                                                    value={states?.email || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.email} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <FileInput label="Image" setImage={setImage} initialImage={image} onChange={handleChange} />
+                                                <LableInput
+                                                    label="Mobile Number"
+                                                    className="form-control"
+                                                    id="mobile_no"
+                                                    placeholder="Enter mobile number"
+                                                    type="text"
+                                                    name='mobile_no'
+                                                    value={states?.mobile_no || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.mobile_no} />
+                                            </Col>
+                                            <Row className='w-100 mt-3 mt-xl-0 g-0'>
+                                                <Col md={12}>
+                                                    <div className='mt-3 d-flex justify-content-between align-items-center'>
+                                                        <h5 className='form-title mb-0'>Description</h5>
+                                                        <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddDescription}>
+                                                            <PiPlusBold />
+                                                        </div>
+                                                    </div>
+                                                </Col>
+                                                {states?.description?.map((tag, index) => (
+                                                    <Col md={12} key={index}>
+                                                        <div className='d-md-flex align-items-start gap-3 w-100 mt-3'>
+                                                            <div className='w-100 mt-3 mt-md-0 d-flex align-items-center gap-2'>
+                                                                <div className='d-flex align-items-end gap-2 w-100 label-none'>
+                                                                    <div className='w-100'>
+                                                                        <LableInput
+                                                                            className="form-control w-100"
+                                                                            id={`description[${index}]`}
+                                                                            placeholder="Enter title"
+                                                                            type="text"
+                                                                            name={`description[${index}]`}
+                                                                            value={tag || ''}
+                                                                            onChange={(e) =>
+                                                                                handleArrayChange('description', [
+                                                                                    ...states.description.slice(0, index),
+                                                                                    e.target.value,
+                                                                                    ...states.description.slice(index + 1)
+                                                                                ])
+                                                                            }
+                                                                        />
+                                                                        <SingleError error={errors.description?.[index]} />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="d-flex justify-content-end">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleRemoveDescription(index)}
+                                                                        className="btn btn-danger py-2">
+                                                                        <RiDeleteBinLine />
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                ))}
+                                                <SingleError error={errors?.description} />
+                                            </Row>
+                                            {/* <Col md={12} lg={12}>
+                                                <Textarea label="Description" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
+                                                <SingleError error={errors?.description} />
+                                            </Col> */}
+                                            <Col md={12} lg={12}>
+                                                <FileInput required={true} label="Image" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Linkedin:" rows="4" type="text" name="linkedin_link" value={states?.linkedin_link || ""} onChange={handleChange} />
+                                                <Textarea label="Linkedin" rows="2" type="text" name="linkedin_link" value={states?.linkedin_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.linkedin_link} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Twitter:" rows="4" type="text" name="twitter_link" value={states?.twitter_link || ""} onChange={handleChange} />
+                                                <Textarea label="Twitter" rows="2" type="text" name="twitter_link" value={states?.twitter_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.twitter_link} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Facebook:" rows="4" type="text" name="facebook_link" value={states?.facebook_link || ""} onChange={handleChange} />
+                                                <Textarea label="Facebook" rows="2" type="text" name="facebook_link" value={states?.facebook_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.facebook_link} />
                                             </Col>
-                                            <Col md={12} lg={6}>
+                                            {/* <Col md={12} lg={6}>
                                                 <Textarea label="Other:" rows="4" type="text" name="other_link" value={states?.other_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.other_link} />
+                                            </Col> */}
+                                        </Row>
+
+                                        <Row className='mt-2'>
+                                            <Col md={12}>
+                                                <div className='d-flex justify-content-between align-items-center'>
+                                                    <h5 className='form-title'>Expertise</h5>
+                                                    <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddExpertise}>
+                                                        <PiPlusBold />
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                            {states?.expertise?.map((ind, index) => (
+                                                <Col md={12} className='mb-3' key={ind.id}>
+                                                    <div className='d-md-flex align-items-start gap-3 w-100'>
+                                                        <div>
+                                                            <FileInputComman
+                                                                label="Image"
+                                                                id={`expertise[${index}][image]`}
+                                                                setImage={handleImageChange('expertise', index)}
+                                                                initialImage={ind.image || ''}
+                                                                name={`expertise[${index}][image]`}
+                                                            />
+                                                            <singleError error={errors.expertise?.[index]?.image} />
+                                                            {/* <SingleError error={errors.content?.[index]?.image} /> */}
+                                                        </div>
+                                                        <div className='w-100 mt-3 mt-md-0'>
+                                                            <Row className='g-3'>
+                                                                <Col xl={12}>
+                                                                    <LableInput
+                                                                        label="Title"
+                                                                        className="form-control"
+                                                                        id={`expertise[${index}][title]`}
+                                                                        placeholder="Enter title"
+                                                                        type="text"
+                                                                        name={`expertise[${index}][title]`}
+                                                                        value={ind.title || ''}
+                                                                        onChange={(e) => handleArrayChange('expertise', [...states.expertise.slice(0, index), { ...ind, title: e.target.value }, ...states.expertise.slice(index + 1)])} // Use handleArrayChange
+                                                                    />
+                                                                    <SingleError error={errors.expertise?.[index]?.title} />
+                                                                </Col>
+
+                                                            </Row>
+
+                                                            {/* {index > 0 && ( */}
+                                                            <div className="d-flex justify-content-end mt-3">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveExpertise(index)}
+                                                                    className="btn btn-danger py-2"
+                                                                >
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
+                                                            {/* )} */}
+                                                        </div>
+                                                    </div>
+                                                </Col>
+                                            ))}
+                                            <Col md={12}>
+                                                <hr />
                                             </Col>
                                         </Row>
                                     </form>
@@ -224,7 +516,7 @@ function TeamsAdd() {
                                     <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                Status:
+                                                Status
                                             </label>
                                             <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>
