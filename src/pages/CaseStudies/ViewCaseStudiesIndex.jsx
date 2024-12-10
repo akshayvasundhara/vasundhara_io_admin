@@ -1,12 +1,11 @@
 
 import React, { useState } from 'react'
 import Layout from '../../layout/Layout'
-import { Row, Col, Card, Accordion } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
-import CommanButton from '../../components/comman/CommanButton';
 import { ImArrowLeft } from "react-icons/im";
 import { Link, useLocation } from 'react-router-dom';
-import { getImageURL, getServerURL } from '../../helper/envConfig';
+import { getImageURL } from '../../helper/envConfig';
 
 function ViewCaseStudiesIndex() {
     const location = useLocation();
@@ -54,22 +53,22 @@ function ViewCaseStudiesIndex() {
                                         </div>
                                         <div>
                                             <label>Google Play Store:</label>
-                                            <p><Link>{state.play_store_link}</Link></p>
+                                            <p><Link>{state?.play_store_link}</Link></p>
                                         </div>
                                         <div>
                                             <label>App Store:</label>
-                                            <p><Link>{state.app_store_link}</Link></p>
+                                            <p><Link>{state?.app_store_link}</Link></p>
                                         </div>
                                         <div>
                                             <label>Description:</label>
-                                            <p>{state.desc}</p>
+                                            <p>{state?.desc}</p>
                                         </div>
                                         <div>
                                             <label>Tags:</label>
-                                            <p>{state.tags?.map((t, index) => {
+                                            <p>{state?.tags?.map((t, index) => {
                                                 return <span key={index}>
                                                     {t}
-                                                    {index < state.tags.length - 1 && ', '}
+                                                    {index < state?.tags?.length - 1 && ', '}
                                                 </span>;
                                             })}</p>
                                         </div>
@@ -78,7 +77,7 @@ function ViewCaseStudiesIndex() {
                                             <div>
                                                 <div className='view-image-box mb-3'>
                                                     <img
-                                                        src={`${imageURL}${state.image}`}
+                                                        src={`${imageURL}${state?.image}`}
                                                         alt=""
                                                         className='w-100 h-100'
                                                     />
@@ -91,7 +90,7 @@ function ViewCaseStudiesIndex() {
                                                 <div className='d-flex flex-wrap gap-3 mb-3'>
                                                     <div className='border rounded-3 p-1'>
                                                         <video autoplay="" loop="" controls="" width="240" height="240">
-                                                            <source type="video/mp4" src={`${imageURL}${state.video}`} />
+                                                            <source type="video/mp4" src={`${imageURL}${state?.video}`} />
                                                         </video>
                                                     </div>
                                                 </div>
@@ -101,7 +100,7 @@ function ViewCaseStudiesIndex() {
                                         <h5 className='form-title pt-3'>Details:</h5>
 
                                         <div>
-                                            {state?.details.map((item) => (
+                                            {state?.details?.map((item) => (
                                                 <>
                                                     <div>
                                                         <label>{item?.key}</label>
@@ -114,17 +113,17 @@ function ViewCaseStudiesIndex() {
                                         <h5 className='form-title pt-3'>Process:</h5>
 
                                         <div className='row studies_details_cards mb-3 g-3'>
-                                            {state?.process.map((item) => (
-                                                <div className='col-12 col-md-6 col-xl-3' key={item._id}>
+                                            {state?.process?.map((item, index) => (
+                                                <div className='col-12 col-md-6 col-xl-3' key={index + "process"}>
                                                     <div className='card'>
                                                         <div className="card-body">
                                                             <div className='d-flex align-items-center gap-3'>
                                                                 <div className='process_icons d-flex justify-content-center align-items-center'>
                                                                     <img
-                                                                        src={`${imageURL}${item.image}`}
+                                                                        src={`${imageURL}${item?.image}`}
                                                                         width={30}
                                                                         height={30}
-                                                                        alt={item.title}
+                                                                        alt={item?.title}
                                                                     />
                                                                 </div>
                                                                 <h4 className='mb-0'>{item?.title}</h4>
@@ -140,13 +139,13 @@ function ViewCaseStudiesIndex() {
                                             <p>{state?.solution_main_title}</p>
                                         </div>
                                         <div className='row studies_details_cards my-3 g-3'>
-                                            {state?.solution.map((item) => (
-                                                <div className="col-3 col-md-6 col-lg-6 col-xl-3">
+                                            {state?.solution?.map((item, index) => (
+                                                <div className="col-3 col-md-6 col-lg-6 col-xl-3" key={"solution" + index}>
                                                     <div className="card rounded-2">
                                                         <div className="card-body">
                                                             <div key={item?._id}>
-                                                                <h4>{item.title}</h4>
-                                                                <p>{item.desc}</p>
+                                                                <h4>{item?.title}</h4>
+                                                                <p>{item?.desc}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -155,12 +154,11 @@ function ViewCaseStudiesIndex() {
                                         </div>
                                         <h5 className='form-title pt-3'>Technology:</h5>
                                         <p>{state?.technology?.title}</p>
-
                                         <div style={{ marginTop: '20px' }}>
                                             <label>Technologies name:</label>
                                             <ul className='technologies_name'>
                                                 {state?.technology?.tech.map((technology, index) => (
-                                                    <li key={index}>
+                                                    <li key={index + "tech"}>
                                                         {technology}
                                                     </li>
                                                 ))}
@@ -324,23 +322,22 @@ function ViewCaseStudiesIndex() {
                                         <h5 className='form-title pt-3'>Content:</h5>
 
                                         <div className="career-flight section-py mt-2 mb-3 mt-3">
-                                            {state.content.map(detail => (
-                                                <div className="card mb-4">
+                                            {state?.content?.map((detail, index) => (
+                                                <div className="card mb-4" key={index + "detail"}>
                                                     <div className="card-body">
-                                                        <div className="row g-3 align-items-center" key={detail.id}>
-
+                                                        <div className="row g-3 align-items-center" >
                                                             <div className="col-12 col-md-12 col-lg-6 career-details order-2 order-lg-1">
-                                                                <h4>{detail.title}</h4>
+                                                                <h4>{detail?.title}</h4>
                                                                 {/* {isReadMore ? detail.desc.slice(0, 100) : detail.desc} */}
                                                                 {/* <p onClick={toggleReadMore} style={{ color: "blue", cursor: "pointer" }}>
                                                                     {isReadMore ? " ...Read More" : " Read Less"}
                                                                 </p> */}
                                                                 <p>
-                                                                    {renderTextWithList(detail.desc)}
+                                                                    {renderTextWithList(detail?.desc)}
                                                                 </p>
                                                             </div>
                                                             <div className='col-12 col-lg-6 order-1 order-lg-2' aria-label={detail.title}>
-                                                                <img className='rounded-3 w-100 h-100' src={`${imageURL}${detail.image}`} alt={detail.title} />
+                                                                <img className='rounded-3 w-100 h-100' src={`${imageURL}${detail?.image}`} alt={detail?.title} />
                                                             </div>
                                                         </div>
                                                     </div>
