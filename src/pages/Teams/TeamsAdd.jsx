@@ -96,21 +96,21 @@ function TeamsAdd() {
         }
 
         if (states?.twitter_link) {
-            const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/i;
+            const urlPattern =/^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
             if (!urlPattern.test(states?.twitter_link)) {
                 validationErrors.twitter_link = "Invalid Twitter link";
             }
         }
 
         if (states?.linkedin_link) {
-            const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/i;
+            const urlPattern =/^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
             if (!urlPattern.test(states?.linkedin_link)) {
                 validationErrors.linkedin_link = "Invalid LinkedIn link";
             }
         }
 
         if (states?.facebook_link) {
-            const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/i;
+            const urlPattern =/^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
             if (!urlPattern.test(states?.facebook_link)) {
                 validationErrors.facebook_link = "Invalid Facebook link";
             }
@@ -157,7 +157,7 @@ function TeamsAdd() {
                 // formData.append('description', updatedValues.description);
                 formData.append('image', image);
                 formData.append('email', updatedValues?.email);
-                formData.append('mobile_no', updatedValues?.mobile_no);
+                formData.append('mobile_no', updatedValues?.mobile_no || "");
                 formData.append('status', status);
                 if (updatedValues.linkedin_link) {
                     formData.append('linkedin_link', updatedValues.linkedin_link);
@@ -429,7 +429,7 @@ function TeamsAdd() {
                                                 <Textarea label="Description" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.description} />
                                             </Col> */}
-                                            <Col md={12} lg={12}>
+                                            <Col md={12} lg={12} className='team_images'>
                                                 <FileInput required={true} label="Image" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
                                             </Col>

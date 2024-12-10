@@ -113,8 +113,8 @@ export const BlogValidates = (values) => {
 
             if (!ind.desc || ind.desc.trim().length === 0) {
                 errors.solution[index].desc = "Solution description is required.";
-            } else if (ind.desc.length < 3 || ind.desc.length > 500) {
-                errors.solution[index].desc = "Solution description must be between 3 and 500 characters.";
+            } else if (ind.desc.length < 3 || ind.desc.length > 1000) {
+                errors.solution[index].desc = "Solution description must be between 3 and 1000 characters.";
             }
         });
         if (errors.solution.every((error) => Object.keys(error).length === 0)) {

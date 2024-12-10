@@ -840,6 +840,10 @@ td p {
   height: auto !important;
 }
 
+.team_images .image-upload img {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 /* Testimonials Page End */
 

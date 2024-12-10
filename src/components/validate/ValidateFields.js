@@ -126,25 +126,34 @@ export const ValidateFields = (values) => {
   // Validate facebook_link field
   if (values?.facebook_link) {
     const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
-    if (!appStoreUrlPattern.test(values.facebook_link)) {
+    if (!Boolean(values?.facebook_link?.startsWith('http://') || values?.facebook_link?.startsWith('https://'))) {
       errors.facebook_link = "Invalid facebook link";
     }
+    // if (!appStoreUrlPattern.test(values.facebook_link)) {
+    //   errors.facebook_link = "Invalid facebook link";
+    // }
   }
 
   // Validate twitter_link field
 
   if (values?.twitter_link) {
     const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
-    if (!appStoreUrlPattern.test(values.twitter_link)) {
+    if (!Boolean(values?.twitter_link?.startsWith('http://') || values?.twitter_link?.startsWith('https://'))) {
       errors.twitter_link = "Invalid twitter link";
     }
+    // if (!appStoreUrlPattern.test(values.twitter_link)) {
+    //   errors.twitter_link = "Invalid twitter link";
+    // }
   }
   // linkedin_link 
   if (values?.linkedin_link) {
     const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
-    if (!appStoreUrlPattern.test(values.linkedin_link)) {
+    if (!Boolean(values?.linkedin_link?.startsWith('http://') || values?.linkedin_link?.startsWith('https://'))) {
       errors.linkedin_link = "Invalid linkedin link";
     }
+    // if (!appStoreUrlPattern.test(values.linkedin_link)) {
+    //   errors.linkedin_link = "Invalid linkedin link";
+    // }
   }
 
   //Other link

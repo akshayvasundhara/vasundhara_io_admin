@@ -1362,12 +1362,12 @@ function AddCaseStudiesIndex() {
                                                 </div>
                                                 <hr className='mt-4' />
                                             </Col>
-                                            <div className='d-flex justify-content-between align-items-center'>
+                                            {/* <div className='d-flex justify-content-between align-items-center'>
                                                 <h5 className='form-title'>{""}</h5>
                                                 <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddSolutions}>
                                                     <PiPlusBold />
                                                 </div>
-                                            </div>
+                                            </div> */}
 
                                             {states?.solution?.map((ind, index) => (
                                                 <Col md={12} key={"solution" + index}>
@@ -1412,6 +1412,13 @@ function AddCaseStudiesIndex() {
                                                     </div>
                                                 </Col>
                                             ))}
+
+                                            <div className='d-flex justify-content-between align-items-center'>
+                                                <h5 className='form-title'>{""}</h5>
+                                                <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddSolutions}>
+                                                    <PiPlusBold />
+                                                </div>
+                                            </div>
                                             <Col md={12}>
                                                 <hr />
                                             </Col>
@@ -1446,10 +1453,10 @@ function AddCaseStudiesIndex() {
                                                                     <LableInput
                                                                         label="Title"
                                                                         className="form-control"
-                                                                        id={`content[${index}][title]`}
+                                                                        id={`process[${index}][title]`}
                                                                         placeholder="Enter title"
                                                                         type="text"
-                                                                        name={`content[${index}][title]`}
+                                                                        name={`process[${index}][title]`}
                                                                         value={ind.title || ''}
                                                                         onChange={(e) => handleArrayChange('process', [...states.process.slice(0, index), { ...ind, title: e.target.value }, ...states.process.slice(index + 1)])} // Use handleArrayChange
                                                                     />
@@ -1576,12 +1583,14 @@ function AddCaseStudiesIndex() {
                                                                 <Col xl={12}>
                                                                     <div className='d-flex align-items-end gap-2'>
                                                                         <div className='w-100'>
-                                                                            <label htmlFor="signin-username" className="form-label text-default" id={`text-${index}`}>Title<span className="star">*</span></label>
+                                                                            
+                                                                            {/* <label htmlFor="signin-username" className="form-label text-default" id={`text-${index}`}>Title<span className="star">*</span></label> */}
                                                                             <div className='label-none'>
                                                                                 <LableInput
+                                                                                    required={false}
                                                                                     label="Title"
                                                                                     className="form-control"
-                                                                                    id={`text-${index}`}
+                                                                                    id={`content[${index}][title]`}
                                                                                     placeholder="Enter title"
                                                                                     type="text"
                                                                                     name={`content[${index}][title]`}
