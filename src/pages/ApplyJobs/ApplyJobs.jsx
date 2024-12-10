@@ -81,7 +81,7 @@ function ApplyJobs() {
                                                     <th>Position</th>
                                                     <th>Mobile</th>
                                                     <th>File</th>
-                                                    <th width='100'>Action</th>
+                                                    <th width='100' className='text-center'>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -109,8 +109,8 @@ function ApplyJobs() {
                                                                         </div>
                                                                     </td>
                                                                     <td width={100}>
-                                                                        <div className='d-flex align-items-center gap-2'>
-                                                                            <ViewButton to='/apply-jobs-view' />
+                                                                        <div className='d-flex justify-content-center align-items-center gap-2'>
+                                                                            {/* <ViewButton to='/apply-jobs-view' /> */}
                                                                             <DeleteButton id={test._id}
                                                                                 endpoint={`${serverURL}/apply-job`}
                                                                                 onSuccess={onSuccessData}

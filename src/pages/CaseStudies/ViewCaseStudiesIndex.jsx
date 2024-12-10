@@ -332,7 +332,7 @@ function ViewCaseStudiesIndex() {
                                                                 {/* <p onClick={toggleReadMore} style={{ color: "blue", cursor: "pointer" }}>
                                                                     {isReadMore ? " ...Read More" : " Read Less"}
                                                                 </p> */}
-                                                                <p>
+                                                                <p className='content_list'>
                                                                     {renderTextWithList(detail?.desc)}
                                                                 </p>
                                                             </div>

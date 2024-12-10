@@ -471,7 +471,7 @@ function TeamsAdd() {
                                                                 initialImage={ind.image || ''}
                                                                 name={`expertise[${index}][image]`}
                                                             />
-                                                            <singleError error={errors.expertise?.[index]?.image} />
+                                                            <SingleError error={errors.expertise?.[index]?.image} />
                                                             {/* <SingleError error={errors.content?.[index]?.image} /> */}
                                                         </div>
                                                         <div className='w-100 mt-3 mt-md-0'>

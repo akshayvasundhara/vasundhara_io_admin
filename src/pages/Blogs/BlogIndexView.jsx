@@ -68,7 +68,7 @@ strong {
         { label: 'Featured:', value: state.isFeatured === 1 ? 'On' : 'Off' },
         { label: 'Trending:', value: state.isTrending === 1 ? 'On' : 'Off' },
         { label: 'Content:', value: state.content || '' },
-        { label: 'Head Tags By SEO:', value: state.seo || '' },
+        // { label: 'Head Tags By SEO:', value: state.seo || '' },
     ];
 
     const [isCopied, setIsCopied] = useState(false);
@@ -136,18 +136,29 @@ strong {
                                         ))}
                                         {/* Render the Main Content separately */}
                                         <div>
+                                            <label>Head Tags By SEO:</label>
+                                            <div className='border p-3 mt-2 mb-3 rounded-2 table_content'>
+                                                <p>{state.seo}</p>
+                                            </div>
+                                        </div>
+
+                                        <div>
                                             <label>Table of Content:</label>
                                             {/* <div
                                                 dangerouslySetInnerHTML={{ __html: finalContentBenefit }}
                                             /> */}
-                                            <span dangerouslySetInnerHTML={{ __html: state?.table_content || "" }} />
+                                            <div className='border p-3 mt-2 mb-3 rounded-2 table_content'>
+                                                <span dangerouslySetInnerHTML={{ __html: state?.table_content || "" }} />
+                                            </div>
                                         </div>
                                         <div>
                                             <label>Main Content:</label>
                                             {/* <div
                                                 dangerouslySetInnerHTML={{ __html: finalContentBenefit }}
                                             /> */}
-                                            <span dangerouslySetInnerHTML={{ __html: state?.main_content || "" }} />
+                                            <div className='border p-3 mt-2 mb-3 rounded-2'>
+                                                <span dangerouslySetInnerHTML={{ __html: state?.main_content || "" }} />\
+                                            </div>
                                         </div>
                                     </div>
 
