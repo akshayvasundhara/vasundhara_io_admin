@@ -24,6 +24,7 @@ import FileInputComman from '../../components/comman/FileInputComman';
 const requireField = [
     "name",
     "designation",
+    "description",
     "image",
     "email",
 ];
@@ -81,46 +82,39 @@ function TeamsAdd() {
     const addTeam = async (e) => {
         e.preventDefault();
         setSubmitCount(prevCount => prevCount + 1);
-        const updatedValues = { ...states, image, status };
+        const updatedValues = { ...states, status };
         let validationErrors = ValidateFields(updatedValues);
 
         validationErrors = ErrorFilter(validationErrors, requireField);
         if (image) {
             delete errors.image;
         }
-        if (states?.mobile_number) {
+        if (states?.mobile_no) {
             const mobileNumberPattern = /^\d{10}$/; // Exactly 10 digits
-            if (!mobileNumberPattern.test(states?.mobile_number)) {
-                validationErrors.mobile_number = "Invalid mobile number, must be exactly 10 digits";
+            if (!mobileNumberPattern.test(states?.mobile_no)) {
+                validationErrors.mobile_no = "Invalid mobile number, must be exactly 10 digits";
             }
         }
 
         if (states?.twitter_link) {
-            const urlPattern =/^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+            const urlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
             if (!urlPattern.test(states?.twitter_link)) {
                 validationErrors.twitter_link = "Invalid Twitter link";
             }
         }
 
         if (states?.linkedin_link) {
-            const urlPattern =/^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+            const urlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
             if (!urlPattern.test(states?.linkedin_link)) {
                 validationErrors.linkedin_link = "Invalid LinkedIn link";
             }
         }
 
         if (states?.facebook_link) {
-            const urlPattern =/^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
+            const urlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
             if (!urlPattern.test(states?.facebook_link)) {
                 validationErrors.facebook_link = "Invalid Facebook link";
             }
-        }
-
-        if (Object.keys(validationErrors)?.length) {
-            Object.entries(validationErrors)?.map(([key], i) => {
-                if (i == 0)
-                    document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
-            });
         }
 
 
@@ -148,6 +142,13 @@ function TeamsAdd() {
             }
         }
         setErrors(validationErrors);
+
+        if (Object.keys(validationErrors)?.length) {
+            Object.entries(validationErrors)?.map(([key], i) => {
+                if (i == 0)
+                    document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
+            });
+        }
 
         if (Object.keys(validationErrors).length === 0) {
             try {
@@ -237,6 +238,7 @@ function TeamsAdd() {
                 email: state.email,
                 mobile_no: state.mobile_no,
                 expertise: state?.expertise?.length ? state?.expertise : [{ image: null, title: '' }],
+                image: state?.image || null
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -378,10 +380,11 @@ function TeamsAdd() {
                                                 />
                                                 <SingleError error={errors?.mobile_no} />
                                             </Col>
+                                            {/* {  console.log(states?.description)} */}
                                             <Row className='w-100 mt-3 mt-xl-0 g-0'>
                                                 <Col md={12}>
-                                                    <div className='mt-3 d-flex justify-content-between align-items-center'>
-                                                        <h5 className='form-title mb-0'>Description</h5>
+                                                    <div className='mt-3 d-flex justify-content-between align-items-center' id='description'>
+                                                        <h5 className='form-title mb-0'>Description<span className='text-danger'>*</span></h5>
                                                         <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddDescription}>
                                                             <PiPlusBold />
                                                         </div>
@@ -408,7 +411,6 @@ function TeamsAdd() {
                                                                                 ])
                                                                             }
                                                                         />
-                                                                        <SingleError error={errors.description?.[index]} />
                                                                     </div>
                                                                 </div>
                                                                 <div className="d-flex justify-content-end">
@@ -434,15 +436,15 @@ function TeamsAdd() {
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Linkedin" rows="2" type="text" name="linkedin_link" value={states?.linkedin_link || ""} onChange={handleChange} />
+                                                <Textarea label="Linkedin" id="linkedin_link" rows="2" type="text" name="linkedin_link" value={states?.linkedin_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.linkedin_link} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Twitter" rows="2" type="text" name="twitter_link" value={states?.twitter_link || ""} onChange={handleChange} />
+                                                <Textarea label="Twitter" id="twitter_link" rows="2" type="text" name="twitter_link" value={states?.twitter_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.twitter_link} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <Textarea label="Facebook" rows="2" type="text" name="facebook_link" value={states?.facebook_link || ""} onChange={handleChange} />
+                                                <Textarea label="Facebook" id="facebook_link" rows="2" type="text" name="facebook_link" value={states?.facebook_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.facebook_link} />
                                             </Col>
                                             {/* <Col md={12} lg={6}>

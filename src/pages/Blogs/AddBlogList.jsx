@@ -221,7 +221,8 @@ function AddBlogList() {
                 formData.append('isTrending', isTrending);
                 formData.append('likes', updatedValues.likes || 0);
                 formData.append('views', updatedValues.views || 0);
-                formData.append('blog_read_time', updatedValues.blog_read_time || 0);
+                // if(updatedValues?.blog_read_time)
+                formData.append('blog_read_time', updatedValues.blog_read_time || "");
                 formData.append('tag', updatedValues.tag);
                 formData.append('image', image);
                 if (updatedValues?.faqs?.length > 0)

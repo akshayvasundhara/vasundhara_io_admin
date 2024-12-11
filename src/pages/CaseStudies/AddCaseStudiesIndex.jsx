@@ -33,11 +33,18 @@ const requireField = [
     "desc",
     "tags",
     "image",
-    "detail",
+    "details",
     "solution",
     "solution_main_title",
     "client"
 ];
+
+const clientRequireField = [
+    "name",
+    "designation",
+    "image",
+    "feedback"
+]
 
 function AddCaseStudiesIndex() {
     const location = useLocation();
@@ -88,14 +95,9 @@ function AddCaseStudiesIndex() {
         navigate('/case-studies');
     }
 
-
-    console.log(states?.content);
-
     // Get State 
     useEffect(() => {
         if (state && Object.keys(state)?.length > 0) {
-            // console.log("===================",state?.content?.length);
-
             setStates({
                 title: state?.title,
                 sub_title: state?.sub_title,
@@ -463,19 +465,21 @@ function AddCaseStudiesIndex() {
 
     const handleClientChange = async (e) => {
         const { name, value, checked, type, files } = e.target;
-        console.log('name, value,: ', name, value,);
         let newValue = type === "checkbox" ? checked : value;
+
+        console.log();
+
 
         // Only trigger validation on submit
         if (submitCount > 0) {
             const validationErrors = BlogValidates({ ...states, client: { ...states?.client, [name]: newValue } });
-            const filteredErrors = ErrorFilter(validationErrors, requireField);
+            const filteredErrors = ErrorFilter(validationErrors, requireField) || {};
             setErrors(filteredErrors);
-            console.log(filteredErrors, "==filteredErrors");
-
             // If there are no errors, remove error for this field
-            if (Object.keys(filteredErrors).length === 0) {
-                delete errors?.client[name];
+
+            if (Object.keys(filteredErrors)?.length === 0) {
+                // console.log('errors?.client[name]: ',name,errors?.client);
+                // delete errors?.client[name];
                 // setErrors((prevErrors) => {
                 //     // const { [name]: omitted, ...restErrors } = prevErrors;
                 //     // return restErrors;
@@ -503,9 +507,6 @@ function AddCaseStudiesIndex() {
             }));
         }
     };
-
-    console.log("=====states", states);
-
 
     // Handle array change for tags
     const handleArrayChange = (name, newValues) => {
@@ -873,6 +874,9 @@ function AddCaseStudiesIndex() {
         }));
     };
 
+    console.log(errors, "erro000rs");
+
+
     return (
         <>
             {mainLoader && (
@@ -959,7 +963,7 @@ function AddCaseStudiesIndex() {
                                             <Col md={12}>
                                                 <div className='d-xl-flex align-items-start gap-3'>
                                                     <div className='d-md-flex align-items-start gap-3'>
-                                                        <div>
+                                                        <div className='team_images'>
                                                             <FileInput required={true} label="Banner" name="image" id="image" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} />
                                                             <SingleError error={errors?.image} />
                                                         </div>
@@ -1300,6 +1304,7 @@ function AddCaseStudiesIndex() {
                                                             value={ind.key || ''}
                                                             onChange={(e) => handleArrayChange('details', [...states.details.slice(0, index), { ...ind, key: e.target.value }, ...states.details.slice(index + 1)])}
                                                         />
+                                                        {errors?.details?.[index]?.key && <SingleError error={errors?.details?.[index]?.key} />}
                                                     </Col>
                                                     <Col xl={6}>
                                                         <div className='d-flex align-items-end gap-2 w-100'>
@@ -1317,6 +1322,7 @@ function AddCaseStudiesIndex() {
                                                                         value={ind.value || ''}
                                                                         onChange={(e) => handleArrayChange('details', [...states.details.slice(0, index), { ...ind, value: e.target.value }, ...states.details.slice(index + 1)])}
                                                                     />
+                                                                    {errors?.details?.[index]?.value && <SingleError error={errors?.details?.[index]?.value} />}
                                                                 </div>
                                                             </div>
                                                             <button
@@ -1428,9 +1434,9 @@ function AddCaseStudiesIndex() {
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
                                                     <h5 className='form-title'>Process</h5>
-                                                    <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddProcess}>
+                                                    {/* <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddProcess}>
                                                         <PiPlusBold />
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </Col>
                                             {states?.process?.map((ind, index) => (
@@ -1480,6 +1486,12 @@ function AddCaseStudiesIndex() {
                                                     </div>
                                                 </Col>
                                             ))}
+                                            <div className='d-flex justify-content-between align-items-center'>
+                                                <h5 className='form-title'>{""}</h5>
+                                                <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddProcess}>
+                                                    <PiPlusBold />
+                                                </div>
+                                            </div>
                                             <Col md={12}>
                                                 <hr />
                                             </Col>
@@ -1560,15 +1572,15 @@ function AddCaseStudiesIndex() {
                                             <Col md={12}>
                                                 <div className='d-flex justify-content-between align-items-center'>
                                                     <h5 className='form-title'>Content</h5>
-                                                    <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddContent}>
+                                                    {/* <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddContent}>
                                                         <PiPlusBold />
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </Col>
                                             {states?.content?.map((ind, index) => (
                                                 <Col md={12} className='mb-3' key={index + "content"}>
                                                     <div className='d-md-flex align-items-start gap-3 w-100'>
-                                                        <div>
+                                                        <div className='team_images'>
                                                             <FileInputComman
                                                                 label="Image"
                                                                 setImage={handleImageChange('content', index)}
@@ -1583,7 +1595,7 @@ function AddCaseStudiesIndex() {
                                                                 <Col xl={12}>
                                                                     <div className='d-flex align-items-end gap-2'>
                                                                         <div className='w-100'>
-                                                                            
+
                                                                             {/* <label htmlFor="signin-username" className="form-label text-default" id={`text-${index}`}>Title<span className="star">*</span></label> */}
                                                                             <div className='label-none'>
                                                                                 <LableInput
@@ -1639,6 +1651,12 @@ function AddCaseStudiesIndex() {
                                                     </div>
                                                 </Col>
                                             ))}
+                                            <div className='d-flex justify-content-between align-items-center'>
+                                                <h5 className='form-title'>{""}</h5>
+                                                <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddContent}>
+                                                    <PiPlusBold />
+                                                </div>
+                                            </div>
                                             <Col md={12}>
                                                 <hr />
                                             </Col>
@@ -1653,7 +1671,7 @@ function AddCaseStudiesIndex() {
 
                                             <Col md={12} className='mb-3'>
                                                 <div className='d-md-flex align-items-start gap-3 w-100'>
-                                                    <div>
+                                                    <div className='team_images'>
                                                         <FileInputComman
                                                             required={true}
                                                             label="Image"

@@ -60,11 +60,15 @@ function TeamsIndex() {
     }
 
     // Update status
-    const updateStatus = async (itemId, newStatus) => {
+    const updateStatus = async (itemId, newStatus, object) => {
         try {
-            const response = await api.patchWithToken(`${serverURL}/team/${itemId}`, { status: newStatus });
+            const response = await api.patchWithToken(`${serverURL}/team/${itemId}`, { ...object });
             if (response.data.success) {
-                toast.info("Status updated successfully.");
+                if (object?.status) {
+                    toast.info("Status updated successfully.");
+                }
+                else
+                    toast.info("IsFeatured updated successfully.");
                 getTeams();
             } else {
                 toast.error("Failed to update status:", response.data.message);
@@ -101,6 +105,7 @@ function TeamsIndex() {
                                                     <th>Designation</th>
                                                     {/* <th>Description</th> */}
                                                     <th>Links</th>
+                                                    <th width='100'>Is Feature</th>
                                                     <th width='100'>Status</th>
                                                     <th width='100'>Action</th>
                                                 </tr>
@@ -161,7 +166,11 @@ function TeamsIndex() {
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
+                                                                    <Switch mode={test?.isFeatured} index={index} itemId={test._id} onToggle={updateStatus} data={"isFeatured"} />
+                                                                </td>
+
+                                                                <td>
+                                                                    <Switch mode={test?.status} index={index} itemId={test._id} onToggle={updateStatus} data={"status"} />
                                                                 </td>
                                                                 <td width={100}>
                                                                     <div className='d-flex align-items-center gap-2'>

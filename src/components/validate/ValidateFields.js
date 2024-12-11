@@ -28,6 +28,10 @@ export const ValidateFields = (values) => {
     errors.designation = "Designation must be between 3 and 50 characters.";
   }
 
+  if (values?.description && Array.isArray(values?.description) && values?.description[0] === '') {
+    errors.description = "Description array must contain at least one element.";
+  }
+
   // Validate Description field
   // if (!values?.description) {
   //   errors.description = "Description field is required.";
@@ -121,7 +125,6 @@ export const ValidateFields = (values) => {
   } else if (values.skill.some(sk => sk.length < 3 || sk.length > 255)) {
     errors.skill = "Each skill must be between 3 and 255 characters.";
   }
-
 
   // Validate facebook_link field
   if (values?.facebook_link) {

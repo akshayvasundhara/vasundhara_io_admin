@@ -122,7 +122,7 @@ function IndexPortfolioEdit() {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
         if (submitCount > 0) {
-            let validationErrors = PortFolioValidate({ ...states, [name]: value, image, icon });
+            let validationErrors = PortFolioValidate({ ...states, [name]: value });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
@@ -232,6 +232,13 @@ function IndexPortfolioEdit() {
         //     delete errors.icon;
         // }
         setErrors(validationErrors);
+
+        if (Object.keys(validationErrors)?.length) {
+            Object.entries(validationErrors)?.map(([key], i) => {
+                if (i == 0)
+                    document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
+            });
+        }
 
         if (isValidationErrorsEmpty(validationErrors)) {
             try {
@@ -369,7 +376,7 @@ function IndexPortfolioEdit() {
                                                     required={true}
                                                     label="Title"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="title"
                                                     placeholder="Enter title"
                                                     type="text"
                                                     name='title'
@@ -379,13 +386,13 @@ function IndexPortfolioEdit() {
                                                 <SingleError error={errors?.title} />
                                             </Col>
                                             <Col md={12}>
-                                                <Textarea label="Description" required={true} rows="4" type="text" name="desc" value={states.desc || ""}
+                                                <Textarea label="Description" id={"desc"} required={true} rows="4" type="text" name="desc" value={states.desc || ""}
                                                     onChange={handleChange} placeholder="Enter description"
                                                 />
                                                 <SingleError error={errors?.desc} />
                                             </Col>
                                             <Col md={12}>
-                                                <SelectInput required={true} label="Category" select={"Category"} options={teamOptions} name='category' value={states.category}  // Bind to the state
+                                                <SelectInput required={true} id="category" label="Category" select={"Category"} options={teamOptions} name='category' value={states.category}  // Bind to the state
                                                     onChange={handleChange} />
                                                 <SingleError error={errors?.category} />
                                             </Col>
@@ -408,7 +415,7 @@ function IndexPortfolioEdit() {
                                                 <LableInput
                                                     label="Google Play Store"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="play_store_link"
                                                     placeholder="Enter google play store link"
                                                     type="text"
                                                     name='play_store_link'
@@ -421,7 +428,7 @@ function IndexPortfolioEdit() {
                                                 <LableInput
                                                     label="App Store"
                                                     className="form-control"
-                                                    id="text"
+                                                    id="app_store_link"
                                                     placeholder="Enter app store link"
                                                     type="text"
                                                     name='app_store_link'
@@ -435,7 +442,7 @@ function IndexPortfolioEdit() {
                                                     label="Rating"
                                                     className="form-control"
                                                     placeholder="Enter rating"
-
+                                                    id={"rating"}
                                                     type="number"
                                                     name='rating'
                                                     value={states?.rating || ""}
@@ -448,6 +455,7 @@ function IndexPortfolioEdit() {
                                                     label="Downloads"
                                                     className="form-control"
                                                     placeholder="Enter downloads"
+                                                    id={"downloads"}
                                                     type="text"
                                                     name='downloads'
                                                     value={states?.downloads || ""}
@@ -459,6 +467,7 @@ function IndexPortfolioEdit() {
                                                     label="Reviews"
                                                     className="form-control"
                                                     placeholder="Enter reviews"
+                                                    id={"reviews"}
                                                     type="text"
                                                     name='reviews'
                                                     value={states?.reviews || ""}
@@ -470,14 +479,14 @@ function IndexPortfolioEdit() {
                                                 <div className='d-xl-flex align-items-start gap-3'>
                                                     <div className='d-md-flex align-items-start gap-3'>
                                                         <div>
-                                                            <FileInput required={true} label="Image" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} name='image' id="image" />
+                                                            <FileInput required={true} label="Image" id="image" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} name='image' />
                                                             <SingleError error={errors?.image} />
                                                         </div>
                                                         <div>
-                                                            <FileICon label="Icon" setIcon={setIcon} initialIcon={icon !== null && `${icon}`} onChange={handleChange} name='icon' />
+                                                            <FileICon id="icon" label="Icon" setIcon={setIcon} initialIcon={icon !== null && `${icon}`} onChange={handleChange} name='icon' />
                                                         </div>
                                                         <div>
-                                                            <FileVideo label="Video" setImage={setVideo} initialImage={video !== null && `${imageURL}${video}`} onChange={handleChange} name='image' id="video" />
+                                                            <FileVideo label="Video" setImage={setVideo} initialImage={video !== null && `${imageURL}${video}`} onChange={handleChange} name='video' id="video" />
                                                             {/* <FileVideo label="Video" url={imageURL} setImage={setVideo} initialImage={video !== null && `${video}`} onChange={handleChange} name='video' id={"video"} /> */}
                                                         </div>
                                                     </div>
@@ -497,7 +506,7 @@ function IndexPortfolioEdit() {
                                                     </div>
                                                 </div>
                                             </Col>
-                                            {states.features.map((ind, index) => (
+                                            {states?.features?.map((ind, index) => (
                                                 <Col md={12} className='mb-3' key={index}>
                                                     <div className='d-md-flex align-items-start gap-3 w-100'>
                                                         <div>
@@ -507,7 +516,7 @@ function IndexPortfolioEdit() {
                                                                 initialImage={ind.image || ''}
                                                                 name={`features[${index}][image]`}
                                                             />
-                                                            <SingleError error={errors.features?.[index]?.image} />
+                                                            <SingleError error={errors?.features?.[index]?.image} />
                                                         </div>
                                                         <div className='w-100 mt-3 mt-md-0'>
                                                             <div className='d-flex align-items-end gap-2'>
@@ -519,7 +528,7 @@ function IndexPortfolioEdit() {
                                                                         placeholder="Enter title"
                                                                         type="text"
                                                                         name={`features[${index}][title]`} // Use indexed name for formData
-                                                                        value={ind.title || ''} // Set value from state
+                                                                        value={ind?.title || ''} // Set value from state
                                                                         onChange={(e) => handleArrayChange('features', [...states.features.slice(0, index), { ...ind, title: e.target.value }, ...states.features.slice(index + 1)])} // Use handleArrayChange
                                                                     />
                                                                     <SingleError error={errors.features?.[index]?.title} />
@@ -590,7 +599,7 @@ function IndexPortfolioEdit() {
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                 Status
                                             </label>
-                                            <Switch mode={state.status} onToggle={handleToggle} index={0} />
+                                            <Switch mode={state?.status} onToggle={handleToggle} index={0} />
                                         </div>
                                         <div className='d-flex justify-content-end gap-2 mt-3 mt-md-0'>
                                             <CommanButton className="save-btn" text="Save" handleSubmit={addCases} />

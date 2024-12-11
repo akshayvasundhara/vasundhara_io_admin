@@ -63,14 +63,14 @@ function CaseStudiesIndex() {
     // Update status
     const updateStatus = async (itemId, newStatus, object) => {
         try {
-            const response = await api.postWithToken(`${serverURL}/case-study-status`, 
-                {id:itemId,...object});
+            const response = await api.postWithToken(`${serverURL}/case-study-status`,
+                { id: itemId, ...object });
             if (response.data.success) {
-                if(object?.status){
+                if (object?.status) {
                     toast.info("Status updated successfully.");
                 }
-                else 
-                toast.info("isFeatured updated successfully.");
+                else
+                    toast.info("IsFeatured updated successfully.");
                 getCaseStudy(); // Refresh hiring data after updating
             } else {
                 console.error("Failed to update status:", response.data.message);

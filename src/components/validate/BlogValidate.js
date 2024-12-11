@@ -290,7 +290,7 @@ export const BlogValidates = (values) => {
     }
 
     console.log(errors);
-    
+
 
     // Validate client designation
     if (!client?.designation || client?.designation.trim().length === 0) {
@@ -303,7 +303,7 @@ export const BlogValidates = (values) => {
 
     // Validate client feedback
     if (!client?.feedback || client?.feedback.trim().length === 0) {
-        errors.client = errors.client || {}; 
+        errors.client = errors.client || {};
         errors.client.feedback = "Client feedback is required.";
     } else if (client?.feedback?.length < 3 || client?.feedback?.length > 500) {
         errors.client = errors.client || {}
@@ -323,28 +323,44 @@ export const BlogValidates = (values) => {
 
 
     // Validate detail field
-    if (values?.detail && values.detail.length > 0) {
-        values.detail.forEach((ind, index) => {
-            errors.detail = errors.detail || [];
-            errors.detail[index] = errors.detail[index] || {};
+    if (values?.details && values?.details?.length > 0) {
+        values?.details?.forEach((ind, index) => {
+            errors.details = errors?.details || [];
+            errors.details[index] = errors.details[index] || {};
 
+            // Ensure each item in details is an object
             if (typeof ind !== 'object' || Array.isArray(ind)) {
-                errors.detail[index].details = "Detail must be an object.";
+                errors.details[index].details = "Detail must be an object.";
             } else {
+                // Check for empty value, but don't check for empty key
                 Object.entries(ind).forEach(([key, value]) => {
-                    if (typeof key !== 'string') {
-                        errors.detail[index].key = `The key '${key}' must be a string.`;
+                    if (!value || value.trim() === '') {
+                        errors.details[index].value = `Value must not be empty.`;
                     }
-                    if (typeof value !== 'string') {
-                        errors.detail[index][key] = `The value of '${key}' must be a string.`;
+                    if (!value || value.trim() === '') {
+                        errors.details[index].key = `Key must not be empty.`;
                     }
+
+                    // // Ensure the key is a string (you may want to keep this check as is)
+                    // if (typeof key !== 'string') {
+                    //     errors.details[index].key = `The key '${key}' must be a string.`;
+                    // }
+
+                    // You can add other validations for the key here if needed, but not for emptiness
                 });
             }
         });
-        if (errors.detail.every((error) => Object.keys(error).length === 0)) {
-            delete errors.detail;
+
+        // If no errors, clean up the errors object
+        if (errors?.details?.every((error) => Object.keys(error).length === 0)) {
+            delete errors.details;
         }
+    } else {
+        errors.details = "Details array must contain at least one object.";
     }
+
+
+    console.log(errors?.client, "errors");
 
     return errors;
 };
