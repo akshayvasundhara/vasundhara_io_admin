@@ -67,6 +67,7 @@ function IndexPortfolioEdit() {
     // Function to handle the toggle switch
     const handleToggle = () => {
         setStatus(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
+        setStates(prevStates => ({ ...prevStates, status: prevStates.status === 0 ? 1 : 0 }));
     };
 
     // Close PortFOlio
@@ -89,7 +90,10 @@ function IndexPortfolioEdit() {
                 features: state?.features || [''],
                 rating: state?.rating,
                 reviews: state?.reviews,
-                downloads: state?.downloads
+                downloads: state?.downloads,
+                image: state?.image || null,
+                video: state?.video || null,
+                icon: state?.icon || null
             });
             if (state?.image) {
                 setImage(state?.image);
@@ -217,9 +221,9 @@ function IndexPortfolioEdit() {
     };
 
     const addCases = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         setSubmitCount(prevCount => prevCount + 1);
-        const updatedValues = { ...states, image, icon, status };
+        const updatedValues = { ...states };
 
         let validationErrors = PortFolioValidate(updatedValues);
 
@@ -256,6 +260,9 @@ function IndexPortfolioEdit() {
                 if (updatedValues.reviews) {
                     formData.append('reviews', updatedValues.reviews);
                 }
+                if (updatedValues.website_link) {
+                    formData.append('website_link', updatedValues.website_link);
+                }
                 // Append play_store_link if not empty
                 if (updatedValues.play_store_link) {
                     formData.append('play_store_link', updatedValues.play_store_link);
@@ -278,22 +285,23 @@ function IndexPortfolioEdit() {
                     updatedValues.features.forEach((feature, index) => {
                         if (feature.title) {
                             formData.append(`features[${index}][title]`, feature.title);
-                            if (state._id) {
-                                if (feature.image && feature.image.name) {
-                                    formData.append(`features[${index}][image]`, feature.image.name);
-                                    formData.append('feature_image', feature.image || '');
-                                } else {
-                                    formData.append(`features[${index}][_id]`, feature._id);
-                                    formData.append(`features[${index}][image]`, feature.image || '');
-                                    if (feature.image.name) {
-                                        formData.append('feature_image', feature.image || '');
-                                    }
-                                }
-                            } else {
-                                formData.append(`features[${index}][image]`, feature.image ? feature.image.name : '');
-                                formData.append('feature_image', feature.image || '');
-                            }
                         }
+                        if (state._id) {
+                            if (feature.image && feature.image.name) {
+                                formData.append(`features[${index}][image]`, feature.image.name);
+                                formData.append('feature_image', feature.image || '');
+                            } else {
+                                formData.append(`features[${index}][_id]`, feature._id);
+                                formData.append(`features[${index}][image]`, feature.image || '');
+                                if (feature.image.name) {
+                                    formData.append('feature_image', feature.image || '');
+                                }
+                            }
+                        } else {
+                            formData.append(`features[${index}][image]`, feature.image ? feature.image.name : '');
+                            formData.append('feature_image', feature.image || '');
+                        }
+                        // }
                     });
                 }
 
@@ -338,7 +346,6 @@ function IndexPortfolioEdit() {
             }
         }
     };
-
 
     const handleRemoveImage = (e, index, name) => {
         e.preventDefault()
@@ -397,7 +404,7 @@ function IndexPortfolioEdit() {
                                                 <SingleError error={errors?.category} />
                                             </Col>
                                             {(states.category == "671f912e59efcf3c988cdbad") &&
-                                                <Col md={12} lg={6}>
+                                                <Col md={12} lg={12}>
                                                     <LableInput
                                                         label="Website Link"
                                                         className="form-control"
@@ -405,13 +412,13 @@ function IndexPortfolioEdit() {
                                                         placeholder="Enter website link"
                                                         type="text"
                                                         name='website_link'
-                                                        value={states?.play_store_link || ""}
+                                                        value={states?.website_link || ""}
                                                         onChange={handleChange}
                                                     />
                                                     <SingleError error={errors?.website_link} />
                                                 </Col>
                                             }
-                                            <Col md={12} lg={6}>
+                                            <Col md={12} lg={12}>
                                                 <LableInput
                                                     label="Google Play Store"
                                                     className="form-control"
@@ -609,7 +616,6 @@ function IndexPortfolioEdit() {
                                 </Card.Body>
                             </Card>
                         </Col>
-
                     </Row>
                 </div>
             </Layout >

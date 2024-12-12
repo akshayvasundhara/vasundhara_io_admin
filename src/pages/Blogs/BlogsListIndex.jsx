@@ -17,8 +17,8 @@ import { toast } from 'react-toastify';
 import LoaderComman from '../../components/comman/LoaderComman';
 import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
-
 function BlogsListIndex() {
+
     const serverURL = getServerURL();
     const [category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -30,10 +30,27 @@ function BlogsListIndex() {
     const [mainLoader, setMainLoader] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Get blog category Type
+    const categoryOptions = [
+        { value: '', label: 'All' },
+        ...category.map(cat => ({
+            value: cat._id,
+            label: cat.name
+        }))
+    ];
+
+    useEffect(() => {
+        getCategories();
+    }, [])
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            getBlogs();
+        }, 500);
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery, selectedCategory, page]);
+
     const getCategories = async () => {
         try {
-
             const response = await api.getWithToken(`${serverURL}/blog-category?status=1`)
             if (response.data.success === true) {
                 setCategory(response.data.data.data || []);
@@ -46,18 +63,6 @@ function BlogsListIndex() {
         }
     }
 
-    useEffect(() => {
-        getCategories();
-    }, [])
-
-    const categoryOptions = [
-        { value: '', label: 'All' }, // All option
-        ...category.map(cat => ({
-            value: cat._id,
-            label: cat.name
-        }))
-    ];
-    // Get Blogs
     const getBlogs = async () => {
         setMainLoader(true);
         try {
@@ -76,14 +81,6 @@ function BlogsListIndex() {
         }
     }
 
-    useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            getBlogs();
-        }, 500);
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery, selectedCategory, page]); // 
-
-    // Delete function
     const onSuccessData = () => {
         if (blog.data.length === 1 && page > 1) {
             setPage(page - 1);
@@ -92,8 +89,6 @@ function BlogsListIndex() {
         }
     }
 
-
-    // Update status
     const updateStatus = async (itemId, newStatus) => {
         try {
             const response = await api.patchWithToken(`${serverURL}/blog/${itemId}`, { status: newStatus });
@@ -108,17 +103,16 @@ function BlogsListIndex() {
         }
     };
 
-    // Handle category change
     const handleCategoryChange = (event) => {
-        setSelectedCategory(event.target.value); // Set the selected category
-        setPage(1); // Reset to first page when category changes
+        setSelectedCategory(event.target.value);
+        setPage(1);
     };
 
-    // Handle search input change
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
-        setPage(1); // Reset to the first page when search changes
+        setPage(1);
     };
+
     return (
         <>
             {mainLoader && (
@@ -137,17 +131,17 @@ function BlogsListIndex() {
                                     <Row className='g-4 mb-4'>
                                         <Col md={6}>
                                             <SelectInput label="" options={categoryOptions} value={selectedCategory}
+                                                select="category"
                                                 onChange={handleCategoryChange} />
                                         </Col>
                                         <Col md={6}>
                                             <div className="position-relative">
                                                 <LableInput
-                                                    // label="Search Blog:"
                                                     className="form-control create-password-input overflow-hidden"
                                                     id="password"
                                                     placeholder="Search blog"
                                                     name='search'
-                                                    value={searchQuery} // Set the value for the input
+                                                    value={searchQuery}
                                                     onChange={handleSearchChange}
                                                 />
                                                 <span
@@ -160,7 +154,6 @@ function BlogsListIndex() {
                                         </Col>
                                     </Row>
                                     <div className='overflow-x-auto'>
-
                                         <Table >
                                             <thead>
                                                 <tr>
@@ -230,7 +223,6 @@ function BlogsListIndex() {
                                 </Card.Body>
                             </Card>
                         </Col>
-
                     </Row>
                 </div>
             </Layout >
@@ -239,4 +231,3 @@ function BlogsListIndex() {
 }
 
 export default BlogsListIndex
-

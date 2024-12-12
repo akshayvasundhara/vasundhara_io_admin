@@ -16,7 +16,7 @@ function SelectInput({ select, label, id, options, name, value, onChange, requir
                 value={value}
                 onChange={onChange}
             >
-                <option value="" disabled selected>Select {select}</option> 
+                <option value="" disabled selected>Select {select}</option>
                 {options.map(option => (
                     <option key={option.value} value={option.value}>
                         {option.label}

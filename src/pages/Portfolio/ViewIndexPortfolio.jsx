@@ -103,7 +103,9 @@ function ViewIndexPortfolio() {
                                                     <img
                                                         src={`${imageURL}${state.image}`}
                                                         alt=""
-                                                        className='object-fit-contain'
+                                                        height={"100%"}
+                                                        width={"100%"}
+                                                        // className='object-fit-contain'
                                                     />
                                                 </div>
                                             </div>
@@ -170,7 +172,7 @@ function ViewIndexPortfolio() {
 
                                         <h5 className='form-title mt-4'>Sample Screens:</h5>
                                         <div className='d-flex gap-3 flex-wrap'>
-                                            {state.sample_screen_images?.length > 0 ? (
+                                            {state.sample_screen_images?.length > 0 && (
                                                 state.sample_screen_images?.map((sample, index) => {
                                                     return (
                                                         <div>
@@ -184,17 +186,19 @@ function ViewIndexPortfolio() {
                                                         </div>
                                                     )
                                                 })
-                                            ) : (
-                                                <div>
-                                                    <div className='view-image-box mb-3'>
-                                                        <img
-                                                            src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
-                                                            alt=""
-                                                            className='preview-image sample-screens-image'
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )}
+                                            )
+                                            //  : (
+                                            //     <div>
+                                            //         <div className='view-image-box mb-3'>
+                                            //             <img
+                                            //                 src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYkW08ALhub8QLhbnIlCWdSrEKaGyhMqjOsbVaEtvJcAszZaTIx48a--Zd7XBwQO4tbgw&usqp=CAU'
+                                            //                 alt=""
+                                            //                 className='preview-image sample-screens-image'
+                                            //             />
+                                            //         </div>
+                                            //     </div>
+                                            // )
+                                            }
                                         </div>
                                     </div>
                                 </Card.Body>

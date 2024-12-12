@@ -39,13 +39,6 @@ const requireField = [
     "client"
 ];
 
-const clientRequireField = [
-    "name",
-    "designation",
-    "image",
-    "feedback"
-]
-
 function AddCaseStudiesIndex() {
     const location = useLocation();
     const state = location.state || {};
@@ -84,18 +77,19 @@ function AddCaseStudiesIndex() {
         other_images: [],
     });
 
-    // Function to handle the toggle switch
+    useEffect(() => {
+        getOptions();
+    }, [])
+
     const handleToggle = () => {
         setStatus(prevStatus => (prevStatus === 0 ? 1 : 0));
     };
 
-    // Close Case Studies
     const closeFaq = async (e) => {
         setStates({});
         navigate('/case-studies');
     }
 
-    // Get State 
     useEffect(() => {
         if (state && Object.keys(state)?.length > 0) {
             setStates({
@@ -179,7 +173,6 @@ function AddCaseStudiesIndex() {
         }
     }, [state, options]);
 
-    // Get FAQ Type
     const getOptions = async () => {
         try {
             const response = await api.getWithToken(`${serverURL}/team?status=1`)
@@ -193,11 +186,7 @@ function AddCaseStudiesIndex() {
         }
     };
 
-    useEffect(() => {
-        getOptions();
-    }, [])
-
-    const teamOptions = options.map(member => ({
+     const teamOptions = options.map(member => ({
         value: member._id,
         label: member.name
     }));
@@ -205,7 +194,7 @@ function AddCaseStudiesIndex() {
     const handleAddTags = () => {
         setStates((prevStates) => ({
             ...prevStates,
-            tags: [...prevStates.tags, ''], // Add a new empty tag field
+            tags: [...prevStates.tags, ''],
         }));
     }
 
@@ -310,7 +299,7 @@ function AddCaseStudiesIndex() {
             ...prevStates,
             technology: {
                 ...prevStates.technology,
-                tech: [...prevStates.technology.tech, ''], // Add an empty technology name to the list
+                tech: [...prevStates.technology.tech, ''],
             },
         }));
     };
@@ -332,13 +321,13 @@ function AddCaseStudiesIndex() {
     const handleRemoveContent = (index) => {
         setStates((prevStates) => ({
             ...prevStates,
-            content: prevStates.content.filter((_, i) => i !== index), // Remove the tag at the specified index
+            content: prevStates.content.filter((_, i) => i !== index),
         }));
     };
     const handleRemoveFaqs = (index) => {
         setStates((prevStates) => ({
             ...prevStates,
-            faqs: prevStates.faqs.filter((_, i) => i !== index), // Remove the tag at the specified index
+            faqs: prevStates.faqs.filter((_, i) => i !== index),
         }));
     };
     const handleRemoveDetails = (index) => {
@@ -375,7 +364,7 @@ function AddCaseStudiesIndex() {
     const handleRemoveTechnology = (index) => {
         setStates((prevStates) => {
             const updatedTechnology = [...prevStates.technology.tech];
-            updatedTechnology.splice(index, 1); // Remove the item at the specified index
+            updatedTechnology.splice(index, 1);
             return {
                 ...prevStates,
                 technology: {
@@ -452,7 +441,7 @@ function AddCaseStudiesIndex() {
                 ...prevStates,
                 client: {
                     ...prevStates.client,
-                    [name.split('_')[1]]: value // Update the correct client field
+                    [name.split('_')[1]]: value
                 }
             }));
         } else {
@@ -466,19 +455,12 @@ function AddCaseStudiesIndex() {
     const handleClientChange = async (e) => {
         const { name, value, checked, type, files } = e.target;
         let newValue = type === "checkbox" ? checked : value;
-
-        console.log();
-
-
-        // Only trigger validation on submit
         if (submitCount > 0) {
             const validationErrors = BlogValidates({ ...states, client: { ...states?.client, [name]: newValue } });
             const filteredErrors = ErrorFilter(validationErrors, requireField) || {};
             setErrors(filteredErrors);
-            // If there are no errors, remove error for this field
-
+ 
             if (Object.keys(filteredErrors)?.length === 0) {
-                // console.log('errors?.client[name]: ',name,errors?.client);
                 // delete errors?.client[name];
                 // setErrors((prevErrors) => {
                 //     // const { [name]: omitted, ...restErrors } = prevErrors;
@@ -487,17 +469,15 @@ function AddCaseStudiesIndex() {
             }
         }
 
-        // Handle file input separately
         if (type === "file") {
             setStates((prevStates) => ({
                 ...prevStates,
                 client: {
                     ...prevStates?.client,
-                    [name]: files[0], // Assuming only one file is selected
+                    [name]: files[0],
                 },
             }));
         } else {
-            // For other input types (text, checkbox, etc.)
             setStates((prevStates) => ({
                 ...prevStates,
                 client: {
@@ -873,9 +853,6 @@ function AddCaseStudiesIndex() {
             },
         }));
     };
-
-    console.log(errors, "erro000rs");
-
 
     return (
         <>

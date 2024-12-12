@@ -45,9 +45,8 @@ function TeamsAdd() {
     const [mainLoader, setMainLoader] = useState(false);
     const navigate = useNavigate();
 
-    // Function to handle the toggle switch
     const handleToggle = () => {
-        setStatus(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
+        setStatus(prevStatus => (prevStatus === 0 ? 1 : 0));
     };
 
     const handleChange = async (e) => {
@@ -78,7 +77,6 @@ function TeamsAdd() {
         }
     }
 
-    // Add Edit Api
     const addTeam = async (e) => {
         e.preventDefault();
         setSubmitCount(prevCount => prevCount + 1);
@@ -117,26 +115,19 @@ function TeamsAdd() {
             }
         }
 
-
-
         if (Array.isArray(updatedValues?.expertise)) {
             updatedValues?.expertise.forEach((item, index) => {
                 const { title, image } = item;
                 let expertiseErrors = {};
-
-                // Check if any field is filled and validate
                 if (title || image) {
                     if (!title) expertiseErrors.title = "Title is required if any field is filled";
                     if (!image) expertiseErrors.image = "Image is required if any field is filled";
                 }
-
-                // Only assign expertiseErrors if it has any errors
                 if (Object.keys(expertiseErrors).length > 0) {
                     validationErrors.expertise[index] = expertiseErrors;
                 }
             });
 
-            // Remove expertise entry if it's empty
             if (validationErrors?.expertise?.every((error) => Object.keys(error).length === 0)) {
                 delete validationErrors.expertise;
             }
@@ -194,7 +185,7 @@ function TeamsAdd() {
                     });
                 }
 
-                setMainLoader(true); // Start loader
+                setMainLoader(true);
                 let response;
 
                 if (state._id) {
@@ -217,7 +208,6 @@ function TeamsAdd() {
             }
         }
     }
-
 
     const closeTestimonial = async (e) => {
         setStates({});
@@ -244,7 +234,7 @@ function TeamsAdd() {
                 const fullImageUrl = `${imageURL}${state.image}`;
                 setImage(fullImageUrl);
             } else {
-                setImage(null); // Clear image if there's no valid image
+                setImage(null);
             }
         }
     }, [state]);
@@ -271,7 +261,6 @@ function TeamsAdd() {
         }));
     };
 
-
     const handleArrayChange = (name, newValues) => {
         setStates((prevValues) => ({
             ...prevValues,
@@ -290,15 +279,15 @@ function TeamsAdd() {
     };
 
     const handleImageChange = (type, index) => (file) => {
-        const updatedArray = [...states[type]]; // Create a copy of the specified array
-        updatedArray[index].image = file; // Update the specific index for the image
-        setStates({ ...states, [type]: updatedArray }); // Update the state with the modified array
+        const updatedArray = [...states[type]];
+        updatedArray[index].image = file;
+        setStates({ ...states, [type]: updatedArray });
     };
 
     const handleAddDescription = () => {
         setStates((prevStates) => ({
             ...prevStates,
-            description: [...prevStates.description, ''], // Add a new empty tag field
+            description: [...prevStates.description, ''],
         }));
     }
 
@@ -309,7 +298,6 @@ function TeamsAdd() {
         })
         )
     };
-
 
     return (
         <>
@@ -380,7 +368,6 @@ function TeamsAdd() {
                                                 />
                                                 <SingleError error={errors?.mobile_no} />
                                             </Col>
-                                            {/* {  console.log(states?.description)} */}
                                             <Row className='w-100 mt-3 mt-xl-0 g-0'>
                                                 <Col md={12}>
                                                     <div className='mt-3 d-flex justify-content-between align-items-center' id='description'>
@@ -530,7 +517,6 @@ function TeamsAdd() {
                                 </Card.Body>
                             </Card>
                         </Col>
-
                     </Row>
                 </div>
             </Layout >

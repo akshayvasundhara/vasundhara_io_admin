@@ -53,8 +53,7 @@ const MyEditor = ({ htmlData, onChangeHtmlData, className = "" }) => {
 
         if (element) {
             const handleResize = debounce(() => {
-                // console.log('Element resized:', element.getBoundingClientRect());
-            }, 100); // Adjust the debounce delay as needed
+            }, 100);
 
             const resizeObserver = new ResizeObserver(handleResize);
             resizeObserver.observe(element);

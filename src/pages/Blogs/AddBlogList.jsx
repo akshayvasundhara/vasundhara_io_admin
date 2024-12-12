@@ -33,10 +33,12 @@ const requireField = [
     "main_content",
 ];
 
-
 function AddBlogList() {
 
     const location = useLocation();
+    const serverURL = getServerURL();
+    const imageURL = getImageURL();
+    const navigate = useNavigate();
     const state = location.state || {};
 
     const [team, setTeam] = useState([]);
@@ -44,13 +46,8 @@ function AddBlogList() {
     const [main_content, setMainContent] = useState("");
     const [table_content, setTableContent] = useState("");
     const [errors, setErrors] = useState({});
-
-    const serverURL = getServerURL();
-    const imageURL = getImageURL();
-    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [submitCount, setSubmitCount] = useState(0);
 
-    // const [faqList, setFaqList] = useState(state?.faqs || [{ question: '', answer: '' }]);
     const [faqList, setFaqList] = useState(() => {
         if (state?.faqs && state.faqs.length > 0) {
             return [...state.faqs, { question: '', answer: '' }];
@@ -59,83 +56,18 @@ function AddBlogList() {
         }
     });
 
-    // console.log('faqList: ', faqList,state);
-
+    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [isFeatured, setIsFeatured] = useState(state.isFeatured !== undefined ? state.isFeatured : 1);
     const [isTrending, setIsTrending] = useState(state.isTrending !== undefined ? state.isTrending : 1);
     const [states, setStates] = useState({});
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
-    const navigate = useNavigate();
-
-    // Function to handle the toggle switch
-    const handleToggle = () => {
-        setStatus(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
-    };
-
-    const handleToggleFeature = () => {
-        setIsFeatured(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
-    };
-
-    const handleToggleTrending = () => {
-        setIsTrending(prevStatus => (prevStatus === 0 ? 1 : 0)); // Toggle between 0 and 1
-    };
-
-    // Get Member
-    const getMember = async () => {
-        try {
-            const response = await api.getWithToken(`${serverURL}/team?status=1`)
-            if (response.data.success === true) {
-                setTeam(response.data.data.data || []);
-            } else {
-                setTeam([]);
-            }
-        } catch (error) {
-            console.error("Error fetching products:", error.response ? error.response.data : error.message);
-        }
-    }
 
     useEffect(() => {
         getMember();
-    }, [])
-
-    // Get Category
-    const getCategories = async () => {
-        try {
-
-            const response = await api.getWithToken(`${serverURL}/blog-category?status=1`)
-            if (response.data.success === true) {
-                setCategory(response.data.data.data || []);
-            } else {
-                setCategory([]);
-            }
-
-        } catch (error) {
-            console.error("Error fetching products:", error.response ? error.response.data : error.message);
-        }
-    }
-
-    useEffect(() => {
         getCategories();
     }, [])
 
-    const teamOptions = team.map(member => ({
-        value: member._id,
-        label: member.name
-    }));
-
-    const categoryOptions = category.map(cat => ({
-        value: cat._id,
-        label: cat.name
-    }));
-
-    // Close Blog
-    const closeBlog = async (e) => {
-        setStates({});
-        navigate('/blogs-list');
-    }
-
-    // Get State 
     useEffect(() => {
         if (state && Object.keys(state).length > 0) {
             setMainContent(state?.main_content);
@@ -156,6 +88,8 @@ function AddBlogList() {
                 blog_read_time: state.blog_read_time,
                 tag: state.tag,
                 faqs: state?.faqs || [{ question: '', answer: '' }],
+                image: state.image || null
+
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -166,7 +100,60 @@ function AddBlogList() {
         }
     }, [state]);
 
-    // Handle Change
+    const handleToggle = () => {
+        setStatus(prevStatus => (prevStatus === 0 ? 1 : 0));
+    };
+
+    const handleToggleFeature = () => {
+        setIsFeatured(prevStatus => (prevStatus === 0 ? 1 : 0));
+    };
+
+    const handleToggleTrending = () => {
+        setIsTrending(prevStatus => (prevStatus === 0 ? 1 : 0));
+    };
+
+    const getMember = async () => {
+        try {
+            const response = await api.getWithToken(`${serverURL}/team?status=1`)
+            if (response.data.success === true) {
+                setTeam(response.data.data.data || []);
+            } else {
+                setTeam([]);
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error.response ? error.response.data : error.message);
+        }
+    }
+
+    const getCategories = async () => {
+        try {
+            const response = await api.getWithToken(`${serverURL}/blog-category?status=1`)
+            if (response.data.success === true) {
+                setCategory(response.data.data.data || []);
+            } else {
+                setCategory([]);
+            }
+
+        } catch (error) {
+            console.error("Error fetching products:", error.response ? error.response.data : error.message);
+        }
+    }
+
+    const teamOptions = team.map(member => ({
+        value: member._id,
+        label: member.name
+    }));
+
+    const categoryOptions = category.map(cat => ({
+        value: cat._id,
+        label: cat.name
+    }));
+
+    const closeBlog = async (e) => {
+        setStates({});
+        navigate('/blogs-list');
+    }
+
     const handleChange = async (e) => {
         const { name, value, checked, type } = e.target;
         let newValue = type === "checkbox" ? checked : value;
@@ -176,7 +163,6 @@ function AddBlogList() {
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
                 delete errors[name];
-                // delete errors.image;
             }
         }
         setStates((prevValues) => ({
@@ -185,9 +171,8 @@ function AddBlogList() {
         }));
     }
 
-    // Add Edit Blog
     const addBlog = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         setSubmitCount(prevCount => prevCount + 1);
         const updatedValues = { ...states, image, status };
 
@@ -221,7 +206,6 @@ function AddBlogList() {
                 formData.append('isTrending', isTrending);
                 formData.append('likes', updatedValues.likes || 0);
                 formData.append('views', updatedValues.views || 0);
-                // if(updatedValues?.blog_read_time)
                 formData.append('blog_read_time', updatedValues.blog_read_time || "");
                 formData.append('tag', updatedValues.tag);
                 formData.append('image', image);
@@ -250,7 +234,6 @@ function AddBlogList() {
         }
     };
 
-    // Main content change
     const handleChangeHtmlData = (data) => {
         if (submitCount > 0) {
             let validationErrors = ValidateFields({ ...states, main_content: data });
@@ -273,25 +256,11 @@ function AddBlogList() {
         }));
     };
 
-
-    // const addFAQ = () => {
-    //     const newFaq = faqList[faqList.length - 1];
-    //     if (newFaq.question && newFaq.answer) {
-    //         setStates({ ...states, faqs: faqList });
-    //         setFaqList([...faqList, { question: '', answer: '' }]);
-    //     } else {
-    //         alert('Please fill both question and answer before adding.');
-    //     }
-    // };
-
     const addFAQ = () => {
         const newFaq = faqList[faqList.length - 1];
-
-        // Trim spaces from question and answer
         const trimmedQuestion = newFaq.question.trim();
         const trimmedAnswer = newFaq.answer.trim();
 
-        // Validate question and answer lengths after trimming spaces
         if (trimmedQuestion && trimmedAnswer) {
             if (
                 trimmedQuestion.length >= 3 &&
@@ -299,18 +268,15 @@ function AddBlogList() {
                 trimmedAnswer.length >= 3 &&
                 trimmedAnswer.length <= 500
             ) {
-                // Add the new FAQ to the list
                 setFaqList([...faqList, { question: '', answer: '' }]);
                 setStates({ ...states, faqs: faqList });
             } else {
                 alert('Question must be between 3 and 255 characters, and answer must be between 3 and 500 characters.');
             }
         } else {
-            // Show message when both question and answer contain only spaces or are empty
             alert('Please fill both question and answer with valid content. Spaces are not considered valid.');
         }
     };
-
 
     const deleteFAQ = (index) => {
         const updatedFaqList = faqList.filter((_, i) => i !== index);
@@ -362,7 +328,6 @@ function AddBlogList() {
                                                     type="date"
                                                     name='date'
                                                     value={states?.date || ""}
-                                                    // onKeyPress={handleKeyPress}
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.date} />
@@ -384,7 +349,6 @@ function AddBlogList() {
                                                     type="number"
                                                     name='views'
                                                     value={states?.views || ""}
-                                                    // onKeyPress={handleKeyPress}
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.views} />
@@ -400,7 +364,6 @@ function AddBlogList() {
                                                     type="number"
                                                     name='likes'
                                                     value={states?.likes || ""}
-                                                    // onKeyPress={handleKeyPress}
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.likes} />
@@ -415,7 +378,6 @@ function AddBlogList() {
                                                     type="number"
                                                     name='blog_read_time'
                                                     value={states?.blog_read_time || ""}
-                                                    // onKeyPress={handleKeyPress}
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.blog_read_time} />
@@ -430,7 +392,6 @@ function AddBlogList() {
                                                     type="text"
                                                     name='tag'
                                                     value={states?.tag || ""}
-                                                    // onKeyPress={handleKeyPress}
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.tag} />
@@ -493,9 +454,7 @@ function AddBlogList() {
                                                 <SingleError error={errors?.seo} />
                                             </Col>
                                         </Row>
-
                                         <hr />
-
                                         <div className='d-flex justify-content-between align-items-center mb-3'>
                                             <label htmlFor="industry-select" className="form-label text-default form-title mb-0">
                                                 FAQs
@@ -556,7 +515,6 @@ function AddBlogList() {
                                                     </div>
                                                 </Col>
                                                 {/* <Col md={4} className="d-flex justify-content-between align-items-center">
-
                                                     {index === faqList.length - 1 ? (
                                                         <button type="button" onClick={addFAQ}>
                                                            <PiPlusBold />

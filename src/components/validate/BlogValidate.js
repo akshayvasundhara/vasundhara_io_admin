@@ -1,8 +1,6 @@
 export const BlogValidates = (values) => {
     let errors = {};
 
-    const playStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
-
     // Validate title field
     if (!values?.title?.trim()) {
         errors.title = "Title is required";
@@ -41,7 +39,6 @@ export const BlogValidates = (values) => {
         errors.image = "Please upload an image";
     }
 
-
     // Validate Play store link field
     if (values?.play_store_link) {
         const playStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
@@ -50,7 +47,6 @@ export const BlogValidates = (values) => {
         }
     }
 
-
     // Validate App store link field
     if (values?.app_store_link) {
         const appStoreUrlPattern = /^(http:\/\/|https:\/\/)[^\s/$.?#].[^\s]*$/i;
@@ -58,7 +54,6 @@ export const BlogValidates = (values) => {
             errors.app_store_link = "Invalid app store link";
         }
     }
-
 
     // Validate FAQs field
     if (values?.faqs && values.faqs.length > 0) {
@@ -218,7 +213,6 @@ export const BlogValidates = (values) => {
         });
     }
 
-
     // Validate content field
     if (values?.content && values.content.length > 0) {
         values.content.forEach((ind, index) => {
@@ -278,9 +272,8 @@ export const BlogValidates = (values) => {
         });
     }
 
-    const client = values?.client || {};
-
     // Validate client name
+    const client = values?.client || {};
     if (!client?.name || client?.name.trim().length === 0) {
         errors.client = errors.client || {};
         errors.client.name = "Client name is required.";
@@ -288,9 +281,6 @@ export const BlogValidates = (values) => {
         errors.client = errors.client || {};
         errors.client.name = "Client name must be between 3 and 50 characters.";
     }
-
-    console.log(errors);
-
 
     // Validate client designation
     if (!client?.designation || client?.designation.trim().length === 0) {
@@ -321,7 +311,6 @@ export const BlogValidates = (values) => {
         delete errors.client;
     }
 
-
     // Validate detail field
     if (values?.details && values?.details?.length > 0) {
         values?.details?.forEach((ind, index) => {
@@ -340,7 +329,6 @@ export const BlogValidates = (values) => {
                     if (!value || value.trim() === '') {
                         errors.details[index].key = `Key must not be empty.`;
                     }
-
                     // // Ensure the key is a string (you may want to keep this check as is)
                     // if (typeof key !== 'string') {
                     //     errors.details[index].key = `The key '${key}' must be a string.`;
@@ -358,9 +346,6 @@ export const BlogValidates = (values) => {
     } else {
         errors.details = "Details array must contain at least one object.";
     }
-
-
-    console.log(errors?.client, "errors");
 
     return errors;
 };
