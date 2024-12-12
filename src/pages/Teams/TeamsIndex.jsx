@@ -126,7 +126,7 @@ function TeamsIndex() {
                                                                 {/* <td>{test.description}</td> */}
                                                                 <td>
                                                                     <div className='d-flex align-items-center gap-2'>
-                                                                        {test.twitter_link && (<a
+                                                                        {test.linkedin_link && (<a
                                                                             href={test.linkedin_link}
                                                                             target="_blank"
                                                                             rel="noopener noreferrer"

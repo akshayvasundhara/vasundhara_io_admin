@@ -12,7 +12,6 @@ import api from '../../API/api';
 import LoaderComman from '../../components/comman/LoaderComman';
 import NoDataAvailable from '../../components/comman/NoDataAvailable';
 
-
 function ContactUsIndex() {
 
     const serverURL = getServerURL();
@@ -21,7 +20,6 @@ function ContactUsIndex() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
-
 
     // Get Contact us 
     const getContacts = async () => {
@@ -89,7 +87,7 @@ function ContactUsIndex() {
                                                         return (
                                                             <tr key={index}>
                                                                 <td>{(page - 1) * limit + index + 1}.</td>
-                                                                <td><p>{test.full_name}</p></td>
+                                                                <td><p>{test.first_name}</p></td>
                                                                 <td><p>{test.last_name}</p></td>
                                                                 <td><p>{test.email}</p></td>
                                                                 <td><p>{test.phone}</p></td>

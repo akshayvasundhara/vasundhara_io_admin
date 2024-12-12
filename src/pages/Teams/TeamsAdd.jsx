@@ -25,8 +25,7 @@ const requireField = [
     "name",
     "designation",
     "description",
-    "image",
-    "email",
+    "image"
 ];
 
 
@@ -148,21 +147,12 @@ function TeamsAdd() {
                 formData.append('designation', updatedValues.designation);
                 // formData.append('description', updatedValues.description);
                 formData.append('image', image);
-                formData.append('email', updatedValues?.email);
+                formData.append('email', updatedValues?.email || "");
                 formData.append('mobile_no', updatedValues?.mobile_no || "");
                 formData.append('status', status);
-                if (updatedValues.linkedin_link) {
-                    formData.append('linkedin_link', updatedValues.linkedin_link);
-                }
-                if (updatedValues.twitter_link) {
-                    formData.append('twitter_link', updatedValues.twitter_link);
-                }
-                if (updatedValues.facebook_link) {
-                    formData.append('facebook_link', updatedValues.facebook_link);
-                }
-                if (updatedValues.other_link) {
-                    formData.append('other_link', updatedValues.other_link);
-                }
+                formData.append('linkedin_link', updatedValues.linkedin_link || "");
+                formData.append('twitter_link', updatedValues.twitter_link || "");
+                formData.append('facebook_link', updatedValues.facebook_link || "");
 
                 if (Array.isArray(updatedValues.description) && updatedValues.description.length > 0) {
                     updatedValues.description.forEach((desc, index) => {
@@ -343,7 +333,6 @@ function TeamsAdd() {
                                             </Col>
                                             <Col md={12} lg={6}>
                                                 <LableInput
-                                                    required={true}
                                                     label="Email"
                                                     className="form-control"
                                                     id="email"

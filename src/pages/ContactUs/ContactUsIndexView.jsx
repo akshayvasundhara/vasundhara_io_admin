@@ -17,7 +17,7 @@ function ContactUsIndexView() {
     const state = location.state || {};
 
     const names = [
-        { label: 'Full Name:', value: state.full_name || '' },
+        { label: 'First Name:', value: state.first_name || '' },
         { label: 'Last Name:', value: state.last_name || '' },
         { label: 'Email:', value: state.email || '' },
         { label: 'Mobile:', value: state.phone || '' },
