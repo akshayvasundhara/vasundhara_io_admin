@@ -186,7 +186,7 @@ function AddCaseStudiesIndex() {
         }
     };
 
-     const teamOptions = options.map(member => ({
+    const teamOptions = options.map(member => ({
         value: member._id,
         label: member.name
     }));
@@ -459,7 +459,7 @@ function AddCaseStudiesIndex() {
             const validationErrors = BlogValidates({ ...states, client: { ...states?.client, [name]: newValue } });
             const filteredErrors = ErrorFilter(validationErrors, requireField) || {};
             setErrors(filteredErrors);
- 
+
             if (Object.keys(filteredErrors)?.length === 0) {
                 // delete errors?.client[name];
                 // setErrors((prevErrors) => {
@@ -651,11 +651,12 @@ function AddCaseStudiesIndex() {
                     });
                 }
 
-                formData.append('technology[title]', updatedValues?.technology.title);
+                formData.append('technology[title]', updatedValues?.technology.title || "");
 
                 // Iterate over the "tech" array and append each technology name
                 updatedValues?.technology?.tech.forEach((techItem, index) => {
-                    formData.append(`technology[tech][${index}]`, techItem);
+                    if (techItem && techItem.trim().length > 0)
+                        formData.append(`technology[tech][${index}]`, techItem);
                 });
 
                 formData.append('solution_main_title', updatedValues.solution_main_title);

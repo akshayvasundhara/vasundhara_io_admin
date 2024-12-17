@@ -60,12 +60,9 @@ function AddBlogList() {
     const [status, setStatus] = useState(state.status !== undefined ? state.status : 0);
     const [isFeatured, setIsFeatured] = useState(state.isFeatured !== undefined ? state.isFeatured : 1);
     const [isTrending, setIsTrending] = useState(state.isTrending !== undefined ? state.isTrending : 1);
-    const [states, setStates] = useState({ faqs: [{ question: '', answer: '' }] });
+    const [states, setStates] = useState({ faqs: [{ question: '', answer: '' }], status: 0, isTrending: 0, isFeatured: 0 });
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
-
-    console.log(status);
-    
 
     useEffect(() => {
         getMember();
@@ -74,16 +71,16 @@ function AddBlogList() {
 
     useEffect(() => {
         if (state && Object.keys(state).length > 0) {
-            setMainContent(state?.main_content);
-            setTableContent(state?.table_content);
+            setMainContent(state?.main_content ||  "");
+            setTableContent(state?.table_content || "");
             setStates({
-                title: state.title,
-                seo: state.seo,
-                content: state.content,
-                main_content: state.main_content,
-                status: state.status,
-                isFeatured: state.isFeatured,
-                isTrending: state.isTrending,
+                title: state.title || "",
+                seo: state.seo || "",
+                content: state.content || "",
+                main_content: state.main_content || "",
+                status: state.status || 0,
+                isFeatured: state.isFeatured || 0,
+                isTrending: state.isTrending || 0,
                 date: state.date ? new Date(state.date).toISOString().split("T")[0] : "",
                 category: state.category?._id,
                 author: state?.author?._id,
@@ -93,7 +90,6 @@ function AddBlogList() {
                 tag: state.tag,
                 faqs: state?.faqs?.length > 0 ? state?.faqs : [{ question: '', answer: '' }],
                 image: state.image || null
-
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -105,14 +101,17 @@ function AddBlogList() {
     }, [state]);
 
     const handleToggle = () => {
+        setStates((prevStates) => ({ ...prevStates, status: prevStates.status === 0 ? 1 : 0 }));
         setStatus(prevStatus => (prevStatus === 0 ? 1 : 0));
     };
 
     const handleToggleFeature = () => {
+        setStates((prevStates) => ({ ...prevStates, isFeatured: prevStates.isFeatured === 0 ? 1 : 0 }));
         setIsFeatured(prevStatus => (prevStatus === 0 ? 1 : 0));
     };
 
     const handleToggleTrending = () => {
+        setStates((prevStates) => ({ ...prevStates, isTrending: prevStates.isTrending === 0 ? 1 : 0 }));
         setIsTrending(prevStatus => (prevStatus === 0 ? 1 : 0));
     };
 
@@ -178,7 +177,7 @@ function AddBlogList() {
     const addBlog = async (e) => {
         e.preventDefault();
         setSubmitCount(prevCount => prevCount + 1);
-        const updatedValues = { ...states, image, status };
+        const updatedValues = { ...states };
 
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
@@ -199,13 +198,13 @@ function AddBlogList() {
                 const formData = new FormData(); // Create FormData for file upload
                 formData.append('title', updatedValues.title);
                 formData.append('seo', updatedValues.seo ? updatedValues.seo : "");
-                formData.append('content', updatedValues.content);
-                formData.append('main_content', updatedValues.main_content);
+                formData.append('content', updatedValues.content || "");
+                formData.append('main_content', updatedValues.main_content || "");
                 formData.append('table_content', updatedValues?.table_content || "");
                 formData.append('date', updatedValues.date);
                 formData.append('category', updatedValues.category ? updatedValues.category : categoryOptions[0].value);
                 formData.append('author', updatedValues.author ? updatedValues.author : teamOptions[0].value);
-                formData.append('status', status);
+                formData.append('status', status || 0);
                 formData.append('isFeatured', isFeatured);
                 formData.append('isTrending', isTrending);
                 formData.append('likes', updatedValues.likes || 0);
@@ -447,19 +446,19 @@ function AddBlogList() {
                                                     <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                         Status
                                                     </label>
-                                                    <Switch mode={state.status} onToggle={handleToggle} index={0} />
+                                                    <Switch mode={states?.status} onToggle={handleToggle} index={0} />
                                                 </div>
                                                 <div className='d-flex align-items-center gap-2 mb-3'>
                                                     <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                         Featured
                                                     </label>
-                                                    <Switch mode={state.isFeatured} onToggle={handleToggleFeature} index={1} />
+                                                    <Switch mode={states.isFeatured} onToggle={handleToggleFeature} index={1} />
                                                 </div>
                                                 <div className='d-flex align-items-center gap-2 mb-3'>
                                                     <label htmlFor="industry-select" className="form-label text-default mb-0">
                                                         Trending
                                                     </label>
-                                                    <Switch mode={state.isTrending} onToggle={handleToggleTrending} index={2} />
+                                                    <Switch mode={states.isTrending} onToggle={handleToggleTrending} index={2} />
                                                 </div>
                                             </Col>
                                             <Col md={6}>

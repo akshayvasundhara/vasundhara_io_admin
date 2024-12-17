@@ -94,13 +94,13 @@ function AddTestimonials() {
         if (Object.keys(validationErrors).length === 0) {
             try {
                 const formData = new FormData(); // Create FormData for file upload
-                formData.append('name', updatedValues.name);
-                formData.append('designation', updatedValues.designation);
-                formData.append('description', updatedValues.description);
-                formData.append('platform_link', updatedValues.platform_link);
-                formData.append('image', image);
+                formData.append('name', updatedValues.name || "");
+                formData.append('designation', updatedValues.designation || "");
+                formData.append('description', updatedValues.description || "");
+                formData.append('platform_link', updatedValues.platform_link || "");
+                formData.append('image', image || null);
                 formData.append('platform_logo', platform_logo);
-                formData.append('status', status);
+                formData.append('status', status || 0);
                 formData.append('rating', updatedValues.rating);
 
                 setMainLoader(true); // Start loader

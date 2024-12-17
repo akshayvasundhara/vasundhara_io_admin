@@ -177,6 +177,26 @@ const MyEditor = ({ htmlData, onChangeHtmlData, className = "" }) => {
                             { model: 'heading6', view: 'h6', title: 'Heading 6', className: 'ck-heading_heading6' },
                         ]
                     },
+                    htmlEmbed: {
+                        showPreviews: true
+                    },
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true,
+                            }
+                        ],
+                        disallow: [
+                            {
+                                attributes: [
+                                    { key: /.*/, value: /data:(?!image\/(png|jpeg|gif|webp))/i }
+                                ]
+                            }
+                        ]
+                    },
                 }}
                 data={htmlData || ""}
                 onChange={(event, editor) => {
