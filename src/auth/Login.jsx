@@ -98,7 +98,7 @@ function Login() {
                             <div className="card custom-card my-auto border">
                                 <div className="card-body p-4">
                                     <div className='d-flex justify-content-center py-4'>
-                                        <img src="../images/logo/logo.svg" width={250} alt="" />
+                                        <img src="../images/logo/vasundhara.png" width={250} alt="" />
                                     </div>
                                     <div className="row gy-3 mt-2 single-error">
                                         <div className="col-xl-12 label-none">
@@ -110,7 +110,6 @@ function Login() {
                                                 type="text"
                                                 name='email'
                                                 value={values?.email || ""}
-
                                                 onChange={handleChange}
                                             />
                                         </div>

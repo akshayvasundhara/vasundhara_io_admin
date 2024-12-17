@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
@@ -22,6 +22,7 @@ import { toast } from 'react-toastify';
 import LoaderComman from '../../components/comman/LoaderComman';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { PiPlusBold } from 'react-icons/pi';
+import { RiDeleteBinLine } from 'react-icons/ri';
 const requireField = [
     "title",
     "category",
@@ -56,12 +57,15 @@ function AddBlogList() {
         }
     });
 
-    const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
+    const [status, setStatus] = useState(state.status !== undefined ? state.status : 0);
     const [isFeatured, setIsFeatured] = useState(state.isFeatured !== undefined ? state.isFeatured : 1);
     const [isTrending, setIsTrending] = useState(state.isTrending !== undefined ? state.isTrending : 1);
-    const [states, setStates] = useState({});
+    const [states, setStates] = useState({ faqs: [{ question: '', answer: '' }] });
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
+
+    console.log(status);
+    
 
     useEffect(() => {
         getMember();
@@ -87,7 +91,7 @@ function AddBlogList() {
                 views: state.views,
                 blog_read_time: state.blog_read_time,
                 tag: state.tag,
-                faqs: state?.faqs || [{ question: '', answer: '' }],
+                faqs: state?.faqs?.length > 0 ? state?.faqs : [{ question: '', answer: '' }],
                 image: state.image || null
 
             });
@@ -197,7 +201,7 @@ function AddBlogList() {
                 formData.append('seo', updatedValues.seo ? updatedValues.seo : "");
                 formData.append('content', updatedValues.content);
                 formData.append('main_content', updatedValues.main_content);
-                formData.append('table_content', updatedValues?.table_content);
+                formData.append('table_content', updatedValues?.table_content || "");
                 formData.append('date', updatedValues.date);
                 formData.append('category', updatedValues.category ? updatedValues.category : categoryOptions[0].value);
                 formData.append('author', updatedValues.author ? updatedValues.author : teamOptions[0].value);
@@ -211,6 +215,8 @@ function AddBlogList() {
                 formData.append('image', image);
                 if (updatedValues?.faqs?.length > 0)
                     formData.append('faqs', JSON.stringify(updatedValues?.faqs));
+                else
+                    formData.append('faqs', JSON.stringify([]));
                 setMainLoader(true);
                 let response;
                 if (state._id) {
@@ -281,7 +287,47 @@ function AddBlogList() {
     const deleteFAQ = (index) => {
         const updatedFaqList = faqList.filter((_, i) => i !== index);
         setFaqList(updatedFaqList);
+        setStates({ ...states, faqs: updatedFaqList });
     };
+
+    const handleArrayChange = (name, newValues) => {
+        setStates((prevValues) => ({
+            ...prevValues,
+            [name]: newValues,
+        }));
+
+        // if (submitCount > 0) {
+        //     const updatedValues = { ...states, [name]: newValues };
+        //     let validationErrors = BlogValidates(updatedValues);
+        //     validationErrors = ErrorFilter(validationErrors, requireField);
+        //     setErrors(validationErrors);
+        //     if (Object.keys(validationErrors).length === 0) {
+        //         delete errors[name];
+        //     }
+        // }
+    };
+
+    const handleRemoveFAQ = (index) => {
+        setStates((prevStates) => ({
+            ...prevStates,
+            faqs: prevStates.faqs.filter((_, i) => i !== index),
+        }));
+    };
+
+    const handleAddFAQ = () => {
+        const data = states?.faqs;
+        if (data?.length > 0) {
+            if (data[data?.length - 1]?.question !== '' && data[data?.length - 1]?.answer !== '') {
+                setStates((prevStates) => ({
+                    ...prevStates,
+                    faqs: [...prevStates.faqs, { question: '', answer: '' }]
+                }));
+            } else {
+                alert('Please enter both question and answer');
+            }
+        }
+    };
+
 
     return (
         <>
@@ -459,11 +505,11 @@ function AddBlogList() {
                                             <label htmlFor="industry-select" className="form-label text-default form-title mb-0">
                                                 FAQs
                                             </label>
-                                            <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={addFAQ}>
+                                            <div className="input-add d-inline-flex justify-content-center align-items-center" onClick={handleAddFAQ}>
                                                 <PiPlusBold />
                                             </div>
                                         </div>
-                                        {faqList.map((faq, index) => (
+                                        {/* {faqList.map((faq, index) => (
                                             <Row key={index} className="g-4">
                                                 <Col md={12} className='mb-4'>
                                                     <div className='d-flex align-items-end gap-2'>
@@ -514,15 +560,76 @@ function AddBlogList() {
                                                         />
                                                     </div>
                                                 </Col>
-                                                {/* <Col md={4} className="d-flex justify-content-between align-items-center">
-                                                    {index === faqList.length - 1 ? (
-                                                        <button type="button" onClick={addFAQ}>
-                                                           <PiPlusBold />
-                                                        </button>
-                                                    ) : null}
-                                                </Col> */}
                                             </Row>
-                                        ))}
+                                        ))} */}
+
+                                        <Row className="g-3">
+                                            <Row className="g-3">
+                                                {states?.faqs?.map((faq, index) => (
+                                                    <Fragment key={index + "faq"}>
+                                                        <Col xl={12}>
+                                                            <LableInput
+                                                                label="Question"
+                                                                className="form-control"
+                                                                id={`faq[${index}][question]`}
+                                                                placeholder="Enter the question"
+                                                                type="text"
+                                                                name={`faq[${index}][question]`}
+                                                                value={faq.question || ''}
+                                                                onChange={(e) => handleArrayChange('faqs', [
+                                                                    ...states?.faqs?.slice(0, index),
+                                                                    { ...faq, question: e.target.value },
+                                                                    ...states?.faqs?.slice(index + 1)
+                                                                ])}
+                                                            />
+                                                            {errors?.faqs?.[index]?.question && <SingleError error={errors?.faqs?.[index]?.question} />}
+                                                        </Col>
+                                                        <Col xl={12}>
+                                                            <div className="d-flex align-items-end gap-2 w-100">
+                                                                <div className="w-100">
+                                                                    <label htmlFor={`faq[${index}][answer]`} className="form-label text-default">
+                                                                        Answer<span className="star">*</span>
+                                                                    </label>
+                                                                    <div className="label-none">
+                                                                        <Textarea
+                                                                            label="Answer"
+                                                                            rows="4"
+                                                                            className="form-control"
+                                                                            id={`faqs[${index}][answer]`}
+                                                                            placeholder="Enter the answer"
+                                                                            type="text"
+                                                                            name={`faqs[${index}][answer]`}
+                                                                            value={faq.answer || ''}
+                                                                            onChange={(e) => handleArrayChange('faqs', [
+                                                                                ...states?.faqs?.slice(0, index),
+                                                                                { ...faq, answer: e.target.value },  // Only update answer
+                                                                                ...states?.faqs?.slice(index + 1)
+                                                                            ])}
+                                                                        />
+                                                                        {errors?.faqs?.[index]?.answer && <SingleError error={errors?.faqs?.[index]?.answer} />}
+                                                                    </div>
+                                                                </div>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveFAQ(index)}
+                                                                    className="btn btn-danger py-2"
+                                                                >
+                                                                    <RiDeleteBinLine />
+                                                                </button>
+                                                            </div>
+                                                        </Col>
+                                                    </Fragment>
+                                                ))}
+                                                <Col md={12}>
+                                                    <hr />
+                                                </Col>
+                                            </Row>
+
+                                            <Col md={12}>
+                                                <hr />
+                                            </Col>
+                                        </Row>
+
 
                                     </form>
 

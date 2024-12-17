@@ -323,6 +323,10 @@ td p {
 /* General Css End*/
 
 /* Login Pega Start */
+.login {
+  background-color: rgba(32, 41, 71, 0.8);
+}
+
 .login .card.custom-card {
   border-radius: 0.5rem;
   background-color: #fff;
