@@ -23,6 +23,8 @@ import LoaderComman from '../../components/comman/LoaderComman';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { PiPlusBold } from 'react-icons/pi';
 import { RiDeleteBinLine } from 'react-icons/ri';
+import SummerEditor from '../../components/comman/SummerEditor';
+
 const requireField = [
     "title",
     "category",
@@ -71,7 +73,7 @@ function AddBlogList() {
 
     useEffect(() => {
         if (state && Object.keys(state).length > 0) {
-            setMainContent(state?.main_content ||  "");
+            setMainContent(state?.main_content || "");
             setTableContent(state?.table_content || "");
             setStates({
                 title: state.title || "",
@@ -475,22 +477,25 @@ function AddBlogList() {
                                                 <label htmlFor="industry-select" className="form-label text-default">
                                                     Table of Content
                                                 </label>
-                                                <MyEditor
+
+                                                {/* <MyEditor
                                                     htmlData={table_content}
                                                     onChangeHtmlData={handleChangeTableHtmlData}
-                                                />
+                                                /> */}
+                                                <SummerEditor htmlContent={table_content} setHtmlContent={handleChangeTableHtmlData} id="table_content" />
                                             </Col>
                                             <Col md={12}>
-                                                <label htmlFor="industry-select" className="form-label text-default" id="main_content">
+                                                <label htmlFor="main_content" className="form-label text-default">
                                                     Main Content
                                                     <span className="star">*</span>
                                                 </label>
-                                                <MyEditor
+                                                <SummerEditor htmlContent={main_content} setHtmlContent={handleChangeHtmlData} id="main_content" />
+                                                {/* <MyEditor
                                                     htmlData={main_content}
                                                     onChangeHtmlData={handleChangeHtmlData}
                                                     className={true}
                                                     name="main_content"
-                                                />
+                                                /> */}
                                                 <SingleError error={errors?.main_content} />
                                             </Col>
 

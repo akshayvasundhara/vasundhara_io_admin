@@ -92,7 +92,19 @@ function FileImageVideo({ label, setImage, initialImage, name, onChange }) {
                                 </div>
                             )
                                 :
-                                (typeof selectedFile === "string" && selectedFile?.includes("images")) ? (
+                                (typeof selectedFile === "string" && selectedFile?.endsWith("mp4")) ? (
+                                    <>
+                                        {console.log('selectedFile: ', selectedFile)}
+                                        <div className="video-upload">
+                                            <video src={selectedFile} autoPlay loop className='w-100 h-100'>
+                                                {/* <source  /> */}
+                                                {/* Your browser does not support the video tag. */}
+                                            </video>
+
+                                        </div>
+                                    </>
+                                )
+                                    :
                                     <>
                                         <div className="image-upload">
                                             <img
@@ -101,25 +113,7 @@ function FileImageVideo({ label, setImage, initialImage, name, onChange }) {
                                                 className='object-fit-contain w-100 h-100'
                                             />
                                         </div>
-                                        {/* <button onClick={handleRemoveFile}>
-                                    <RiDeleteBinLine />
-                                </button> */}
                                     </>
-                                )
-                                    :
-                                    (typeof selectedFile === "string" && selectedFile?.includes("videos")) && (
-                                        <>
-                                            <div className="video-upload">
-                                                <video autoPlay loop className='w-100 h-100'>
-                                                    <source src={selectedFile} />
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            </div>
-                                            {/* <button onClick={handleRemoveFile}>
-                                    <RiDeleteBinLine />
-                                </button> */}
-                                        </>
-                                    )
                     ) :
                         <div className='drag-drop-icons d-flex justify-content-center align-items-center m-auto mb-3'>
                             <MdOutlineFileUpload />
