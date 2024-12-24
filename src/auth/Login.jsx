@@ -89,6 +89,7 @@ function Login() {
     useEffect(() => {
         document.title = "Vasundhara | Login";
     }, [window.location.pathname])
+    
     return (
         <>
             <section className='login font-family-poppins'>

@@ -486,11 +486,11 @@ function IndexPortfolioEdit() {
                                                 <div className='d-xl-flex align-items-start gap-3'>
                                                     <div className='d-md-flex align-items-start gap-3'>
                                                         <div>
-                                                            <FileInput required={true} label="Image" id="image" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} name='image' />
+                                                            <FileInput required={true} label="Thumbnail Image" id="image" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} name='image' />
                                                             <SingleError error={errors?.image} />
                                                         </div>
                                                         <div>
-                                                            <FileICon id="icon" label="Icon" setIcon={setIcon} initialIcon={icon !== null && `${icon}`} onChange={handleChange} name='icon' />
+                                                            <FileICon id="icon" label="Banner Image" setIcon={setIcon} initialIcon={icon !== null && `${icon}`} onChange={handleChange} name='icon' />
                                                         </div>
                                                         <div>
                                                             <FileVideo label="Video" setImage={setVideo} initialImage={video !== null && `${imageURL}${video}`} onChange={handleChange} name='video' id="video" />

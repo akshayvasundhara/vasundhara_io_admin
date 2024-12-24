@@ -95,7 +95,7 @@ function IndexPortfolio() {
                                             <thead>
                                                 <tr>
                                                     <th width="50px">No.</th>
-                                                    <th width="100px">Icon</th>
+                                                    <th width="100px">Image</th>
                                                     <th>Title</th>
                                                     <th>Category</th>
                                                     <th>Status</th>

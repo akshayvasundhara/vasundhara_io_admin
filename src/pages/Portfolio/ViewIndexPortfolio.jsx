@@ -81,7 +81,7 @@ function ViewIndexPortfolio() {
                                         }
                                         {state.icon &&
                                             <>
-                                                <label className='mb-2'>Icon:</label>
+                                                <label className='mb-2'>Banner Image:</label>
                                                 <div className='d-flex gap-3 flex-wrap'>
                                                     <div>
                                                         <div className='view-image-box mb-3'>
@@ -96,7 +96,7 @@ function ViewIndexPortfolio() {
                                             </>
                                         }
 
-                                        <label className='mb-2'>Banner:</label>
+                                        <label className='mb-2'>Thumbnail Image:</label>
                                         <div className='d-flex gap-3 flex-wrap'>
                                             <div>
                                                 <div className='view-image-box mb-3 d-flex justify-content-center align-items-center'>
