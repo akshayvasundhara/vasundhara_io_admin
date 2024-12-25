@@ -260,18 +260,18 @@ function IndexPortfolioEdit() {
                 if (updatedValues.reviews) {
                     formData.append('reviews', updatedValues.reviews);
                 }
-                if (updatedValues.website_link) {
-                    formData.append('website_link', updatedValues.website_link);
-                }
+                // if (updatedValues.website_link) {
+                formData.append('website_link', updatedValues.website_link || '');
+                // }
                 // Append play_store_link if not empty
-                if (updatedValues.play_store_link) {
-                    formData.append('play_store_link', updatedValues.play_store_link);
-                }
+                // if (updatedValues.play_store_link) {
+                formData.append('play_store_link', updatedValues.play_store_link || '');
+                // }
 
                 // Append app_store_link if not empty
-                if (updatedValues.app_store_link) {
-                    formData.append('app_store_link', updatedValues.app_store_link);
-                }
+                // if (updatedValues.app_store_link) {
+                formData.append('app_store_link', updatedValues.app_store_link || '');
+                // }
                 if (updatedValues.desc) {
                     formData.append('desc', updatedValues.desc);
                 }
@@ -398,6 +398,7 @@ function IndexPortfolioEdit() {
                                                 />
                                                 <SingleError error={errors?.desc} />
                                             </Col>
+                                            
                                             <Col md={12}>
                                                 <SelectInput required={true} id="category" label="Category" select={"Category"} options={teamOptions} name='category' value={states.category}  // Bind to the state
                                                     onChange={handleChange} />
