@@ -148,7 +148,7 @@ strong {
                                                 dangerouslySetInnerHTML={{ __html: finalContentBenefit }}
                                             /> */}
                                             <div className='border p-3 mt-2 mb-3 rounded-2 table_content'>
-                                                <span dangerouslySetInnerHTML={{ __html: state?.table_content || "" }} />
+                                                <span dangerouslySetInnerHTML={{ __html: state?.table_content || "-" }} />
                                             </div>
                                         </div>
                                         <div>
@@ -157,7 +157,7 @@ strong {
                                                 dangerouslySetInnerHTML={{ __html: finalContentBenefit }}
                                             /> */}
                                             <div className='border p-3 mt-2 mb-3 rounded-2'>
-                                                <span dangerouslySetInnerHTML={{ __html: state?.main_content || "" }} />\
+                                                <span dangerouslySetInnerHTML={{ __html: state?.main_content || "-" }} />
                                             </div>
                                         </div>
                                     </div>

@@ -79,6 +79,7 @@ function AddBlogList() {
                 title: state.title || "",
                 seo: state.seo || "",
                 content: state.content || "",
+                table_content: state.table_content || "",
                 main_content: state.main_content || "",
                 status: state.status || 0,
                 isFeatured: state.isFeatured || 0,
@@ -329,7 +330,6 @@ function AddBlogList() {
         }
     };
 
-
     return (
         <>
             {mainLoader && (
@@ -478,18 +478,18 @@ function AddBlogList() {
                                                     Table of Content
                                                 </label>
 
-                                                {/* <MyEditor
+                                                <MyEditor
                                                     htmlData={table_content}
                                                     onChangeHtmlData={handleChangeTableHtmlData}
-                                                /> */}
-                                                <SummerEditor htmlContent={table_content} setHtmlContent={handleChangeTableHtmlData} id="table_content" />
+                                                />
+                                                {/* <SummerEditor htmlContent={table_content} setHtmlContent={handleChangeTableHtmlData} id="table_content" /> */}
                                             </Col>
                                             <Col md={12}>
                                                 <label htmlFor="main_content" className="form-label text-default">
                                                     Main Content
                                                     <span className="star">*</span>
                                                 </label>
-                                                <SummerEditor htmlContent={main_content} setHtmlContent={handleChangeHtmlData} id="main_content" />
+                                                <SummerEditor htmlContent={main_content} setHtmlContent={handleChangeHtmlData} />
                                                 {/* <MyEditor
                                                     htmlData={main_content}
                                                     onChangeHtmlData={handleChangeHtmlData}
