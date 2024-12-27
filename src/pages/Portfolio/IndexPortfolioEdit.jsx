@@ -250,16 +250,16 @@ function IndexPortfolioEdit() {
                 // Append top-level fields
                 formData.append('title', updatedValues.title);
                 formData.append('category', updatedValues.category ? updatedValues.category : teamOptions[0].value);
-                if (updatedValues.rating) {
-                    formData.append('rating', updatedValues.rating);
-                }
-                if (updatedValues.downloads) {
+                // if (updatedValues.rating) {
+                formData.append('rating', updatedValues.rating || "");
+                // }
+                // if (updatedValues.downloads) {
 
-                    formData.append('downloads', updatedValues.downloads);
-                }
-                if (updatedValues.reviews) {
-                    formData.append('reviews', updatedValues.reviews);
-                }
+                formData.append('downloads', updatedValues.downloads || "");
+                // }
+                // if (updatedValues.reviews) {
+                formData.append('reviews', updatedValues.reviews || "");
+                // }
                 // if (updatedValues.website_link) {
                 formData.append('website_link', updatedValues.website_link || '');
                 // }
@@ -398,7 +398,7 @@ function IndexPortfolioEdit() {
                                                 />
                                                 <SingleError error={errors?.desc} />
                                             </Col>
-                                            
+
                                             <Col md={12}>
                                                 <SelectInput required={true} id="category" label="Category" select={"Category"} options={teamOptions} name='category' value={states.category}  // Bind to the state
                                                     onChange={handleChange} />
