@@ -43,7 +43,6 @@ function AddBlogList() {
     const imageURL = getImageURL();
     const navigate = useNavigate();
     const state = location.state || {};
-
     const [team, setTeam] = useState([]);
     const [category, setCategory] = useState([]);
     const [main_content, setMainContent] = useState("");
@@ -65,6 +64,7 @@ function AddBlogList() {
     const [states, setStates] = useState({ faqs: [{ question: '', answer: '' }], status: 0, isTrending: 0, isFeatured: 0 });
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
+    
 
     useEffect(() => {
         getMember();
@@ -157,7 +157,7 @@ function AddBlogList() {
 
     const closeBlog = async (e) => {
         setStates({});
-        navigate('/blogs-list');
+        navigate('/blogs-list', { state: { page: state?.page } });
     }
 
     const handleChange = async (e) => {
@@ -228,7 +228,7 @@ function AddBlogList() {
                 }
                 if (response?.data.success === true) {
                     toast.info(response?.data.message);
-                    navigate('/blogs-list');
+                    navigate('/blogs-list', { state: { page: state?.page } });
                 } else if (response?.data?.success === false) {
                     if (typeof response?.data?.message === "string")
                         toast.error(response?.data?.message);

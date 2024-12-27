@@ -18,8 +18,7 @@ const SummerEditor = ({ htmlContent, setHtmlContent }) => {
                     tabsize: 2,
                     callbacks: {
                         onChange: function (contents, $editable) {
-                            console.log("contents", contents);
-                            setHtmlContent(contents); // Update content on change
+                            setHtmlContent(contents);
                         }
                     }
                 });

@@ -94,7 +94,6 @@ function FileImageVideo({ label, setImage, initialImage, name, onChange }) {
                                 :
                                 (typeof selectedFile === "string" && selectedFile?.endsWith("mp4")) ? (
                                     <>
-                                        {console.log('selectedFile: ', selectedFile)}
                                         <div className="video-upload">
                                             <video src={selectedFile} autoPlay loop className='w-100 h-100'>
                                                 {/* <source  /> */}

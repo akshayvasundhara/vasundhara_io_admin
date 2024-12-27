@@ -16,6 +16,8 @@ import { getImageURL, getServerURL } from '../../helper/envConfig';
 import { toast } from 'react-toastify';
 import LoaderComman from '../../components/comman/LoaderComman';
 import NoDataAvailable from '../../components/comman/NoDataAvailable';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { IframeView } from 'ckeditor5';
 
 function BlogsListIndex() {
 
@@ -29,6 +31,8 @@ function BlogsListIndex() {
     const [limit, setLimit] = useState(10);
     const [mainLoader, setMainLoader] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate()
 
     const categoryOptions = [
         { value: '', label: 'All' },
@@ -41,6 +45,24 @@ function BlogsListIndex() {
     useEffect(() => {
         getCategories();
     }, [])
+
+    useEffect(() => {
+        if (location?.state?.page) {
+            setPage(location?.state?.page || 1);
+        }
+    }, [location?.state?.page])
+
+    useEffect(() => {
+        if (location?.state?.page) {
+            setPage(location?.state?.page || 1);
+
+            const timeout = setTimeout(() => {
+                navigate(location.pathname, { replace: true, state: null });
+            }, 30000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [location?.state?.page]);
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -192,7 +214,7 @@ function BlogsListIndex() {
                                                                 <td width={100}>
                                                                     <div className='d-flex align-items-center gap-2'>
                                                                         <ViewButton to='/blogs-details' state={test} />
-                                                                        <EditButton to='/blogs-list-edit' state={test} />
+                                                                        <EditButton to='/blogs-list-edit' state={{ ...test, page: page }} />
                                                                         <DeleteButton id={test._id}
                                                                             endpoint={`${serverURL}/blog`}
                                                                             onSuccess={onSuccessData}
@@ -217,6 +239,9 @@ function BlogsListIndex() {
                                             totalPages={paginationData}
                                             onPageChange={(newPage) => {
                                                 setPage(newPage);
+                                                if (location.state?.page) {
+                                                    navigate(location.pathname, { replace: true, state: null });
+                                                }
                                             }}
                                         />
                                     )}
