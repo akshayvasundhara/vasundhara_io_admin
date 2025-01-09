@@ -8,6 +8,12 @@ export const PortFolioValidate = (values) => {
         errors.title = "Title must be between 3 and 100 characters.";
     }
 
+    if (!values?.slug?.trim()) {
+        errors.slug = "Unique route is required";
+    } else if (/[^a-zA-Z0-9-]/.test(values?.slug)) {
+        errors.slug = "Only alphanumeric characters and dashes are allowed.";
+    }
+
     // Validate Description field
     if (values?.desc && values.desc.trim()) {
         if (values.desc.length < 3 || values.desc.length > 1000) {

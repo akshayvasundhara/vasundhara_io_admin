@@ -48,6 +48,10 @@ function ViewCaseStudiesIndex() {
                                             <p>{state.title}</p>
                                         </div>
                                         <div>
+                                            <label>Unique  Route:</label>
+                                            <p>{state.slug}</p>
+                                        </div>
+                                        <div>
                                             <label>Subtitle:</label>
                                             <p>{state?.sub_title}</p>
                                         </div>
@@ -62,6 +66,10 @@ function ViewCaseStudiesIndex() {
                                         <div>
                                             <label>Description:</label>
                                             <p>{state?.desc}</p>
+                                        </div>
+                                        <div>
+                                            <label>Head Tags By SEO:</label>
+                                            <p>{state?.seo || "-"}</p>
                                         </div>
                                         <div>
                                             <label>Tags:</label>

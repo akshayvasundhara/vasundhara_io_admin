@@ -30,6 +30,7 @@ import { type } from '@testing-library/user-event/dist/type';
 
 const requireField = [
     "title",
+    "slug",
     "desc",
     "category",
     "image",
@@ -81,6 +82,7 @@ function IndexPortfolioEdit() {
         if (state && Object.keys(state).length > 0) {
             setStates({
                 title: state?.title,
+                slug: state?.slug,
                 category: state?.category?._id,
                 status: state?.status,
                 play_store_link: state?.play_store_link,
@@ -93,7 +95,8 @@ function IndexPortfolioEdit() {
                 downloads: state?.downloads,
                 image: state?.image || null,
                 video: state?.video || null,
-                icon: state?.icon || null
+                icon: state?.icon || null,
+                seo: state?.seo || ""
             });
             if (state?.image) {
                 setImage(state?.image);
@@ -249,6 +252,7 @@ function IndexPortfolioEdit() {
                 const formData = new FormData();
                 // Append top-level fields
                 formData.append('title', updatedValues.title);
+                formData.append('slug', updatedValues.slug?.toLowerCase());
                 formData.append('category', updatedValues.category ? updatedValues.category : teamOptions[0].value);
                 // if (updatedValues.rating) {
                 formData.append('rating', updatedValues.rating || "");
@@ -272,6 +276,7 @@ function IndexPortfolioEdit() {
                 // if (updatedValues.app_store_link) {
                 formData.append('app_store_link', updatedValues.app_store_link || '');
                 // }
+                formData.append("seo", updatedValues?.seo || '');
                 if (updatedValues.desc) {
                     formData.append('desc', updatedValues.desc);
                 }
@@ -393,6 +398,20 @@ function IndexPortfolioEdit() {
                                                 <SingleError error={errors?.title} />
                                             </Col>
                                             <Col md={12}>
+                                                <LableInput
+                                                    required={true}
+                                                    label="Unique Route"
+                                                    className="form-control"
+                                                    id="slug"
+                                                    placeholder="Enter unique"
+                                                    type="text"
+                                                    name='slug'
+                                                    value={states?.slug || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.slug} />
+                                            </Col>
+                                            <Col md={12}>
                                                 <Textarea label="Description" id={"desc"} required={true} rows="4" type="text" name="desc" value={states.desc || ""}
                                                     onChange={handleChange} placeholder="Enter description"
                                                 />
@@ -499,6 +518,10 @@ function IndexPortfolioEdit() {
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </Col>
+                                            <Col md={12}>
+                                                <Textarea id={"seo"} label="Head Tags By SEO" rows="9" type="text" name="seo" value={states?.seo} onChange={handleChange} />
+                                                <SingleError error={errors?.seo} />
                                             </Col>
                                             <Col md={12}>
                                                 <hr />

@@ -29,6 +29,7 @@ import FileInputComman from '../../components/comman/FileInputComman';
 
 const requireField = [
     "title",
+    "slug",
     "sub_title",
     "desc",
     "tags",
@@ -56,12 +57,14 @@ function AddCaseStudiesIndex() {
     const [status, setStatus] = useState(state.status !== undefined ? state.status : 1);
     const [states, setStates] = useState({
         title: '',
+        slug: '',
         sub_title: '',
         // author: '',
         status: '',
         play_store_link: '',
         app_store_link: '',
         desc: '',
+        seo: '',
         tags: [''],
         // industry: [{ title: '', desc: '', image: null }],
         // features: [{ title: '', desc: '', image: null }],
@@ -94,12 +97,14 @@ function AddCaseStudiesIndex() {
         if (state && Object.keys(state)?.length > 0) {
             setStates({
                 title: state?.title,
+                slug: state?.slug,
                 sub_title: state?.sub_title,
                 // author: state.author._id,
                 status: state?.status,
                 play_store_link: state?.play_store_link,
                 app_store_link: state?.app_store_link,
                 desc: state?.desc,
+                seo: state?.seo || "",
                 tags: state?.tags || [''],
                 // industry: state.industry || [''],
                 // features: state.features || [''],
@@ -527,6 +532,7 @@ function AddCaseStudiesIndex() {
 
         let validationErrors = BlogValidates(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
+        console.log('validationErrors: ', validationErrors);
 
         if (image) {
             delete errors.image;
@@ -609,6 +615,7 @@ function AddCaseStudiesIndex() {
             try {
                 const formData = new FormData();
                 formData.append('title', updatedValues.title);
+                formData.append('slug', updatedValues.slug?.toLowerCase());
                 formData.append('sub_title', updatedValues.sub_title);
                 formData.append('author', updatedValues.author ? updatedValues.author : teamOptions[0].value);
                 if (updatedValues.play_store_link) {
@@ -623,6 +630,7 @@ function AddCaseStudiesIndex() {
                 formData.append('status', status);
                 formData.append('image', image);
                 formData.append('video', video);
+                formData.append("seo", updatedValues.seo || "");
                 if (Array.isArray(updatedValues.tags) && updatedValues.tags.length > 0) {
                     updatedValues.tags.forEach((tag, index) => {
                         if (tag && tag.trim().length > 0) {
@@ -889,6 +897,20 @@ function AddCaseStudiesIndex() {
                                             <Col md={12}>
                                                 <LableInput
                                                     required={true}
+                                                    label="Unique Route"
+                                                    className="form-control"
+                                                    id="slug"
+                                                    placeholder="Enter unique"
+                                                    type="text"
+                                                    name='slug'
+                                                    value={states?.slug || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.slug} />
+                                            </Col>
+                                            <Col md={12}>
+                                                <LableInput
+                                                    required={true}
                                                     label="Subtitle"
                                                     className="form-control"
                                                     id="sub_title"
@@ -938,6 +960,10 @@ function AddCaseStudiesIndex() {
                                                 <SingleError error={errors?.desc} />
                                             </Col>
 
+                                            <Col md={12}>
+                                                <Textarea id={"seo"} label="Head Tags By SEO" rows="9" type="text" name="seo" value={states.seo} onChange={handleChange} />
+                                                <SingleError error={errors?.seo} />
+                                            </Col>
                                             <Col md={12}>
                                                 <div className='d-xl-flex align-items-start gap-3'>
                                                     <div className='d-md-flex align-items-start gap-3'>

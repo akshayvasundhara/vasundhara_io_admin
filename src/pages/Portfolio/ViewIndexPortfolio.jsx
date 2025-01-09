@@ -48,10 +48,13 @@ function ViewIndexPortfolio() {
                             <Card>
                                 <Card.Body className='details-box'>
                                     <div>
-
                                         <div>
                                             <label>Title:</label>
                                             <p>{state.title}</p>
+                                        </div>
+                                        <div>
+                                            <label>Unique route:</label>
+                                            <p>{state.slug}</p>
                                         </div>
                                         <div>
                                             <label>Description:</label>
@@ -79,6 +82,12 @@ function ViewIndexPortfolio() {
                                                 <p>{state.website_link}</p>
                                             </div>
                                         }
+                                        {state?.seo &&
+                                            <div>
+                                                <label>Head Tags By SEO:</label>
+                                                <p>{state.seo}</p>
+                                            </div>
+                                            }
                                         {state.icon &&
                                             <>
                                                 <label className='mb-2'>Banner Image:</label>
