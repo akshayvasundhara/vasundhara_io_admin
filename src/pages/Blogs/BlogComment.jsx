@@ -2,35 +2,37 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../layout/Layout'
 import { Row, Col, Card, Table } from 'react-bootstrap';
-import DeleteButton from '../../components/comman/DeleteButton';
-import CommanPagination from '../../components/comman/CommanPagination';
-import { getImageURL, getServerURL } from '../../helper/envConfig';
-import api from '../../API/api';
-import LoaderComman from '../../components/comman/LoaderComman';
-import Switch from '../../components/comman/Switch';
-import ViewButton from '../../components/comman/ViewButton';
-import EditButton from '../../components/comman/EditButton';
 import LinkButton from '../../components/comman/LinkButton';
-import { toast } from 'react-toastify';
-import NoDataAvailable from '../../components/comman/NoDataAvailable';
-import { RiSearch2Line } from 'react-icons/ri';
+import DeleteButton from '../../components/comman/DeleteButton';
+import ViewButton from '../../components/comman/ViewButton';
+import CommanPagination from '../../components/comman/CommanPagination';
+import EditButton from '../../components/comman/EditButton';
+import Switch from '../../components/comman/Switch';
 import SelectInput from '../../components/comman/SelectInput';
 import LableInput from '../../components/comman/LableInput';
+import { RiSearch2Line } from 'react-icons/ri';
+import api from '../../API/api';
+import { getImageURL, getServerURL } from '../../helper/envConfig';
+import { toast } from 'react-toastify';
+import LoaderComman from '../../components/comman/LoaderComman';
+import NoDataAvailable from '../../components/comman/NoDataAvailable';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { IframeView } from 'ckeditor5';
 
-
-function IndexPortfolio() {
+function BlogComments() {
 
     const serverURL = getServerURL();
+    const [category, setCategory] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const imageURL = getImageURL();
-    const [portFolio, setPortFolio] = useState([]);
+    const [blog, setBlog] = useState([]);
     const [paginationData, setPaginationData] = useState({});
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const [mainLoader, setMainLoader] = useState(true);
-    const [category, setCategory] = useState([]);
+    const [mainLoader, setMainLoader] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState(null);
-
+    const location = useLocation();
+    const navigate = useNavigate()
 
     const categoryOptions = [
         { value: '', label: 'All' },
@@ -41,41 +43,45 @@ function IndexPortfolio() {
     ];
 
     useEffect(() => {
-        getCategories();
+        getBlogCommentsList();
     }, [])
 
-
-    const getCategories = async () => {
-        try {
-            const response = await api.getWithToken(`${serverURL}/blog-category?status=1&type=portfolio`)
-            console.log('response.data.data.data : ', response.data.data.data);
-            if (response.data.success === true) {
-                setCategory(response.data.data.data || []);
-            } else {
-                setCategory([]);
-            }
-
-        } catch (error) {
-            console.log(error);
-
-            console.error("Error fetching products:", error.response ? error.response.data : error.message);
+    useEffect(() => {
+        if (location?.state?.page) {
+            setPage(location?.state?.page || 1);
         }
-    }
+    }, [location?.state?.page])
 
-    // Get PortFolio
-    const getPortFolio = async () => {
+    useEffect(() => {
+        if (location?.state?.page) {
+            setPage(location?.state?.page || 1);
+
+            const timeout = setTimeout(() => {
+                navigate(location.pathname, { replace: true, state: null });
+            }, 30000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [location?.state?.page]);
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            getBlogCommentsList();
+        }, 500);
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery, selectedCategory, page]);
+
+    const getBlogCommentsList = async () => {
         setMainLoader(true);
         try {
-
-            const response = await api.getWithToken(`${serverURL}/portfolio?perPage=${limit}&page=${page}${selectedCategory ? `&category=${selectedCategory}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`)
+            const response = await api.getWithToken(`${serverURL}/blog/comment?perPage=${limit}&page=${page}${selectedCategory ? `&category=${selectedCategory}` : ''}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
             if (response.data.success === true) {
-                setPortFolio(response.data.data || []);
+                setBlog(response.data.data || []);
                 setPaginationData(response?.data?.data.paginationValue);
                 setPage(response?.data?.data.page);
             } else {
-                setPortFolio([]);
+                setBlog([]);
             }
-
         } catch (error) {
             console.error("Error fetching products:", error.response ? error.response.data : error.message);
         } finally {
@@ -83,43 +89,38 @@ function IndexPortfolio() {
         }
     }
 
-    useEffect(() => {
-        getPortFolio();
-    }, [page, selectedCategory, searchQuery])
-
-    // Delete function
     const onSuccessData = () => {
-        if (portFolio.data.length === 1 && page > 1) {
+        if (blog.data.length === 1 && page > 1) {
             setPage(page - 1);
         } else {
-            getPortFolio(limit, page);
+            // getBlogs(limit, page);
         }
     }
 
-    const handleCategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
-        setPage(1);
-    };
-
-    // Update status
     const updateStatus = async (itemId, newStatus) => {
         try {
-            const response = await api.patchWithToken(`${serverURL}/portFolio/${itemId}`, { status: newStatus });
+            const response = await api.patchWithToken(`${serverURL}/blog/${itemId}`, { status: newStatus });
             if (response.data.success) {
                 toast.info("Status updated successfully.");
-                getPortFolio(); // Refresh hiring data after updating
+                // getBlogs();
             } else {
-                console.error("Failed to update status:", response.data.message);
+                toast.error("Failed to update status:", response.data.message);
             }
         } catch (error) {
             console.error("Error updating status:", error.response ? error.response.data : error.message);
         }
     };
 
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
+        setPage(1);
+    };
+
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
         setPage(1);
     };
+
     return (
         <>
             {mainLoader && (
@@ -127,8 +128,7 @@ function IndexPortfolio() {
             )}
             <Layout>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <h2 className='page-title'>Portfolio</h2>
-                    <LinkButton text="Add" to='/portfolio-add' className='secondary-button text-decoration-none px-4' />
+                    <h2 className='page-title'>Blog comment</h2>
                 </div>
                 <div className='font-family-poppins mt-3'>
                     <Row xs={12} className="table-card">
@@ -136,11 +136,6 @@ function IndexPortfolio() {
                             <Card>
                                 <Card.Body>
                                     <Row className='g-4 mb-4'>
-                                        <Col md={6}>
-                                            <SelectInput label="" options={categoryOptions} value={selectedCategory}
-                                                select="category"
-                                                onChange={handleCategoryChange} />
-                                        </Col>
                                         <Col md={6}>
                                             <div className="position-relative">
                                                 <LableInput
@@ -153,48 +148,40 @@ function IndexPortfolio() {
                                                 />
                                                 <span
                                                     className="position-absolute end-0 top-70 translate-middle-y cursor-pointer search-icon"
-                                                    onClick={() => getPortFolio()}
+                                                // onClick={() => getBlogs()}
                                                 >
                                                     <RiSearch2Line />
                                                 </span>
                                             </div>
                                         </Col>
                                     </Row>
-                                    <div className='overflow-auto'>
+                                    <div className='overflow-x-auto'>
                                         <Table>
                                             <thead>
                                                 <tr>
                                                     <th width="50px">No.</th>
-                                                    <th width="100px">Image</th>
-                                                    <th>Title</th>
-                                                    <th>Category</th>
-                                                    <th>Status</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Comments</th>
                                                     <th width='100'>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {portFolio?.data?.length > 0 ? (
-                                                    portFolio.data.map((test, index) => {
+                                                {blog?.length > 0 ? (
+                                                    blog?.map((test, index) => {
                                                         return (
                                                             <tr key={index}>
                                                                 <td>{(page - 1) * limit + index + 1}.</td>
-                                                                <td>
-                                                                    <div className='table-image'>
-                                                                        <img src={`${imageURL}${test.image}`} alt="" className='w-100 h-100' />
-                                                                    </div>
-                                                                </td>
-                                                                <td><p>{test.title}</p></td>
-                                                                <td><p>{test?.category?.name || ''}</p></td>
-                                                                <td>
-                                                                    <Switch mode={test.status} index={index} itemId={test._id} onToggle={updateStatus} />
-                                                                </td>
+
+                                                                <td><p>
+                                                                    {test.name}
+                                                                </p></td>
+                                                                <td><p>{test.email}</p></td>
+                                                                <td><p>{test.comment || ''}</p></td>
+
                                                                 <td width={100}>
                                                                     <div className='d-flex align-items-center gap-2'>
-                                                                        <ViewButton to='/portfolio-view' state={test} />
-                                                                        <EditButton to='/portfolio-edit' state={test} />
-                                                                        <DeleteButton id={test._id}
-                                                                            endpoint={`${serverURL}/portfolio`}
-                                                                            onSuccess={onSuccessData} />
+                                                                        <ViewButton to='/blogs-details' state={test} />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -202,7 +189,7 @@ function IndexPortfolio() {
                                                     })
                                                 ) : (
                                                     <tr>
-                                                        <td colSpan="10"><NoDataAvailable /></td>
+                                                        <td colSpan={7}><NoDataAvailable /></td>
                                                     </tr>
                                                 )}
 
@@ -215,13 +202,15 @@ function IndexPortfolio() {
                                             totalPages={paginationData}
                                             onPageChange={(newPage) => {
                                                 setPage(newPage);
+                                                if (location.state?.page) {
+                                                    navigate(location.pathname, { replace: true, state: null });
+                                                }
                                             }}
                                         />
                                     )}
                                 </Card.Body>
                             </Card>
                         </Col>
-
                     </Row>
                 </div>
             </Layout >
@@ -229,5 +218,4 @@ function IndexPortfolio() {
     )
 }
 
-export default IndexPortfolio
-
+export default BlogComments

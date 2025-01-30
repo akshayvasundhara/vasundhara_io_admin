@@ -34,6 +34,7 @@ import ViewCaseStudiesIndex from '../pages/CaseStudies/ViewCaseStudiesIndex';
 import IndexPortfolio from '../pages/Portfolio/IndexPortfolio';
 import IndexPortfolioEdit from '../pages/Portfolio/IndexPortfolioEdit';
 import ViewIndexPortfolio from '../pages/Portfolio/ViewIndexPortfolio';
+import BlogComments from '../pages/Blogs/BlogComment';
 
 export default [
     {
@@ -251,6 +252,14 @@ export default [
         element: (
             <PrivateRoute>
                 <BlogIndexView />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/blog-comments",
+        element: (
+            <PrivateRoute>
+                <BlogComments />
             </PrivateRoute>
         ),
     },

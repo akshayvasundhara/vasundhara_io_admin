@@ -24,6 +24,7 @@ import { PiPlusBold } from 'react-icons/pi';
 const requireField = [
     "job_name",
     "experience",
+    "slug",
     "qualification",
     "status",
     "image",
@@ -127,6 +128,7 @@ function AddHirings() {
                 const formData = new FormData(); // Create FormData for file upload
                 formData.append('job_name', updatedValues.job_name);
                 formData.append('experience', updatedValues.experience);
+                formData.append('slug', updatedValues.slug?.toLowerCase());
                 formData.append('qualification', updatedValues.qualification);
                 formData.append('job_time', updatedValues.job_time);
                 formData.append('no_of_openings', updatedValues.no_of_openings);
@@ -180,6 +182,7 @@ function AddHirings() {
             setStates({
                 job_name: state.job_name,
                 experience: state.experience,
+                slug: state.slug,
                 qualification: state.qualification,
                 status: state.status,
                 no_of_openings: state.no_of_openings,
@@ -247,6 +250,20 @@ function AddHirings() {
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.experience} />
+                                            </Col>
+                                            <Col md={12}>
+                                                <LableInput
+                                                    required={true}
+                                                    label="Unique Route"
+                                                    className="form-control"
+                                                    id="slug"
+                                                    placeholder="Enter unique"
+                                                    type="text"
+                                                    name='slug'
+                                                    value={states?.slug || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.slug} />
                                             </Col>
                                             <Col md={12} lg={6}>
                                                 <LableInput

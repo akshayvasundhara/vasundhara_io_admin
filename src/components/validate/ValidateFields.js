@@ -19,6 +19,12 @@ export const ValidateFields = (values) => {
     errors.title = "Title must be between 3 and 255 characters.";
   }
 
+  if (!values?.slug?.trim()) {
+    errors.slug = "Unique route is required";
+  } else if (/[^a-zA-Z0-9-]/.test(values?.slug)) {
+    errors.slug = "Only alphanumeric characters and dashes are allowed.";
+  }
+
   // Validate Designation
   if (!values?.designation) {
     errors.designation = "Designation field is required.";

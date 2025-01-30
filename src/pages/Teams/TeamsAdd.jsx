@@ -23,6 +23,7 @@ import FileInputComman from '../../components/comman/FileInputComman';
 
 const requireField = [
     "name",
+    "slug",
     "designation",
     "description",
     "image"
@@ -144,6 +145,7 @@ function TeamsAdd() {
             try {
                 const formData = new FormData(); // Create FormData for file upload
                 formData.append('name', updatedValues.name);
+                formData.append('slug', updatedValues.slug?.toLowerCase());
                 formData.append('designation', updatedValues.designation);
                 // formData.append('description', updatedValues.description);
                 formData.append('image', image);
@@ -153,6 +155,7 @@ function TeamsAdd() {
                 formData.append('linkedin_link', updatedValues.linkedin_link || "");
                 formData.append('twitter_link', updatedValues.twitter_link || "");
                 formData.append('facebook_link', updatedValues.facebook_link || "");
+                formData.append("seo", updatedValues?.seo || '');
 
                 if (Array.isArray(updatedValues.description) && updatedValues.description.length > 0) {
                     updatedValues.description.forEach((desc, index) => {
@@ -208,6 +211,7 @@ function TeamsAdd() {
         if (state && Object.keys(state).length > 0) {
             setStates({
                 name: state.name,
+                slug: state?.slug,
                 designation: state.designation,
                 description: state.description || [''],
                 status: state.status,
@@ -218,7 +222,8 @@ function TeamsAdd() {
                 email: state.email,
                 mobile_no: state.mobile_no,
                 expertise: state?.expertise?.length ? state?.expertise : [{ image: null, title: '' }],
-                image: state?.image || null
+                image: state?.image || null,
+                seo: state?.seo || ""
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -316,6 +321,20 @@ function TeamsAdd() {
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.name} />
+                                            </Col>
+                                            <Col md={12}>
+                                                <LableInput
+                                                    required={true}
+                                                    label="Unique Route"
+                                                    className="form-control"
+                                                    id="slug"
+                                                    placeholder="Enter unique"
+                                                    type="text"
+                                                    name='slug'
+                                                    value={states?.slug || ""}
+                                                    onChange={handleChange}
+                                                />
+                                                <SingleError error={errors?.slug} />
                                             </Col>
                                             <Col md={12} lg={6}>
                                                 <LableInput
@@ -428,6 +447,11 @@ function TeamsAdd() {
                                                 <SingleError error={errors?.other_link} />
                                             </Col> */}
                                         </Row>
+
+                                        <Col md={12}>
+                                            <Textarea id={"seo"} label="Head Tags By SEO" rows="9" type="text" name="seo" value={states?.seo} onChange={handleChange} />
+                                            <SingleError error={errors?.seo} />
+                                        </Col>
 
                                         <Row className='mt-2'>
                                             <Col md={12}>
