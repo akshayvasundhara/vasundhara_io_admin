@@ -20,6 +20,7 @@ import api from '../../API/api';
 import { toast } from 'react-toastify';
 import { errorResponse } from '../../helper/error';
 import { PiPlusBold } from 'react-icons/pi';
+import Textarea from '../../components/comman/Textarea';
 
 const requireField = [
     "job_name",
@@ -51,6 +52,8 @@ function AddHirings() {
         experience: '',
         qualification: '',
         status: '',
+        seo: '',
+        slug: '',
         no_of_openings: '',
         job_time: 'full time',
         responsibilities: [''],
@@ -134,6 +137,7 @@ function AddHirings() {
                 formData.append('no_of_openings', updatedValues.no_of_openings);
                 formData.append('status', status);
                 formData.append('image', image);
+                formData.append('seo', updatedValues.seo || "");
 
                 // Pass arrays with indices
                 updatedValues.location.forEach((loc, index) => {
@@ -183,6 +187,7 @@ function AddHirings() {
                 job_name: state.job_name,
                 experience: state.experience,
                 slug: state.slug,
+                seo: state.seo,
                 qualification: state.qualification,
                 status: state.status,
                 no_of_openings: state.no_of_openings,
@@ -257,7 +262,7 @@ function AddHirings() {
                                                     label="Unique Route"
                                                     className="form-control"
                                                     id="slug"
-                                                    placeholder="Enter unique"
+                                                    placeholder="Enter unique route"
                                                     type="text"
                                                     name='slug'
                                                     value={states?.slug || ""}
@@ -346,6 +351,11 @@ function AddHirings() {
                                                 />
                                                 <SingleError error={errors?.skill} />
                                             </Col>
+
+                                            <Col md={12}>
+                                                <Textarea id={"seo"} label="Head Tags By SEO" rows="9" type="text" name="seo" value={states?.seo} onChange={handleChange} />
+                                            </Col>
+
                                             <Col md={12} lg={6}>
                                                 <FileInput label="Image:" setImage={setImage} initialImage={image} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />

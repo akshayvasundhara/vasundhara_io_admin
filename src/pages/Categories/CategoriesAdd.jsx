@@ -79,7 +79,7 @@ function CategoriesAdd() {
                 if (state._id) {
                     response = await api.patchWithToken(`${serverURL}/blog-category/${state._id}`, { name: updatedValues.name, status: status });
                 } else {
-                    response = await api.postWithToken(`${serverURL}/blog-category`, { name: states.name, status: states.status });
+                    response = await api.postWithToken(`${serverURL}/blog-category`, { name: states.name, status: status });
                 }
                 if (response?.data.success === true) {
                     toast.info(response?.data.message);

@@ -57,6 +57,7 @@ strong {
     const finalContentBenefit = htmlTemplate.replace('%CONTENT%', state.main_content || '');
 
     const names = [
+        { label: 'Unique route:', value: state.tag || '' },
         { label: 'Title:', value: state.title || '' },
         { label: 'Category:', value: state.category?.name || '' },
         { label: 'Date:', value: state.date ? new Date(state.date).toISOString().split("T")[0] : "" },

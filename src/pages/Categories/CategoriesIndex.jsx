@@ -51,7 +51,7 @@ function CategoriesIndex() {
     // Update status
     const updateStatus = async (itemId, newStatus) => {
         try {
-            const response = await api.patchWithToken(`${serverURL}/testimonial/${itemId}`, { status: newStatus });
+            const response = await api.patchWithToken(`${serverURL}/blog-category/${itemId}`, { status: newStatus });
             if (response.data.success) {
                 toast.info("Status updated successfully.");
                 getCategories(); // Refresh hiring data after updating
