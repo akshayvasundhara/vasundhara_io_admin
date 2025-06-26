@@ -1,9 +1,18 @@
 /* global $ */  // Declare `$` as a global variable
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 
-const SummerEditor = ({ htmlContent, setHtmlContent }) => {
+const SummerEditor = forwardRef(({ htmlContent, setHtmlContent }, ref) => {
     const summernoteRef = useRef(null);
     const scriptLoaded = useRef(false);
+
+    useImperativeHandle(ref, () => ({
+        getCurrentContent: () => {
+            if (summernoteRef.current) {
+                return $(summernoteRef.current).summernote('code');
+            }
+            return '';
+        }
+    }));
 
     useEffect(() => {
         if (!scriptLoaded.current) {
@@ -20,6 +29,14 @@ const SummerEditor = ({ htmlContent, setHtmlContent }) => {
                         onChange: function (contents, $editable) {
                             setHtmlContent(contents);
                         }
+                    }
+                });
+
+                // Listen for codeview toggling
+                $(summernoteRef.current).on('summernote.codeview.toggled', function () {
+                    if (!$(summernoteRef.current).summernote('codeview.isActivated')) {
+                        const contents = $(summernoteRef.current).summernote('code');
+                        setHtmlContent(contents);
                     }
                 });
             };
@@ -41,6 +58,6 @@ const SummerEditor = ({ htmlContent, setHtmlContent }) => {
     return (
         <div ref={summernoteRef}></div>
     );
-};
+});
 
 export default SummerEditor;

@@ -1,5 +1,4 @@
-
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useRef, useImperativeHandle, forwardRef } from 'react'
 import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
 import LinkButton from '../../components/comman/LinkButton';
@@ -64,6 +63,7 @@ function AddBlogList() {
     const [states, setStates] = useState({ faqs: [{ question: '', answer: '' }], status: 0, isTrending: 0, isFeatured: 0 });
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
+    const summerEditorRef = useRef();
     
 
     useEffect(() => {
@@ -179,8 +179,17 @@ function AddBlogList() {
 
     const addBlog = async (e) => {
         e.preventDefault();
+
+        let latestContent = main_content;
+        if (summerEditorRef.current) {
+            latestContent = summerEditorRef.current.getCurrentContent();
+            setMainContent(latestContent);
+            setStates((prev) => ({ ...prev, main_content: latestContent }));
+        }
+
         setSubmitCount(prevCount => prevCount + 1);
-        const updatedValues = { ...states };
+
+        const updatedValues = { ...states, main_content: latestContent };
 
         let validationErrors = ValidateFields(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
@@ -198,7 +207,7 @@ function AddBlogList() {
 
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const formData = new FormData(); // Create FormData for file upload
+                const formData = new FormData();
                 formData.append('title', updatedValues.title);
                 formData.append('seo', updatedValues.seo ? updatedValues.seo : "");
                 formData.append('content', updatedValues.content || "");
@@ -489,7 +498,11 @@ function AddBlogList() {
                                                     Main Content
                                                     <span className="star">*</span>
                                                 </label>
-                                                <SummerEditor htmlContent={main_content} setHtmlContent={handleChangeHtmlData} />
+                                                <SummerEditor
+                                                    ref={summerEditorRef}
+                                                    htmlContent={main_content}
+                                                    setHtmlContent={handleChangeHtmlData}
+                                                />
                                                 {/* <MyEditor
                                                     htmlData={main_content}
                                                     onChangeHtmlData={handleChangeHtmlData}

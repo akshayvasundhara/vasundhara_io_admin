@@ -532,7 +532,6 @@ function AddCaseStudiesIndex() {
 
         let validationErrors = BlogValidates(updatedValues);
         validationErrors = ErrorFilter(validationErrors, requireField);
-        console.log('validationErrors: ', validationErrors);
 
         if (image) {
             delete errors.image;

@@ -48,7 +48,6 @@ function IndexPortfolio() {
     const getCategories = async () => {
         try {
             const response = await api.getWithToken(`${serverURL}/blog-category?status=1&type=portfolio`)
-            console.log('response.data.data.data : ', response.data.data.data);
             if (response.data.success === true) {
                 setCategory(response.data.data.data || []);
             } else {
@@ -56,8 +55,6 @@ function IndexPortfolio() {
             }
 
         } catch (error) {
-            console.log(error);
-
             console.error("Error fetching products:", error.response ? error.response.data : error.message);
         }
     }
