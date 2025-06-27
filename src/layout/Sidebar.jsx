@@ -13,6 +13,9 @@ import { RiShieldUserLine } from 'react-icons/ri';
 import { BsFillSendArrowUpFill } from 'react-icons/bs';
 import { FaBarsStaggered } from 'react-icons/fa6';
 import { FaMicrochip } from 'react-icons/fa';
+import { FaSitemap } from 'react-icons/fa';
+import { IoCloudUploadOutline } from "react-icons/io5";
+
 
 const categories = [
     { id: 1, name: 'Dashboard', icons: <IoHomeOutline />, path: '/dashboard', subcategories: [] },
@@ -24,7 +27,7 @@ const categories = [
     { id: 7, name: 'Faqs', icons: <FaQuestion />, path: '/faqs', subcategories: [] },
     // { id: 8, name: 'Categories', icons: <FaListOl />, path: '/categories', subcategories: [] },
     // { id: 9, name: 'Blogs', icons: <TbBrandBlogger />, path: '/blogs-list', subcategories: [] },
-    { id: 8, name: 'Technology', icons: <FaMicrochip />, path: '/technology', subcategories: [] },
+    { id: 8, name: 'Services', icons: <FaMicrochip />, path: '/services', subcategories: [] },
     {
         id: 9,
         name: 'Blogs',
@@ -36,6 +39,7 @@ const categories = [
         ],
     },
     { id: 10, name: 'Contact Us', icons: <LuContact />, path: '/contact-us', subcategories: [] },
+    { id: 10, name: 'Upload Sitemap', icons: <IoCloudUploadOutline />, path: '/upload-sitemap', subcategories: [] },
     { id: 11, name: 'Newsletters', icons: <BsFillSendArrowUpFill />, path: '/newsletters', subcategories: [] },
     { id: 12, name: 'Case Studies', icons: <LuBookMarked />, path: '/case-studies', subcategories: [] },
 ];

@@ -21,12 +21,14 @@ function Technology() {
     const [modalType, setModalType] = useState('add'); // 'add' or 'edit'
     const [currentTech, setCurrentTech] = useState(null);
     const [modalLoading, setModalLoading] = useState(false);
-    const [form, setForm] = useState({ name: '', link: '' });
+    const [form, setForm] = useState({ name: '', link: '', parent: '' });
     const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
+    const [parentServices, setParentServices] = useState([]);
 
     useEffect(() => {
         getServiceList();
+        getParentServices();
     }, []);
 
     useEffect(() => {
@@ -56,6 +58,19 @@ function Technology() {
         }
     };
 
+    const getParentServices = async () => {
+        try {
+            const response = await api.getWithToken(`${serverURL}/parent-service`);
+            if (response.data.success === true) {
+                setParentServices(response.data.data || []);
+            } else {
+                setParentServices([]);
+            }
+        } catch (error) {
+            setParentServices([]);
+        }
+    };
+
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
@@ -63,7 +78,7 @@ function Technology() {
     const handleAdd = () => {
         setModalType('add');
         setCurrentTech(null);
-        setForm({ name: '', link: '' });
+        setForm({ name: '', link: '', parent: '' });
         setFormErrors({});
         setShowModal(true);
     };
@@ -71,7 +86,11 @@ function Technology() {
     const handleEdit = (tech) => {
         setModalType('edit');
         setCurrentTech(tech);
-        setForm({ name: tech.name || '', link: tech.link || '' });
+        setForm({
+            name: tech.name || '',
+            link: tech.link || '',
+            parent: tech.parentServiceId?._id || tech.parentServiceId?.name || '',
+        });
         setFormErrors({});
         setShowModal(true);
     };
@@ -79,19 +98,32 @@ function Technology() {
     const handleModalClose = () => {
         setShowModal(false);
         setCurrentTech(null);
-        setForm({ name: '', link: '' });
+        setForm({ name: '', link: '', parent: '' });
         setFormErrors({});
     };
 
     const handleFormChange = (e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        const { name, value, options, type } = e.target;
+        if (type === 'select-multiple') {
+            const selected = Array.from(options).filter(option => option.selected).map(option => option.value);
+            setForm((prev) => ({ ...prev, [name]: selected }));
+        } else {
+            setForm((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
     const validateForm = () => {
         const errors = {};
         if (!form.name.trim()) errors.name = 'Name is required';
-        if (!form.link.trim()) errors.link = 'Link is required';
+        if (!form.link.trim()) {
+            errors.link = 'Link is required';
+        } else {
+            // Validate URL format
+            const urlPattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+            if (!urlPattern.test(form.link.trim())) {
+                errors.link = 'Please enter a valid URL (must start with http:// or https://)';
+            }
+        }
         setFormErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -135,7 +167,7 @@ function Technology() {
             {mainLoader && <LoaderComman />}
             <Layout>
                 <div className="d-flex justify-content-between align-items-center">
-                    <h2 className="page-title">Service  </h2>
+                    <h2 className="page-title">Services  </h2>
                     <Button variant="primary" onClick={handleAdd}>Add</Button>
                 </div>
                 <div className="font-family-poppins mt-3">
@@ -165,8 +197,9 @@ function Technology() {
                                             <thead>
                                                 <tr>
                                                     <th width="50px">No.</th>
-                                                    <th width='500px'>Name</th>
+                                                    <th>Name</th>
                                                     <th>Link</th>
+                                                    <th>Main Service</th>
                                                     <th width='150'>Action</th>
                                                 </tr>
                                             </thead>
@@ -181,6 +214,7 @@ function Technology() {
                                                                     {tech.link}
                                                                 </a>
                                                             </td>
+                                                            <td><p>{tech.parentServiceId?.name ? tech.parentServiceId?.name : "-"}</p></td>
                                                             <td width={150}>
                                                                 <div className='d-flex align-items-center justify-content-start gap-2'>
                                                                     <span className='table-edit-btn' style={{ cursor: 'pointer', padding: '5px' }} onClick={() => handleEdit(tech)}>
@@ -218,12 +252,14 @@ function Technology() {
                 errors={formErrors}
                 onChange={handleFormChange}
                 type={modalType}
+                parentServices={parentServices}
+                currentTech={currentTech}
             />
         </>
     );
 }
 
-function TechnologyModal({ show, onHide, onSubmit, loading, form, errors, onChange, type }) {
+function TechnologyModal({ show, onHide, onSubmit, loading, form, errors, onChange, type, parentServices, currentTech }) {
     return (
         <Modal show={show} onHide={onHide} centered>
             <Form onSubmit={onSubmit}>
@@ -254,6 +290,21 @@ function TechnologyModal({ show, onHide, onSubmit, loading, form, errors, onChan
                             placeholder="Enter service link"
                         />
                         <Form.Control.Feedback type="invalid">{errors.link}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Parent Service</Form.Label>
+                        <Form.Select
+                            name="parent"
+                            value={form.parent}
+                            onChange={onChange}
+                        >
+                            <option value="">None</option>
+                            {parentServices
+                                .filter(tech => !currentTech || tech._id !== currentTech._id)
+                                .map(tech => (
+                                    <option key={tech._id} value={tech._id}>{tech.name}</option>
+                                ))}
+                        </Form.Select>
                     </Form.Group>
                     {errors.submit && <div className="text-danger mb-2">{errors.submit}</div>}
                 </Modal.Body>

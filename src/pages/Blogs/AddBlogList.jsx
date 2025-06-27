@@ -23,6 +23,8 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { PiPlusBold } from 'react-icons/pi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import SummerEditor from '../../components/comman/SummerEditor';
+import Select from 'react-select';
+import CustomSelect from './CustomSelect';
 
 const requireField = [
     "title",
@@ -64,11 +66,29 @@ function AddBlogList() {
     const [image, setImage] = useState(null);
     const [mainLoader, setMainLoader] = useState(false);
     const summerEditorRef = useRef();
-    
+    const [services, setServices] = useState([]);
+    const [allServices, setAllServices] = useState([]);
+
+    const customServiceStyles = {
+        option: (provided, state) => {
+            const isSubservice = state.data.isSubservice;
+            return {
+                ...provided,
+                backgroundColor: state.isFocused ? '#f0f0f0' : 'white',
+                paddingLeft: isSubservice ? 32 : 12,
+                fontWeight: isSubservice ? 400 : 600,
+            };
+        },
+        multiValueLabel: (provided) => ({
+            ...provided,
+            fontWeight: 400
+        })
+    };
 
     useEffect(() => {
         getMember();
         getCategories();
+        getAllServices();
     }, [])
 
     useEffect(() => {
@@ -92,7 +112,8 @@ function AddBlogList() {
                 blog_read_time: state.blog_read_time,
                 tag: state.tag,
                 faqs: state?.faqs?.length > 0 ? state?.faqs : [{ question: '', answer: '' }],
-                image: state.image || null
+                image: state.image || null,
+                services: state?.services?.length > 0 ? state?.services?.map(service => service._id) : []
             });
             if (state.image) {
                 const fullImageUrl = `${imageURL}${state.image}`;
@@ -145,6 +166,19 @@ function AddBlogList() {
         }
     }
 
+    const getAllServices = async () => {
+        try {
+            const response = await api.getWithToken(`${serverURL}/service-with-subservices`);
+            if (response.data.success === true) {
+                setAllServices(response.data.data || []);
+            } else {
+                setAllServices([]);
+            }
+        } catch (error) {
+            setAllServices([]);
+        }
+    };
+
     const teamOptions = team.map(member => ({
         value: member._id,
         label: member.name
@@ -161,10 +195,13 @@ function AddBlogList() {
     }
 
     const handleChange = async (e) => {
-        const { name, value, checked, type } = e.target;
+        const { name, value, checked, type, options } = e.target;
         let newValue = type === "checkbox" ? checked : value;
+        if (type === 'select-multiple') {
+            newValue = Array.from(options).filter(option => option.selected).map(option => option.value);
+        }
         if (submitCount > 0) {
-            let validationErrors = ValidateFields({ ...states, [name]: value });
+            let validationErrors = ValidateFields({ ...states, [name]: newValue });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
@@ -228,6 +265,9 @@ function AddBlogList() {
                     formData.append('faqs', JSON.stringify(updatedValues?.faqs));
                 else
                     formData.append('faqs', JSON.stringify([]));
+                if (updatedValues.services && updatedValues.services.length > 0) {
+                    formData.append('services', JSON.stringify(updatedValues.services));
+                }
                 setMainLoader(true);
                 let response;
                 if (state._id) {
@@ -338,6 +378,31 @@ function AddBlogList() {
             }
         }
     };
+
+    const groupedServiceOptions = allServices.map(service => ({
+        options: [
+            { value: `main-${service._id}`, label: service.name, isSubservice: false, rawId: service._id },
+            ...(service.subservices || []).map(sub => ({
+                value: `sub-${sub._id}`,
+                label: sub.name,
+                isSubservice: true,
+                rawId: sub._id
+            }))
+        ]
+    }));
+
+    let allOptions = groupedServiceOptions.flatMap(group => group.options);
+
+    const missingSelected = (states.services || [])
+        .filter(id => !allOptions.some(opt => opt.rawId === id))
+        .map(id => ({
+            value: id,
+            label: id, 
+            isSubservice: true,
+            rawId: id
+        }));
+
+    allOptions = [...allOptions, ...missingSelected];
 
     return (
         <>
@@ -451,6 +516,15 @@ function AddBlogList() {
                                                     onChange={handleChange}
                                                 />
                                                 <SingleError error={errors?.tag} />
+                                            </Col>
+                                            <Col md={12}>
+                                                <label className="form-label text-default">Services</label>
+                                                <CustomSelect
+                                                    options={groupedServiceOptions}
+                                                    value={states.services || []}
+                                                    onChange={newServices => setStates(prev => ({ ...prev, services: newServices }))}
+                                                    placeholder="Select services and Sub-service"
+                                                />
                                             </Col>
                                             <Col md={6} className='switch-box'>
                                                 <div className='d-flex align-items-center gap-2 mb-3'>

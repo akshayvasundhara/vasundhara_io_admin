@@ -10,6 +10,7 @@ import { FaCheckCircle, FaClipboard } from 'react-icons/fa';
 function BlogIndexView() {
     const location = useLocation();
     const state = location.state || {};
+    console.log('state :', state);
     const imageURL = getImageURL();
 
     const htmlTemplate = `
@@ -56,8 +57,57 @@ strong {
     `;
     const finalContentBenefit = htmlTemplate.replace('%CONTENT%', state.main_content || '');
 
+    function groupServicesByParent(services) {
+        const mainMap = {};
+        const idToService = {};
+        services.forEach(s => { idToService[s._id] = s; });
+
+        services.forEach(service => {
+            if (service.parentServiceId && typeof service.parentServiceId === 'object') {
+                const parentId = service.parentServiceId._id;
+                if (!mainMap[parentId]) {
+                    mainMap[parentId] = {
+                        main: service.parentServiceId,
+                        subs: []
+                    };
+                }
+                mainMap[parentId].subs.push(service);
+            } else if (!service.parentServiceId) {
+                if (!mainMap[service._id]) {
+                    mainMap[service._id] = {
+                        main: service,
+                        subs: []
+                    };
+                }
+            }
+        });
+
+        return Object.values(mainMap).sort((a, b) => a.main.name.localeCompare(b.main.name));
+    }
+
+    const grouped = groupServicesByParent(state.services || []);
+
     const names = [
         { label: 'Unique route:', value: state.tag || '' },
+        {
+            label: 'Services:',
+            value: (
+                <ol style={{ margin: 0, paddingLeft: 20 }}>
+                    {grouped.map((group, idx) => (
+                        <li key={group.main._id} style={{ marginBottom: 4 }}>
+                            {group.main.name}
+                            {group.subs.length > 0 && (
+                                <ul style={{ margin: 0, paddingLeft: 20 }}>
+                                    {group.subs.map(sub => (
+                                        <li key={sub._id}>{sub.name}</li>
+                                    ))}
+                                </ul>
+                            )}
+                        </li>
+                    ))}
+                </ol>
+            )
+        },
         { label: 'Title:', value: state.title || '' },
         { label: 'Category:', value: state.category?.name || '' },
         { label: 'Date:', value: state.date ? new Date(state.date).toISOString().split("T")[0] : "" },

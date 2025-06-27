@@ -1,0 +1,105 @@
+.custom-select-admin {
+  position: relative;
+  width: 100%;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+.selected-tags-admin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 4px 8px;
+  min-height: 40px;
+  background: #fff;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+.selected-tags-admin:focus-within, .selected-tags-admin:active {
+  border-color: #007bff;
+}
+.tag-admin {
+  background: #e6f7ff;
+  color: #222;
+  border-radius: 2px;
+  margin: 2px 4px 2px 0;
+  padding: 2px 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+.select-input-admin {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 80px;
+  font-size: 15px;
+  background: transparent;
+  padding: 4px 0;
+}
+.dropdown-arrow-admin {
+  margin-left: auto;
+  font-size: 18px;
+  color: #888;
+  padding: 0 6px;
+}
+.dropdown-panel-admin {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0 0 4px 4px;
+  z-index: 10;
+  max-height: 260px;
+  overflow-y: auto;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  margin-top: 2px;
+}
+.group-label-admin {
+  font-weight: 600;
+  background: #f5f5f5;
+  color: #222;
+  padding: 8px 12px 6px 12px;
+  font-size: 15px;
+  border-bottom: 1px solid #eee;
+}
+.dropdown-option-admin {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #222;
+  background: #fff;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+}
+.dropdown-option-admin:hover {
+  background: #f0f0f0;
+}
+.dropdown-option-admin.selected-admin {
+  background: #e6f7ff;
+  color: #222;
+  font-weight: 500;
+}
+.subservice-admin {
+  padding-left: 36px;
+  font-weight: 400;
+}
+.tick-admin {
+  color: #28a745;
+  margin-left: auto;
+  font-size: 16px;
+}
+.tag-remove-admin {
+  margin-left: 8px;
+  color: #888;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+.tag-remove-admin:hover {
+  color: #d32f2f;
+} 

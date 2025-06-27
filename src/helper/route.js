@@ -36,6 +36,7 @@ import IndexPortfolioEdit from '../pages/Portfolio/IndexPortfolioEdit';
 import ViewIndexPortfolio from '../pages/Portfolio/ViewIndexPortfolio';
 import BlogComments from '../pages/Blogs/BlogComment';
 import Technology from '../pages/Technology/Technology';
+import UploadSiteMap from '../pages/UploadSiteMap/UploadSiteMap';
 
 export default [
     {
@@ -201,7 +202,7 @@ export default [
         ),
     },
     {
-        path: "/technology",
+        path: "/services",
         element: (
             <PrivateRoute>
                 <Technology />
@@ -325,6 +326,14 @@ export default [
         element: (
             <PrivateRoute>
                 <ViewCaseStudiesIndex />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/upload-sitemap",
+        element: (
+            <PrivateRoute>
+                <UploadSiteMap />
             </PrivateRoute>
         ),
     },
