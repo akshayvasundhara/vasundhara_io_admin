@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import Layout from '../../layout/Layout'
 import { Row, Col, Card } from 'react-bootstrap';
@@ -24,9 +23,7 @@ const requireField = [
     "designation",
     "description",
     "image",
-    "rating",
-    "platform_logo",
-    "platform_link"
+    "rating"
 ];
 
 function AddTestimonials() {
@@ -64,7 +61,7 @@ function AddTestimonials() {
 
         let validationErrors;
         if (submitCount > 0) {
-            validationErrors = ValidateFields({ ...states, [name]: value, image, platform_logo });
+            validationErrors = ValidateFields({ ...states, [name]: value, image });
             validationErrors = ErrorFilter(validationErrors, requireField);
             setErrors(validationErrors);
             if (Object.keys(validationErrors).length === 0) {
@@ -99,7 +96,7 @@ function AddTestimonials() {
                 formData.append('description', updatedValues.description || "");
                 formData.append('platform_link', updatedValues.platform_link || "");
                 formData.append('image', image || null);
-                formData.append('platform_logo', platform_logo);
+                formData.append('platform_logo', platform_logo || null);
                 formData.append('status', status || 0);
                 formData.append('rating', updatedValues.rating);
 
@@ -177,7 +174,7 @@ function AddTestimonials() {
                                         <Row className='g-3'>
                                             <Col md={12} lg={6}>
                                                 <LableInput
-                                                    label="Name:"
+                                                    label={<span>Name <span style={{color: 'red'}}>*</span></span>}
                                                     className="form-control"
                                                     id="text"
                                                     placeholder="Enter name"
@@ -190,7 +187,7 @@ function AddTestimonials() {
                                             </Col>
                                             <Col md={12} lg={6}>
                                                 <LableInput
-                                                    label="Designation"
+                                                    label={<span>Designation <span style={{color: 'red'}}>*</span></span>}
                                                     className="form-control"
                                                     id="text"
                                                     placeholder="Enter designation"
@@ -203,14 +200,12 @@ function AddTestimonials() {
                                             </Col>
                                             <Col md={12}>
                                                 <LableInput
-                                                    label="Rating:"
+                                                    label={<span>Rating <span style={{color: 'red'}}>*</span></span>}
                                                     className="form-control"
                                                     placeholder="Enter rating"
-
                                                     type="number"
                                                     name='rating'
                                                     value={states?.rating || ""}
-                                                    // onKeyPress={handleKeyPress}
                                                     onChange={handleChange}
                                                     min="1"
                                                     max="5"
@@ -218,20 +213,20 @@ function AddTestimonials() {
                                                 <SingleError error={errors?.rating} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <FileInput label="Image:" setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} />
+                                                <FileInput label={<span>Image <span style={{color: 'red'}}>*</span></span>} setImage={setImage} initialImage={image !== null && `${imageURL}${image}`} onChange={handleChange} />
                                                 <SingleError error={errors?.image} />
                                             </Col>
                                             <Col md={12} lg={6}>
-                                                <FileICon label="Platform Logo:" setIcon={setPlatFormLogo} initialIcon={platform_logo} onChange={handleChange} name='platform_logo' />
+                                                <FileICon label="Platform Logo" setIcon={setPlatFormLogo} initialIcon={platform_logo} onChange={handleChange} name='platform_logo' />
                                                 <SingleError error={errors?.platform_logo} />
                                             </Col>
 
                                             <Col md={12}>
-                                                <LableInput label="Platform Link:" className="form-control" placeholder="Enter platform link" type="text" name="platform_link" value={states?.platform_link || ""} onChange={handleChange} />
+                                                <LableInput label="Platform Link" className="form-control" placeholder="Enter platform link" type="text" name="platform_link" value={states?.platform_link || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.platform_link} />
                                             </Col>
                                             <Col md={12}>
-                                                <Textarea label="Description:" rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
+                                                <Textarea label={<span>Description <span style={{color: 'red'}}>*</span></span>} rows="9" type="text" name="description" value={states?.description || ""} onChange={handleChange} />
                                                 <SingleError error={errors?.description} />
                                             </Col>
 
@@ -241,7 +236,7 @@ function AddTestimonials() {
                                     <div className="d-md-flex justify-content-between align-items-center mt-3">
                                         <div className='d-flex align-items-center gap-2'>
                                             <label htmlFor="industry-select" className="form-label text-default mb-0">
-                                                Status:
+                                                Status
                                             </label>
                                             <Switch mode={state.status} onToggle={handleToggle} index={0} />
                                         </div>

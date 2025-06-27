@@ -35,6 +35,7 @@ import IndexPortfolio from '../pages/Portfolio/IndexPortfolio';
 import IndexPortfolioEdit from '../pages/Portfolio/IndexPortfolioEdit';
 import ViewIndexPortfolio from '../pages/Portfolio/ViewIndexPortfolio';
 import BlogComments from '../pages/Blogs/BlogComment';
+import Technology from '../pages/Technology/Technology';
 
 export default [
     {
@@ -196,6 +197,14 @@ export default [
         element: (
             <PrivateRoute>
                 <FaqsAdd />
+            </PrivateRoute>
+        ),
+    },
+    {
+        path: "/technology",
+        element: (
+            <PrivateRoute>
+                <Technology />
             </PrivateRoute>
         ),
     },

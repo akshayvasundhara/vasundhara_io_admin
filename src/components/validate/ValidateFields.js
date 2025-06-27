@@ -58,11 +58,6 @@ export const ValidateFields = (values) => {
     errors.image = "Please upload an image";
   }
 
-  // Icon validation
-  if (!values?.platform_logo) {
-    errors.icon = "Please upload a platformlogo";
-  }
-
   // Tag validation 
   if (!values?.tag?.trim()) {
     errors.tag = "Tag is required";
