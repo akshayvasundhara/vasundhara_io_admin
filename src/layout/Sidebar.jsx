@@ -35,7 +35,7 @@ const categories = [
         subcategories: [
             { name: 'Blog List', path: '/blogs-list' },
             { name: 'Blog Category', path: '/category' },
-            { name: 'Blog Comments', path: '/blog-comments' },
+            // { name: 'Blog Comments', path: '/blog-comments' },
         ],
     },
     { id: 10, name: 'Contact Us', icons: <LuContact />, path: '/contact-us', subcategories: [] },
