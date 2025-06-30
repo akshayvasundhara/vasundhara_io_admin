@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { getServerURL } from '../../helper/envConfig';
 import { toast } from 'react-toastify';
 import { MdOutlineEdit } from 'react-icons/md';
+import CommanPagination from '../../components/comman/CommanPagination';
 
 function Technology() {
     const serverURL = getServerURL();
@@ -25,33 +26,52 @@ function Technology() {
     const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
     const [parentServices, setParentServices] = useState([]);
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
+    const [count, setCount] = useState(0);
+    const [isSearched, setIsSearched] = useState(false);
 
     useEffect(() => {
-        getServiceList();
+        if (isSearched) {
+            const delayDebounceFn = setTimeout(() => {
+                getServiceList(1, perPage, searchQuery);
+            }, 1000);
+            return () => clearTimeout(delayDebounceFn);
+        }
+    }, [searchQuery]);
+
+    useEffect(() => {
+        getServiceList(page, perPage);
+    }, [page, perPage]);
+
+    useEffect(() => {
         getParentServices();
     }, []);
 
-    useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            getServiceList();
-        }, 500);
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery]);
-
-    const getServiceList = async () => {
+    const getServiceList = async (pageParam = page, perPageParam = perPage, search = searchQuery) => {
         setMainLoader(true);
         try {
-            let url = `${serverURL}/service`;
-            if (searchQuery) {
-                url += `?search=${encodeURIComponent(searchQuery)}`;
+            let url = `${serverURL}/service?perPage=${perPageParam}&page=${pageParam}`;
+            if (search) {
+                url += `&search=${encodeURIComponent(search)}`;
             }
             const response = await api.getWithToken(url);
             if (response.data.success === true) {
-                setTechnologies(response.data.data || []);
+                setTechnologies(response?.data?.data?.data || []);
+                setCount(response.data.data.count || 0);
+                setPerPage(response.data.data.perPage || perPageParam);
+                setPage(response.data.data.page || pageParam);
+                setTotalPages(response.data.data.paginationValue || 1);
             } else {
                 setTechnologies([]);
+                setCount(0);
+                setTotalPages(1);
             }
         } catch (error) {
+            setTechnologies([]);
+            setCount(0);
+            setTotalPages(1);
             console.error("Error fetching services:", error.response ? error.response.data : error.message);
         } finally {
             setMainLoader(false);
@@ -73,6 +93,7 @@ function Technology() {
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
+        setIsSearched(true);
     };
 
     const handleAdd = () => {
@@ -162,6 +183,12 @@ function Technology() {
         getServiceList();
     };
 
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setPage(newPage);
+        }
+    };
+
     return (
         <>
             {mainLoader && <LoaderComman />}
@@ -207,7 +234,7 @@ function Technology() {
                                                 {technologies?.length > 0 ? (
                                                     technologies.map((tech, index) => (
                                                         <tr key={tech._id || index}>
-                                                            <td>{index + 1}.</td>
+                                                            <td>{(page - 1) * perPage + index + 1}.</td>
                                                             <td><p>{tech.name}</p></td>
                                                             <td>
                                                                 <a href={tech.link} target="_blank" rel="noopener noreferrer">
@@ -223,7 +250,7 @@ function Technology() {
                                                                     <DeleteButton
                                                                         id={tech._id}
                                                                         endpoint={`${serverURL}/service`}
-                                                                        onSuccess={handleDeleteSuccess}
+                                                                        onSuccess={() => { handleDeleteSuccess(); setPage(1); }}
                                                                     />
                                                                 </div>
                                                             </td>
@@ -231,11 +258,16 @@ function Technology() {
                                                     ))
                                                 ) : (
                                                     <tr>
-                                                        <td colSpan={4}><NoDataAvailable /></td>
+                                                        <td colSpan={5}><NoDataAvailable /></td>
                                                     </tr>
                                                 )}
                                             </tbody>
                                         </Table>
+                                        <CommanPagination
+                                            currentPage={page}
+                                            totalPages={totalPages}
+                                            onPageChange={handlePageChange}
+                                        />
                                     </div>
                                 </Card.Body>
                             </Card>
