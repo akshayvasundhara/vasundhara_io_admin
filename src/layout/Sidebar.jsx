@@ -39,9 +39,9 @@ const categories = [
         ],
     },
     { id: 10, name: 'Contact Us', icons: <LuContact />, path: '/contact-us', subcategories: [] },
-    { id: 10, name: 'Upload Sitemap', icons: <IoCloudUploadOutline />, path: '/upload-sitemap', subcategories: [] },
-    { id: 11, name: 'Newsletters', icons: <BsFillSendArrowUpFill />, path: '/newsletters', subcategories: [] },
-    { id: 12, name: 'Case Studies', icons: <LuBookMarked />, path: '/case-studies', subcategories: [] },
+    { id: 11, name: 'Upload Sitemap', icons: <IoCloudUploadOutline />, path: '/upload-sitemap', subcategories: [] },
+    { id: 12, name: 'Newsletters', icons: <BsFillSendArrowUpFill />, path: '/newsletters', subcategories: [] },
+    { id: 13, name: 'Case Studies', icons: <LuBookMarked />, path: '/case-studies', subcategories: [] },
 ];
 
 function Sidebar({ className, onToggleSidebar }) {
